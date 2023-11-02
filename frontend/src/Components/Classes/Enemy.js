@@ -10,13 +10,17 @@ class Enemy {
             x: this.position.x + this.width / 2,
             y: this.position.y + this.height / 2
         }
+        this.radius = 50;
     }
 
     draw() {
         const canvas = document.querySelector('canvas');
         const c = canvas.getContext('2d');
         c.fillStyle = 'red';
-    c.fillRect(this.position.x, this.position.y,this.width,this.height);
+        // c.fillRect(this.position.x, this.position.y,this.width,this.height);
+        c.beginPath();
+        c.arc(this.center.x, this.center.y, this.radius, 0, Math.PI *2);
+        c.fill();
     }
 
     update() {

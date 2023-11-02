@@ -1,8 +1,13 @@
+// import Files from Data
 import placementTilesData from '../Data/placementTilesData';
 import waypoints1 from '../Data/waypoint';
+
+// import files from Classes
 import Enemy from '../Classes/Enemy';
 import PlacementTile from '../Classes/PlacementTile';
 import Building from '../Classes/Building';
+
+// import file from img
 import TowerDefenseMap from '../../img/TowerDefenseMap.png';
 
 const GamePage = () => {
@@ -80,6 +85,14 @@ function animate() {
     })
     buildings.forEach(building => {
       building.draw();
+
+      building.projectiles.forEach(projectile => {
+        projectile.update()
+        
+       // const xDifference = projectile.enemies.position.x - projectile.position.x;
+       // console.log(xDifference);
+        // const distance = Math.hypot()
+      })
     })
     
 }
@@ -90,7 +103,8 @@ canvas.addEventListener('click', () => {
       position: {
         x: activeTile.position.x,
         y: activeTile.position.y
-      }
+      },
+      enemies
     }))
     activeTile.isOcupied = true;
   }
@@ -110,14 +124,11 @@ window.addEventListener('mousemove', (event) => {
         mouse.y < tile.position.y + tile.size){
           activeTile = tile;
           break;
-
         }
-      
     }
 })
   
 };
-
 
 export default GamePage;
 
