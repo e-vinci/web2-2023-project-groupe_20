@@ -3,6 +3,7 @@ class PlacementTile{
         this.position = position;
         this.size = 64;
         this.color = 'rgba(255,255,255,0.15)';
+        this.occupied = false;
     }
 
     draw(){
@@ -20,6 +21,10 @@ const c = canvas.getContext('2d');
             mouse.y > this.position.y &&
             mouse.y < this.position.y + this.size ){
                 console.log('colliding');
+                this.color = 'white';
+            }
+            else{
+                this.color = 'rgba(255,255,255,0.15)';
             }
 
     }

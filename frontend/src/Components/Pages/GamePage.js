@@ -2,6 +2,7 @@ import placementTilesData from '../Data/placementTilesData';
 import waypoints1 from '../Data/waypoint';
 import Enemy from '../Classes/Enemy';
 import PlacementTile from '../Classes/PlacementTile';
+import Building from '../Classes/Building';
 import TowerDefenseMap from '../../img/TowerDefenseMap.png';
 
 const GamePage = () => {
@@ -62,6 +63,10 @@ const mouse = {
   y: undefined
 }
 
+const buildings = [];
+
+let activeTile;
+
 function animate() {
     requestAnimationFrame(animate);
     
@@ -73,14 +78,42 @@ function animate() {
     placementTiles.forEach((tile) => {
         tile.update(mouse);
     })
-
+    buildings.forEach(building => {
+      building.draw();
+    })
     
 }
 
+canvas.addEventListener('click', () => {
+  if (activeTile && !activeTile.isOcupied) {
+    buildings.push(new Building({
+      position: {
+        x: activeTile.position.x,
+        y: activeTile.position.y
+      }
+    }))
+    activeTile.isOcupied = true;
+  }
+  console.log(buildings);
+})
 
 window.addEventListener('mousemove', (event) => {
     mouse.x = event.clientX;
     mouse.y = event.clientY;
+
+    activeTile = null;
+    for (let i = 0; i < placementTiles.length; i++) {
+      const tile = placementTiles[i];
+      if(mouse.x > tile.position.x &&
+        mouse.x < tile.position.x + tile.size &&
+        mouse.y > tile.position.y &&
+        mouse.y < tile.position.y + tile.size){
+          activeTile = tile;
+          break;
+
+        }
+      
+    }
 })
   
 };
