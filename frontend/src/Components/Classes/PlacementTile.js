@@ -8,7 +8,7 @@ class PlacementTile{
 
     draw(){
         const canvas = document.querySelector('canvas');
-const c = canvas.getContext('2d');
+        const c = canvas.getContext('2d');
         c.fillStyle = this.color;
         c.fillRect(this.position.x, this.position.y, this.size, this.size )
     }
@@ -20,7 +20,6 @@ const c = canvas.getContext('2d');
             mouse.x < this.position.x + this.size &&
             mouse.y > this.position.y &&
             mouse.y < this.position.y + this.size ){
-                console.log('colliding');
                 this.color = 'white';
             }
             else{

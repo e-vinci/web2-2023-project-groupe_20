@@ -46,7 +46,6 @@ placementTilesData2D.forEach( (row, y) => {
     })
 })
 
-console.log(placementTiles)
 
 const image = new Image();
 image.onload = () => {
@@ -79,20 +78,38 @@ function animate() {
     enemies.forEach(enemy => {
         enemy.update();
     })
-
+  
     placementTiles.forEach((tile) => {
         tile.update(mouse);
     })
     buildings.forEach(building => {
-      building.draw();
-
-      building.projectiles.forEach(projectile => {
-        projectile.update()
+      building.update();
+      const validEnemies = enemies.filter(enemy => {
+        const xDifference = enemy.center.x - building.center.x;
+        const yDifference = enemy.center.y - building.center.y;
         
-       // const xDifference = projectile.enemies.position.x - projectile.position.x;
-       // console.log(xDifference);
-        // const distance = Math.hypot()
+        const distance = Math.hypot(xDifference, yDifference);
+
+        return distance < enemy.radius + building.radius;
       })
+      console.log(validEnemies);
+      
+      building.setEnemy(validEnemies[0]);
+
+      for (let i = building.projectiles.length -1; i >= 0; i--) {
+        const projectile = building.projectiles[i];
+        projectile.update()
+
+        // Get position x/y projectile to enemy        
+        const xDifference = projectile.enemy.center.x - projectile.position.x;
+        const yDifference = projectile.enemy.center.y - projectile.position.y;
+        
+        const distance = Math.hypot(xDifference, yDifference);
+
+        if (distance < projectile.enemy.radius + projectile.radius){
+          building.projectiles.splice(i, 1);
+        }
+      }
     })
     
 }
@@ -108,7 +125,6 @@ canvas.addEventListener('click', () => {
     }))
     activeTile.isOcupied = true;
   }
-  console.log(buildings);
 })
 
 window.addEventListener('mousemove', (event) => {
