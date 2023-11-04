@@ -75,10 +75,11 @@ function animate() {
     requestAnimationFrame(animate);
     
     c.drawImage(image,0, 0);
-    enemies.forEach(enemy => {
-        enemy.update();
-    })
-  
+    for (let i = enemies.length -1; i >= 0 ; i--) {
+      const enemy = enemies[i];
+      enemy.update();
+    }
+    
     placementTiles.forEach((tile) => {
         tile.update(mouse);
     })
@@ -92,7 +93,6 @@ function animate() {
 
         return distance < enemy.radius + building.radius;
       })
-      console.log(validEnemies);
       
       building.setEnemy(validEnemies[0]);
 
@@ -107,6 +107,15 @@ function animate() {
         const distance = Math.hypot(xDifference, yDifference);
 
         if (distance < projectile.enemy.radius + projectile.radius){
+          projectile.enemy.health -= 20;
+          if (projectile.enemy.health <= 0) {
+            const enemyIndex = enemies.findIndex((enemy) => projectile.enemy === enemy)
+
+            if (enemyIndex > -1){
+              enemies.splice(enemyIndex, 1); 
+            }
+          }
+          console.log(projectile.enemy.health)
           building.projectiles.splice(i, 1);
         }
       }
