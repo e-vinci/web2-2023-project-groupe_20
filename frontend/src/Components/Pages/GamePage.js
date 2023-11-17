@@ -67,7 +67,7 @@ const mouse = {
   y: undefined
 }
 
-const buildings = [];
+
 
 let activeTile;
 
