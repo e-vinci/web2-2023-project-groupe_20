@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import StartScene from '../Game/StartScene';
 import GameScene from '../Game/GameScene';
+import GameOverScene from '../Game/GameOverScene';
 
 let game;
 
@@ -14,7 +15,7 @@ const GamePage = () => {
       mode: Phaser.Scale.FIT,
     },
     backgroundColor: 0x000000,
-    scene: [StartScene, GameScene],
+    scene: [StartScene, GameScene, GameOverScene],
     pixelArt: true,
     physics: {
       default: "arcade",

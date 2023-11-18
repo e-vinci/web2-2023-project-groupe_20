@@ -12,6 +12,8 @@ class GameScene extends Phaser.Scene {
         this.background.setOrigin(0,0);
         this.add.text(20,20, "GameScene");
 
+        this.lives = 3;
+
         // Path number 1 white
         const path1 = new Phaser.Curves.Path(147.166666666667,856)
         path1.lineTo(161.833333333333, 542.666666666667);
@@ -20,6 +22,7 @@ class GameScene extends Phaser.Scene {
         path1.lineTo(1120.83333333333,93.3333333333333);
         path1.lineTo(1119.16666666667,678.666666666667);
         path1.lineTo(739.166666666667,676);
+        this.path1 = path1;
 
         const graphics = this.add.graphics();
         graphics.lineStyle(3, 0xffffff, 1);
@@ -35,9 +38,68 @@ class GameScene extends Phaser.Scene {
         graphics2.lineStyle(2, 0x00ff00, 1);
         path2.draw(graphics2);
 
-        const enemy1 = new Enemy(this,path1);
-        this.enemiesGroup = this.add.group({ classType: Enemy, runChildUpdate: true});
-        this.enemiesGroup.add(enemy1);
+        
+        this.enemiesGroup = this.add.group({
+            classType: Enemy,
+            runChildUpdate: true
+        });
+        this.totalEnemies = 5;
+
+      /*  const numEnemies = 5;
+        const delayBetweenEnemies = 1000;
+
+        for (let i = 0; i < numEnemies; i++) {
+            const enemy = new Enemy(this, path1);
+            this.enemiesGroup.add(enemy);
+      
+            // Add a delay between creating each enemy
+            this.time.addEvent({
+              delay: i * delayBetweenEnemies,
+              callback: () => {
+                enemy.setActive(true).setVisible(true);
+              },
+              callbackScope: this,
+            });
+        } */
+        this.nextEnemy = 0;
+    
+    }
+
+    update(time, delta) {
+        if(this.totalEnemies > 0 && time > this.nextEnemy){
+            const enemy = new Enemy(this, this.path1);
+            this.enemiesGroup.add(enemy);
+            if (enemy){
+                enemy.setActive(true);
+                enemy.setVisible(true);
+                enemy.startOnPath();
+
+                this.nextEnemy = time + 2000;
+                this.totalEnemies --;
+            }
+        }
+
+        this.checkEnemiesReachedEnd();
+    }
+
+    checkEnemiesReachedEnd(){
+        const enemiesTab = this.enemiesGroup.getChildren();
+        for (let i = 0; i < enemiesTab.length; i++) {
+            const enemy = enemiesTab[i];
+            if (enemy.active && enemy.follower.t >= 1){
+                this.lives--;
+                enemy.setActive(false);
+                enemy.setVisible(false);
+            }
+            
+        }
+        if(this.lives === 0){
+            this.gameOver();
+        }
+    }
+
+    gameOver(){
+        this.scene.start("gameOver");
     }
 
 }

@@ -11,7 +11,8 @@ module.exports = {
   rules: {
     'linebreak-style': 0,
     'no-use-before-define': ['error', 'nofunc'],
-    'no-plusplus': 0
+    'no-plusplus': 0,
+    'no-unused-vars': 0
   },
 
 };
