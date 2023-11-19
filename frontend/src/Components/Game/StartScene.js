@@ -1,6 +1,8 @@
 import Phaser from "phaser";
 import towerDefenseMap from "../../assets/TowerDefenseMap.png"
-import enemy1 from "../../assets/spriteSheets/S_Goblin_walk.png"
+import enemy1Sprite from "../../assets/spriteSheets/S_Goblin_walk.png"
+import towerSprite from "../../assets/spriteSheets/tower.png"
+import starPng from "../../assets/star.png"
 
 
 class StartScene extends Phaser.Scene {
@@ -10,10 +12,15 @@ class StartScene extends Phaser.Scene {
 
     preload(){
         this.load.image("gameMap", towerDefenseMap);
-        this.load.spritesheet("goblin", enemy1,{
+        this.load.spritesheet("goblin", enemy1Sprite,{
             frameWidth: 48,
             frameHeight: 48
-        })
+        });
+        this.load.spritesheet("tower", towerSprite, {
+            frameWidth: 70,
+            frameHeight: 130
+        });
+        this.load.image("star", starPng);
     }
 
     create(){
@@ -26,6 +33,13 @@ class StartScene extends Phaser.Scene {
         this.anims.create({
             key: "goblin_anim",
             frames: this.anims.generateFrameNames("goblin"),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: "tower_anim",
+            frames: this.anims.generateFrameNames("tower"),
             frameRate: 10,
             repeat: -1
         });

@@ -1,5 +1,19 @@
 import Phaser from "phaser";
 import Enemy from "./Enemy";
+import Tower from "./Tower";
+
+const placementTilesData = [0, 0, 0, 342, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 166, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 342, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 342, 0, 0, 0, 0, 342, 0, 0, 0, 0, 0, 0, 0, 342, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 342,
+    0, 0, 0, 0, 342, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 342, 0, 0, 0, 342, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 342, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 342,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
 
 class GameScene extends Phaser.Scene {
@@ -11,8 +25,10 @@ class GameScene extends Phaser.Scene {
         this.background = this.add.image(0,0, "gameMap");
         this.background.setOrigin(0,0);
         this.add.text(20,20, "GameScene");
+        this.map = placementTilesData;
 
-        this.lives = 3;
+
+        this.lives = 6;
 
         // Path number 1 white
         const path1 = new Phaser.Curves.Path(147.166666666667,856)
@@ -25,7 +41,7 @@ class GameScene extends Phaser.Scene {
         this.path1 = path1;
 
         const graphics = this.add.graphics();
-        graphics.lineStyle(3, 0xffffff, 1);
+     //   graphics.lineStyle(3, 0xffffff, 1);
         path1.draw(graphics);
 
         // Path number 2 green
@@ -35,7 +51,7 @@ class GameScene extends Phaser.Scene {
         path2.lineTo(480, 544);
 
         const graphics2 = this.add.graphics();
-        graphics2.lineStyle(2, 0x00ff00, 1);
+       // graphics2.lineStyle(2, 0x00ff00, 1);
         path2.draw(graphics2);
 
         
@@ -44,24 +60,16 @@ class GameScene extends Phaser.Scene {
             runChildUpdate: true
         });
         this.totalEnemies = 5;
-
-      /*  const numEnemies = 5;
-        const delayBetweenEnemies = 1000;
-
-        for (let i = 0; i < numEnemies; i++) {
-            const enemy = new Enemy(this, path1);
-            this.enemiesGroup.add(enemy);
-      
-            // Add a delay between creating each enemy
-            this.time.addEvent({
-              delay: i * delayBetweenEnemies,
-              callback: () => {
-                enemy.setActive(true).setVisible(true);
-              },
-              callbackScope: this,
-            });
-        } */
         this.nextEnemy = 0;
+
+        this.towers = this.add.group({
+            classType: Tower,
+            runChildUpdate: true
+        });
+
+
+        this.input.on('pointerdown', pointer => this.placeTurrets(pointer));
+        this.createCursor();
     
     }
 
@@ -82,6 +90,49 @@ class GameScene extends Phaser.Scene {
         this.checkEnemiesReachedEnd();
     }
 
+    canPlaceTower(i,j){
+        if(this.map){
+            const index = i * 20 + j;
+            return this.map[index] === 342;
+        }
+        return false;
+    }
+
+    placeTurrets(pointer) {
+        const i = Math.floor(pointer.y / 64);
+        const j = Math.floor(pointer.x / 64);
+
+       if (this.canPlaceTower(i,j)){
+        const index = i * 20 + j;
+        let tower = this.towers.getFirstDead();
+        if(!tower){
+            tower = new Tower(this, 0, 0, this.map);
+            this.towers.add(tower);
+        }
+        tower.setActive(true);
+        tower.setVisible(true);
+        tower.place(i,j);
+       }
+    }
+
+    createCursor() {
+        this.cursor = this.add.image(32, 32, "star");
+        this.cursor.setScale(2);
+        this.cursor.alpha = 1;
+    
+        this.input.on("pointermove", pointer => {
+          const i = Math.floor(pointer.y / 64);
+          const j = Math.floor(pointer.x / 64);
+    
+          if (this.canPlaceTower(i, j)) {
+            this.cursor.setPosition(j * 64 + 32, i * 64 + 32);
+            this.cursor.alpha = 0.8;
+          } else {
+            this.cursor.alpha = 0;
+          }
+        });
+      }
+
     checkEnemiesReachedEnd(){
         const enemiesTab = this.enemiesGroup.getChildren();
         for (let i = 0; i < enemiesTab.length; i++) {
@@ -101,6 +152,8 @@ class GameScene extends Phaser.Scene {
     gameOver(){
         this.scene.start("gameOver");
     }
+
+
 
 }
 

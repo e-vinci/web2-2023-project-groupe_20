@@ -8,7 +8,7 @@ class GameOverScene extends Phaser.Scene{
     create(){
         this.background = this.add.image(0,0, "gameMap");
         this.background.setOrigin(0,0);
-        this.add.text(20,20, "THE END");
+        this.add.text(this.scale.width * 0.5, this.scale.height * 0.5, "GAME OVER").setOrigin(0.5);
 
     }
 
