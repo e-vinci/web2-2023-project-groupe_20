@@ -14,7 +14,7 @@ const GamePage = () => {
       autoCenter: Phaser.Scale.CENTER_BOTH,
       mode: Phaser.Scale.FIT,
     },
-    backgroundColor: 0x000000,
+  
     scene: [StartScene, GameScene, GameOverScene],
     pixelArt: true,
     physics: {

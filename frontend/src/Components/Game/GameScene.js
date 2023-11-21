@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 import Enemy from "./Enemy";
 import Tower from "./Tower";
+import Projectile from "./Projectile";
 
 const placementTilesData = [0, 0, 0, 342, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 166, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -28,7 +29,7 @@ class GameScene extends Phaser.Scene {
         this.map = placementTilesData;
 
 
-        this.lives = 6;
+        this.lives = 2;
 
         // Path number 1 white
         const path1 = new Phaser.Curves.Path(147.166666666667,856)
@@ -41,7 +42,7 @@ class GameScene extends Phaser.Scene {
         this.path1 = path1;
 
         const graphics = this.add.graphics();
-     //   graphics.lineStyle(3, 0xffffff, 1);
+       graphics.lineStyle(3, 0xffffff, 1);
         path1.draw(graphics);
 
         // Path number 2 green
@@ -51,22 +52,12 @@ class GameScene extends Phaser.Scene {
         path2.lineTo(480, 544);
 
         const graphics2 = this.add.graphics();
-       // graphics2.lineStyle(2, 0x00ff00, 1);
+        graphics2.lineStyle(2, 0x00ff00, 1);
         path2.draw(graphics2);
-
+        this.createGroup();
         
-        this.enemiesGroup = this.add.group({
-            classType: Enemy,
-            runChildUpdate: true
-        });
         this.totalEnemies = 5;
         this.nextEnemy = 0;
-
-        this.towers = this.add.group({
-            classType: Tower,
-            runChildUpdate: true
-        });
-
 
         this.input.on('pointerdown', pointer => this.placeTurrets(pointer));
         this.createCursor();
@@ -131,7 +122,20 @@ class GameScene extends Phaser.Scene {
             this.cursor.alpha = 0;
           }
         });
-      }
+    }
+
+    createGroup(){
+        this.enemiesGroup = this.add.group({
+            classType: Enemy,
+            runChildUpdate: true
+        });
+
+        this.towers = this.add.group({
+            classType: Tower,
+            runChildUpdate: true
+        });
+    }
+
 
     checkEnemiesReachedEnd(){
         const enemiesTab = this.enemiesGroup.getChildren();
