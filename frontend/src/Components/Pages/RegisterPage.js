@@ -40,18 +40,12 @@ function renderRegisterForm() {
   confirmPassword.placeholder = 'Confirm your password';
   confirmPassword.className = 'form-control mb-3';
 
-  /* const alReadyAnAccount = document.createElement('p');
-  alReadyAnAccount.innerHTML = 'Already have an account ?'; */
-
-  /* const linkLogin = document.createElement('a');
-  linkLogin.innerHTML='ici';
-  linkLogin.addEventListener('click',()=>{
-    Navigate('/login');
-  });
-  alReadyAnAccount.appendChild(linkLogin); */
+  const alreadyHasDiv = document.createElement('div');
+  const alReadyAnAccount = document.createElement('p');
+  alreadyHasDiv.innerHTML = 'Already have an account ? <a href="/login">sign in.</a>';
 
   const submit = document.createElement('input');
-  submit.value = 'Sign in';
+  submit.value = 'Sign up';
   submit.type = 'submit';
   submit.className = 'btn btn-primary';
   /* submit.disabled = true; */
@@ -60,8 +54,8 @@ function renderRegisterForm() {
   form.appendChild(username);
   form.appendChild(password);
   form.appendChild(confirmPassword);
-  /*  form.appendChild(alReadyAnAccount); */
-
+  form.appendChild(alreadyHasDiv);
+  alreadyHasDiv.appendChild(alReadyAnAccount);
   form.appendChild(submit);
   main.appendChild(form);
 }

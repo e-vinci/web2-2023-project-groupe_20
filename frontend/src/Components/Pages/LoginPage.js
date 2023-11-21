@@ -1,4 +1,4 @@
-import { clearPage} from '../../utils/render';
+import { clearPage } from '../../utils/render';
 
 const LoginPage = () => {
   clearPage();
@@ -12,7 +12,7 @@ function renderLoginForm() {
   form.className = 'p-5';
 
   const formDiv = document.createElement('div');
-  formDiv.id = 'formDiv'; 
+  formDiv.id = 'formDiv';
 
   const title = document.createElement('h1');
   title.className = 'text-center';
@@ -33,6 +33,10 @@ function renderLoginForm() {
   password.placeholder = 'Password';
   password.className = 'form-control mb-3';
 
+  const notYetHasDiv = document.createElement('div');
+  const notYetAnAccount = document.createElement('p');
+  notYetHasDiv.innerHTML = 'Not yet an account ? <a href="/register">sign out.</a>';
+
   const submit = document.createElement('input');
   submit.value = 'Sign up';
   submit.type = 'submit';
@@ -42,6 +46,8 @@ function renderLoginForm() {
   form.appendChild(title);
   form.appendChild(username);
   form.appendChild(password);
+  form.appendChild(notYetHasDiv);
+  notYetHasDiv.appendChild(notYetAnAccount);
   form.appendChild(submit);
   main.appendChild(form);
 }
