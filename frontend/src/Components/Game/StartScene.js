@@ -3,6 +3,7 @@ import towerDefenseMap from "../../assets/TowerDefenseMap.png"
 import enemy1Sprite from "../../assets/spriteSheets/S_Goblin_walk.png"
 import towerSprite from "../../assets/spriteSheets/tower.png"
 import starPng from "../../assets/star.png"
+import arrowPng from "../../assets/arrow.png"
 
 
 class StartScene extends Phaser.Scene {
@@ -12,6 +13,7 @@ class StartScene extends Phaser.Scene {
 
     preload(){
         this.load.image("gameMap", towerDefenseMap);
+        this.load.image("arrow", arrowPng);
         this.load.spritesheet("goblin", enemy1Sprite,{
             frameWidth: 48,
             frameHeight: 48

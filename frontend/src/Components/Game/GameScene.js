@@ -134,6 +134,11 @@ class GameScene extends Phaser.Scene {
             classType: Tower,
             runChildUpdate: true
         });
+
+        this.Projectile = this.add.group({
+            classType: Projectile,
+            runChildUpdate: true
+        });
     }
 
 
