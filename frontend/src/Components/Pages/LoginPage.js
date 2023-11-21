@@ -22,7 +22,7 @@ function renderLoginForm() {
   const username = document.createElement('input');
   username.type = 'text';
   username.id = 'username';
-  username.placeholder = 'username';
+  username.placeholder = 'Username';
   username.required = true;
   username.className = 'form-control mb-3';
 
@@ -30,7 +30,7 @@ function renderLoginForm() {
   password.type = 'password';
   password.id = 'password';
   password.required = true;
-  password.placeholder = 'password';
+  password.placeholder = 'Password';
   password.className = 'form-control mb-3';
 
   const submit = document.createElement('input');
