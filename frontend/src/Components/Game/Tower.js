@@ -2,12 +2,14 @@ import Phaser from "phaser";
 
 class Tower extends Phaser.GameObjects.Sprite{
     constructor(scene, x, y, map) {
-        super(scene, x, y, "tower");
+        super(scene, x, y, "crossbow");
         this.nextTic = 0;
         this.map = map;
 
         this.scene.add.existing(this);
-        this.play("tower_anim");
+        this.rangeGraphics = scene.add.graphics();
+        this.play("crossbow_anim");
+        this.anims.stop();
 
     }
 
@@ -19,10 +21,45 @@ class Tower extends Phaser.GameObjects.Sprite{
         
     }
 
+    fire() {
+        const enemy = this.scene.getEnemy(this.x, this.y, 200);
+        if(enemy){
+            const angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
+            this.scene.addProjectile(this.x, this.y, angle);
+            this.angle = (angle + Math.PI / 2 ) * Phaser.Math.RAD_TO_DEG;
+        }
+    }
+
     update(time, delta){
         if (time > this.nextTic) {
-            this.nextTic = time + 1000;
+            const enemy = this.scene.getEnemy(this.x,this.y, 200);
+            if(enemy){
+                this.play("crossbow_anim");
+            } else {
+                this.anims.stop();
+            }
+            this.fire();
+            this.nextTic = time + 500;
         }
+        this.updateRangeVisualization();
+    }
+
+    showRange(visible){
+        this.rangeGraphics.visible = visible;
+    }
+
+    createRangeGraphics() {
+        this.rangeGraphics = this.scene.add.graphics();
+        this.updateRangeVisualization();
+        this.scene.add.existing(this.rangeGraphics);
+    }
+
+    updateRangeVisualization() {
+        this.rangeGraphics.clear();
+        this.rangeGraphics.lineStyle(2, 0xffffff, 0.3);
+        this.rangeGraphics.beginPath();
+        this.rangeGraphics.arc(this.x, this.y, 200, 0, 2 * Math.PI);
+        this.rangeGraphics.strokePath();
     }
 
 }

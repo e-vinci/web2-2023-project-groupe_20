@@ -29,7 +29,7 @@ class GameScene extends Phaser.Scene {
         this.map = placementTilesData;
 
 
-        this.lives = 2;
+        this.lives = 10;
 
         // Path number 1 white
         const path1 = new Phaser.Curves.Path(147.166666666667,856)
@@ -59,10 +59,12 @@ class GameScene extends Phaser.Scene {
         this.totalEnemies = 5;
         this.nextEnemy = 0;
 
-        this.input.on('pointerdown', pointer => this.placeTurrets(pointer));
-        this.createCursor();
+        this.input.on('pointerdown', pointer => this.placeTowers(pointer));
+        this.showTowerRange();
+        this.showTowerPlacement();
     
     }
+    
 
     update(time, delta) {
         if(this.totalEnemies > 0 && time > this.nextEnemy){
@@ -88,8 +90,9 @@ class GameScene extends Phaser.Scene {
         }
         return false;
     }
+    
 
-    placeTurrets(pointer) {
+    placeTowers(pointer) {
         const i = Math.floor(pointer.y / 64);
         const j = Math.floor(pointer.x / 64);
 
@@ -106,7 +109,22 @@ class GameScene extends Phaser.Scene {
        }
     }
 
-    createCursor() {
+    showTowerRange() {
+        this.input.on("pointermove", pointer => {
+          const hoveredTower = this.getHoveredTower(pointer);
+    
+          if (hoveredTower) {
+            hoveredTower.showRange(true);
+          } else {
+            const towers = this.towers.getChildren();
+            for (const tower of towers ){
+                tower.showRange(false);
+            }
+          }
+        });
+    }
+
+    showTowerPlacement() {
         this.cursor = this.add.image(32, 32, "star");
         this.cursor.setScale(2);
         this.cursor.alpha = 1;
@@ -125,7 +143,7 @@ class GameScene extends Phaser.Scene {
     }
 
     createGroup(){
-        this.enemiesGroup = this.add.group({
+        this.enemiesGroup = this.physics.add.group({
             classType: Enemy,
             runChildUpdate: true
         });
@@ -135,9 +153,13 @@ class GameScene extends Phaser.Scene {
             runChildUpdate: true
         });
 
-        this.Projectile = this.add.group({
+        this.projectiles = this.physics.add.group({
             classType: Projectile,
             runChildUpdate: true
+        });
+
+        this.towers.children.iterate(tower => {
+            tower.createRangeGraphics();
         });
     }
 
@@ -157,6 +179,52 @@ class GameScene extends Phaser.Scene {
             this.gameOver();
         }
     }
+
+    addProjectile(x, y , angle){
+        const projectile = new Projectile(this, 0, 0);
+        this.projectiles.add(projectile);
+        projectile.fire(x, y, angle); 
+    }
+
+    getEnemy(x, y , distance){
+        const enemyUnits = this.enemiesGroup.getChildren();
+        for (const enemy of enemyUnits){
+            if (enemy.active && Phaser.Math.Distance.Between(x, y, enemy.x, enemy.y) <= distance) {
+                return enemy;
+            }
+        }
+        return false;
+    }
+
+    getTowerAt(i, j) {
+        const towers = this.towers.getChildren();
+        for (const tower of towers) {
+            const towerI = Math.floor(tower.y / 64);
+            const towerJ = Math.floor(tower.x / 64);
+            if (towerI === i && towerJ === j) {
+                return tower;
+            }
+        }
+        return null;
+    }
+
+    getHoveredTower(pointer) {
+        const i = Math.floor(pointer.y / 64);
+        const j = Math.floor(pointer.x / 64);
+    
+        const towers = this.towers.getChildren();
+        for (const tower of towers) {
+            const towerI = Math.floor(tower.y / 64);
+            const towerJ = Math.floor(tower.x / 64);
+            if (towerI === i && towerJ === j) {
+                return tower;
+            }
+        }
+    
+        return null;
+    }
+
+
 
     gameOver(){
         this.scene.start("gameOver");

@@ -4,6 +4,8 @@ import enemy1Sprite from "../../assets/spriteSheets/S_Goblin_walk.png"
 import towerSprite from "../../assets/spriteSheets/tower.png"
 import starPng from "../../assets/star.png"
 import arrowPng from "../../assets/arrow.png"
+import crossbowSprite from "../../assets/spriteSheets/crossbow.png"
+import crossbowArrowSprite from "../../assets/spriteSheets/crossbowArrow.png"
 
 
 class StartScene extends Phaser.Scene {
@@ -14,6 +16,7 @@ class StartScene extends Phaser.Scene {
     preload(){
         this.load.image("gameMap", towerDefenseMap);
         this.load.image("arrow", arrowPng);
+        this.load.image("star", starPng);
         this.load.spritesheet("goblin", enemy1Sprite,{
             frameWidth: 48,
             frameHeight: 48
@@ -22,7 +25,15 @@ class StartScene extends Phaser.Scene {
             frameWidth: 70,
             frameHeight: 130
         });
-        this.load.image("star", starPng);
+        this.load.spritesheet("crossbow", crossbowSprite, {
+            frameWidth: 96,
+            frameHeight: 96
+        }); 
+        this.load.spritesheet("crossbowArrow", crossbowArrowSprite, {
+            frameWidth: 8,
+            frameHeight: 34
+        }); 
+        
     }
 
     create(){
@@ -46,8 +57,21 @@ class StartScene extends Phaser.Scene {
             repeat: -1
         });
 
+        this.anims.create({
+            key: "crossbow_anim",
+            frames: this.anims.generateFrameNames("crossbow"),
+            frameRate: 10,
+            repeat: -1
+        });
+        this.anims.create({
+            key: "crossbowArrow_anim",
+            frames: this.anims.generateFrameNames("crossbowArrow"),
+            frameRate: 10,
+            repeat: -1
+        });
+
         // Button to next Scene
-        const button = this.add.text(this.scale.width * 0.5, this.scale.height * 0.5, 'COMMENCER',
+        const button = this.add.text(this.scale.width * 0.5, this.scale.height * 0.5, 'START',
             {
                 fontFamily: 'Candara, Arial',
                 fontSize: '48px',

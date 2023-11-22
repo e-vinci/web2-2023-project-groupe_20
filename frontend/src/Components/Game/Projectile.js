@@ -2,7 +2,7 @@ import Phaser from "phaser";
 
 class Projectile extends Phaser.GameObjects.Sprite{
     constructor(scene, x, y){
-        super(scene, x, y, 'arrow');
+        super(scene, x, y, 'crossbowArrow');
         
         this.dx = 0;
         this.dy = 0;
@@ -10,14 +10,15 @@ class Projectile extends Phaser.GameObjects.Sprite{
         this.speed = Phaser.Math.GetSpeed(600, 1);
 
         scene.add.existing(this);
+        this.play("crossbowArrow_anim");
         
     }
 
     update(time, delta){
         this.lifeSpan -= delta;
 
-        this.x = this.dx * (this.speed * delta);
-        this.y = this.dy * (this.speed * delta);
+        this.x += this.dx * (this.speed * delta);
+        this.y += this.dy * (this.speed * delta);
 
         if (this.lifeSpan <= 0 ){
             this.setActive(false);
@@ -26,6 +27,9 @@ class Projectile extends Phaser.GameObjects.Sprite{
     }
 
     fire(x, y, angle){
+        
+        this.angle = (angle + Math.PI / 2 ) * Phaser.Math.RAD_TO_DEG;
+        
         this.setActive(true);
         this.setVisible(true);
 
