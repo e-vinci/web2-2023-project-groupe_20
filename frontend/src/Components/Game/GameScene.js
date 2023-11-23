@@ -29,7 +29,7 @@ class GameScene extends Phaser.Scene {
         this.map = placementTilesData;
 
 
-        this.lives = 10;
+        this.lives = 2;
 
         // Path number 1 white
         const path1 = new Phaser.Curves.Path(147.166666666667,856)
@@ -62,6 +62,10 @@ class GameScene extends Phaser.Scene {
         this.input.on('pointerdown', pointer => this.placeTowers(pointer));
         this.showTowerRange();
         this.showTowerPlacement();
+
+        this.physics.add.overlap(this.enemiesGroup, this.projectiles, (enemy, projectile) =>
+            this.damageEnemy(enemy,projectile)
+        );
     
     }
     
@@ -222,6 +226,16 @@ class GameScene extends Phaser.Scene {
         }
     
         return null;
+    }
+
+    damageEnemy(enemy, projectile){
+        this.damage = 20;
+        if (enemy.active === true && projectile.active === true) {
+            projectile.setActive(false);
+            projectile.setVisible(false);
+
+            enemy.recieveDamage(this.damage);
+        }
     }
 
 

@@ -6,6 +6,7 @@ import starPng from "../../assets/star.png"
 import arrowPng from "../../assets/arrow.png"
 import crossbowSprite from "../../assets/spriteSheets/crossbow.png"
 import crossbowArrowSprite from "../../assets/spriteSheets/crossbowArrow.png"
+import arrowImpactSprite from "../../assets/spriteSheets/arrowImpact.png"
 
 
 class StartScene extends Phaser.Scene {
@@ -32,6 +33,10 @@ class StartScene extends Phaser.Scene {
         this.load.spritesheet("crossbowArrow", crossbowArrowSprite, {
             frameWidth: 8,
             frameHeight: 34
+        }); 
+        this.load.spritesheet("arrowImpact", arrowImpactSprite, {
+            frameWidth: 64,
+            frameHeight: 64
         }); 
         
     }
@@ -66,6 +71,12 @@ class StartScene extends Phaser.Scene {
         this.anims.create({
             key: "crossbowArrow_anim",
             frames: this.anims.generateFrameNames("crossbowArrow"),
+            frameRate: 10,
+            repeat: -1
+        });
+        this.anims.create({
+            key: "arrowImpact_anim",
+            frames: this.anims.generateFrameNames("arrowImpact"),
             frameRate: 10,
             repeat: -1
         });
