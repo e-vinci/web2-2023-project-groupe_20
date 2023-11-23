@@ -15,7 +15,6 @@ class Enemy extends Phaser.GameObjects.Sprite{
 
         this.healthBarHeight = 5;
         this.healthBarWidth = 50;
-        
 
 
         scene.physics.world.enable(this);

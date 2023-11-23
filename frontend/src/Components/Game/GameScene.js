@@ -22,6 +22,7 @@ class GameScene extends Phaser.Scene {
         super("playGame");
         this.wave = 0;
         this.waveText = null;
+        this.currency = 250;
     }
     
     create(){
@@ -29,6 +30,8 @@ class GameScene extends Phaser.Scene {
         this.background.setOrigin(0,0);
         this.add.text(20,20, "GameScene");
         this.map = placementTilesData;
+        this.playerLives = 1;
+        this.nextWaveTime = 0;
         
         this.waveText = this.add.text(20, 20, `Wave: ${this.wave}`, {
             fontFamily: 'Arial',
@@ -36,9 +39,11 @@ class GameScene extends Phaser.Scene {
             color: '#ffffff',
             fontStyle: 'bold'
         });
+        this.currencyText = this.add.text(10,10, `Currency: ${this.currency}`,{
+            fontSize: '20px',
+            fill: '#ffffff'
+        });
 
-
-        this.playerLives = 2;
 
         // Path number 1 white
         const path1 = new Phaser.Curves.Path(147.166666666667,856)
@@ -90,7 +95,7 @@ class GameScene extends Phaser.Scene {
                 enemy.setVisible(true);
                 enemy.startOnPath();
 
-                this.nextEnemy = time + 2000;
+                this.nextEnemy = time + Phaser.Math.Between(200,1000);
                 this.totalEnemies --;
             }
         }
@@ -104,12 +109,11 @@ class GameScene extends Phaser.Scene {
 
     startNextWave(){
         this.wave++;
-        console.log(`Starting Wave ${this.wave}`);
 
-        this.totalEnemies = 5 + this.wave * 2;
+        this.totalEnemies = this.wave * 2;
         this.nextEnemy = 0;
 
-        this.waveText.setText(`Wave: ${this.wave}`)
+        this.waveText.setText(`Wave: ${this.wave}`);
     }
 
 
@@ -126,8 +130,12 @@ class GameScene extends Phaser.Scene {
     placeTowers(pointer) {
         const i = Math.floor(pointer.y / 64);
         const j = Math.floor(pointer.x / 64);
+        const towerCost = 125;
 
-       if (this.canPlaceTower(i,j)){
+       if (this.canPlaceTower(i,j) && this.currency >= towerCost){
+        this.currency -= towerCost;
+        this.currencyText.setText(`Currency: ${this.currency}`);
+
         const index = i * 20 + j;
         let tower = this.towers.getFirstDead();
         if(!tower){
@@ -203,6 +211,7 @@ class GameScene extends Phaser.Scene {
                 this.playerLives--;
                 enemy.setActive(false);
                 enemy.setVisible(false);
+                enemy.healthBar.destroy();
             }
             
         }
@@ -256,12 +265,19 @@ class GameScene extends Phaser.Scene {
     }
 
     damageEnemy(enemy, projectile){
-        this.damage = 20;
+        this.damage = 30;
+        const reward = 15;
         if (enemy.active === true && projectile.active === true) {
             projectile.setActive(false);
             projectile.setVisible(false);
 
             enemy.recieveDamage(this.damage);
+
+            if(!enemy.active) {
+                this.currency += reward;
+                this.currencyText.setText(`Currency: ${this.currency}`);
+                
+            }
         }
     }
 
