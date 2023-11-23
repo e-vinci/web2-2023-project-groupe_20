@@ -1,170 +1,278 @@
-import Phaser from 'phaser';
-import ScoreLabel from './ScoreLabel';
-import BombSpawner from './BombSpawner';
-import skyAsset from '../../assets/sky.png';
-import platformAsset from '../../assets/platform.png';
-import starAsset from '../../assets/star.png';
-import bombAsset from '../../assets/bomb.png';
-import dudeAsset from '../../assets/dude.png';
+import Phaser from "phaser";
+import Enemy from "./Enemy";
+import Tower from "./Tower";
+import Projectile from "./Projectile";
 
-const GROUND_KEY = 'ground';
-const DUDE_KEY = 'dude';
-const STAR_KEY = 'star';
-const BOMB_KEY = 'bomb';
+const placementTilesData = [0, 0, 0, 342, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 166, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 342, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 342, 0, 0, 0, 0, 342, 0, 0, 0, 0, 0, 0, 0, 342, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 342,
+    0, 0, 0, 0, 342, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 342, 0, 0, 0, 342, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 342, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 342,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
 
 class GameScene extends Phaser.Scene {
-  constructor() {
-    super('game-scene');
-    this.player = undefined;
-    this.cursors = undefined;
-    this.scoreLabel = undefined;
-    this.stars = undefined;
-    this.bombSpawner = undefined;
-    this.gameOver = false;
-  }
+    constructor(){
+        super("playGame");
+        this.wave = 0;
+        this.waveText = null;
+    }
+    
+    create(){
+        this.background = this.add.image(0,0, "gameMap");
+        this.background.setOrigin(0,0);
+        this.add.text(20,20, "GameScene");
+        this.map = placementTilesData;
+        
+        this.waveText = this.add.text(20, 20, `Wave: ${this.wave}`, {
+            fontFamily: 'Arial',
+            fontSize: '24px',
+            color: '#ffffff',
+            fontStyle: 'bold'
+        });
 
-  preload() {
-    this.load.image('sky', skyAsset);
-    this.load.image(GROUND_KEY, platformAsset);
-    this.load.image(STAR_KEY, starAsset);
-    this.load.image(BOMB_KEY, bombAsset);
 
-    this.load.spritesheet(DUDE_KEY, dudeAsset, {
-      frameWidth: 32,
-      frameHeight: 48,
-    });
-  }
+        this.playerLives = 2;
 
-  create() {
-    this.add.image(400, 300, 'sky');
-    const platforms = this.createPlatforms();
-    this.player = this.createPlayer();
-    this.stars = this.createStars();
-    this.scoreLabel = this.createScoreLabel(16, 16, 0);
-    this.bombSpawner = new BombSpawner(this, BOMB_KEY);
-    const bombsGroup = this.bombSpawner.group;
-    this.physics.add.collider(this.stars, platforms);
-    this.physics.add.collider(this.player, platforms);
-    this.physics.add.collider(bombsGroup, platforms);
-    this.physics.add.collider(this.player, bombsGroup, this.hitBomb, null, this);
-    this.physics.add.overlap(this.player, this.stars, this.collectStar, null, this);
-    this.cursors = this.input.keyboard.createCursorKeys();
+        // Path number 1 white
+        const path1 = new Phaser.Curves.Path(147.166666666667,856)
+        path1.lineTo(161.833333333333, 542.666666666667);
+        path1.lineTo(545.166666666667, 545.333333333333);
+        path1.lineTo(560,94.6666666666667);
+        path1.lineTo(1120.83333333333,93.3333333333333);
+        path1.lineTo(1119.16666666667,678.666666666667);
+        path1.lineTo(739.166666666667,676);
+        this.path1 = path1;
 
-    /* The Collider takes two objects and tests for collision and performs separation against them.
-    Note that we could call a callback in case of collision... */
-  }
+        const graphics = this.add.graphics();
+       graphics.lineStyle(3, 0xffffff, 1);
+        path1.draw(graphics);
 
-  update() {
-    if (this.gameOver) {
-      return;
+        // Path number 2 green
+        const path2 = new Phaser.Curves.Path(96, -32)
+        path2.lineTo(96, 164);
+        path2.lineTo(480, 164);
+        path2.lineTo(480, 544);
+
+        const graphics2 = this.add.graphics();
+        graphics2.lineStyle(2, 0x00ff00, 1);
+        path2.draw(graphics2);
+        this.createGroup();
+        
+        this.totalEnemies = 5;
+        this.nextEnemy = 0;
+
+        this.input.on('pointerdown', pointer => this.placeTowers(pointer));
+        this.showTowerRange();
+        this.showTowerPlacement();
+
+        this.physics.add.overlap(this.enemiesGroup, this.projectiles, (enemy, projectile) =>
+            this.damageEnemy(enemy,projectile)
+        );
+
+        this.startNextWave();
+    
+    }
+    
+
+    update(time, delta) {
+        if(this.totalEnemies > 0 && time > this.nextEnemy){
+            const enemy = new Enemy(this, this.path1);
+            this.enemiesGroup.add(enemy);
+            if (enemy){
+                enemy.setActive(true);
+                enemy.setVisible(true);
+                enemy.startOnPath();
+
+                this.nextEnemy = time + 2000;
+                this.totalEnemies --;
+            }
+        }
+
+        this.checkEnemiesReachedEnd();
+
+        if(this.totalEnemies === 0 && this.enemiesGroup.countActive() === 0){
+            this.startNextWave();
+        }
     }
 
-    if (this.cursors.left.isDown) {
-      this.player.setVelocityX(-160);
-      this.player.anims.play('left', true);
-    } else if (this.cursors.right.isDown) {
-      this.player.setVelocityX(160);
-      this.player.anims.play('right', true);
-    } else {
-      this.player.setVelocityX(0);
-      this.player.anims.play('turn');
+    startNextWave(){
+        this.wave++;
+        console.log(`Starting Wave ${this.wave}`);
+
+        this.totalEnemies = 5 + this.wave * 2;
+        this.nextEnemy = 0;
+
+        this.waveText.setText(`Wave: ${this.wave}`)
     }
 
-    if (this.cursors.up.isDown && this.player.body.touching.down) {
-      this.player.setVelocityY(-330);
+
+
+    canPlaceTower(i,j){
+        if(this.map){
+            const index = i * 20 + j;
+            return this.map[index] === 342;
+        }
+        return false;
     }
-  }
+    
 
-  createPlatforms() {
-    const platforms = this.physics.add.staticGroup();
+    placeTowers(pointer) {
+        const i = Math.floor(pointer.y / 64);
+        const j = Math.floor(pointer.x / 64);
 
-    platforms
-      .create(400, 568, GROUND_KEY)
-      .setScale(2)
-      .refreshBody();
-
-    platforms.create(600, 400, GROUND_KEY);
-    platforms.create(50, 250, GROUND_KEY);
-    platforms.create(750, 220, GROUND_KEY);
-    return platforms;
-  }
-
-  createPlayer() {
-    const player = this.physics.add.sprite(100, 450, DUDE_KEY);
-    player.setBounce(0.2);
-    player.setCollideWorldBounds(true);
-    /* The 'left' animation uses frames 0, 1, 2 and 3 and runs at 10 frames per second.
-    The 'repeat -1' value tells the animation to loop.
-    */
-    this.anims.create({
-      key: 'left',
-      frames: this.anims.generateFrameNumbers(DUDE_KEY, { start: 0, end: 3 }),
-      frameRate: 10,
-      repeat: -1,
-    });
-
-    this.anims.create({
-      key: 'turn',
-      frames: [{ key: DUDE_KEY, frame: 4 }],
-      frameRate: 20,
-    });
-
-    this.anims.create({
-      key: 'right',
-      frames: this.anims.generateFrameNumbers(DUDE_KEY, { start: 5, end: 8 }),
-      frameRate: 10,
-      repeat: -1,
-    });
-
-    return player;
-  }
-
-  createStars() {
-    const stars = this.physics.add.group({
-      key: STAR_KEY,
-      repeat: 11,
-      setXY: { x: 12, y: 0, stepX: 70 },
-    });
-
-    stars.children.iterate((child) => {
-      child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
-    });
-
-    return stars;
-  }
-
-  collectStar(player, star) {
-    star.disableBody(true, true);
-    this.scoreLabel.add(10);
-    if (this.stars.countActive(true) === 0) {
-      //  A new batch of stars to collect
-      this.stars.children.iterate((child) => {
-        child.enableBody(true, child.x, 0, true, true);
-      });
+       if (this.canPlaceTower(i,j)){
+        const index = i * 20 + j;
+        let tower = this.towers.getFirstDead();
+        if(!tower){
+            tower = new Tower(this, 0, 0, this.map);
+            this.towers.add(tower);
+        }
+        tower.setActive(true);
+        tower.setVisible(true);
+        tower.place(i,j);
+       }
     }
 
-    this.bombSpawner.spawn(player.x);
-  }
+    showTowerRange() {
+        this.input.on("pointermove", pointer => {
+          const hoveredTower = this.getHoveredTower(pointer);
+    
+          if (hoveredTower) {
+            hoveredTower.showRange(true);
+          } else {
+            const towers = this.towers.getChildren();
+            for (const tower of towers ){
+                tower.showRange(false);
+            }
+          }
+        });
+    }
 
-  createScoreLabel(x, y, score) {
-    const style = { fontSize: '32px', fill: '#000' };
-    const label = new ScoreLabel(this, x, y, score, style);
-    console.log('score:', label);
-    this.add.existing(label);
+    showTowerPlacement() {
+        this.cursor = this.add.image(32, 32, "star");
+        this.cursor.setScale(2);
+        this.cursor.alpha = 1;
+    
+        this.input.on("pointermove", pointer => {
+          const i = Math.floor(pointer.y / 64);
+          const j = Math.floor(pointer.x / 64);
+    
+          if (this.canPlaceTower(i, j)) {
+            this.cursor.setPosition(j * 64 + 32, i * 64 + 32);
+            this.cursor.alpha = 0.8;
+          } else {
+            this.cursor.alpha = 0;
+          }
+        });
+    }
 
-    return label;
-  }
+    createGroup(){
+        this.enemiesGroup = this.physics.add.group({
+            classType: Enemy,
+            runChildUpdate: true
+        });
 
-  hitBomb(player) {
-    this.scoreLabel.setText(`GAME OVER : ( \nYour Score = ${this.scoreLabel.score}`);
-    this.physics.pause();
+        this.towers = this.add.group({
+            classType: Tower,
+            runChildUpdate: true
+        });
 
-    player.setTint(0xff0000);
+        this.projectiles = this.physics.add.group({
+            classType: Projectile,
+            runChildUpdate: true
+        });
 
-    player.anims.play('turn');
+        this.towers.children.iterate(tower => {
+            tower.createRangeGraphics();
+        });
+    }
 
-    this.gameOver = true;
-  }
+
+    checkEnemiesReachedEnd(){
+        const enemiesTab = this.enemiesGroup.getChildren();
+        for (let i = 0; i < enemiesTab.length; i++) {
+            const enemy = enemiesTab[i];
+            if (enemy.active && enemy.follower.t >= 1){
+                this.playerLives--;
+                enemy.setActive(false);
+                enemy.setVisible(false);
+            }
+            
+        }
+        if(this.playerLives === 0){
+            this.gameOver();
+        }
+    }
+
+    addProjectile(x, y , angle){
+        const projectile = new Projectile(this, 0, 0);
+        this.projectiles.add(projectile);
+        projectile.fire(x, y, angle); 
+    }
+
+    getEnemy(x, y , distance){
+        const enemyUnits = this.enemiesGroup.getChildren();
+        for (const enemy of enemyUnits){
+            if (enemy.active && Phaser.Math.Distance.Between(x, y, enemy.x, enemy.y) <= distance) {
+                return enemy;
+            }
+        }
+        return false;
+    }
+
+    getTowerAt(i, j) {
+        const towers = this.towers.getChildren();
+        for (const tower of towers) {
+            const towerI = Math.floor(tower.y / 64);
+            const towerJ = Math.floor(tower.x / 64);
+            if (towerI === i && towerJ === j) {
+                return tower;
+            }
+        }
+        return null;
+    }
+
+    getHoveredTower(pointer) {
+        const i = Math.floor(pointer.y / 64);
+        const j = Math.floor(pointer.x / 64);
+    
+        const towers = this.towers.getChildren();
+        for (const tower of towers) {
+            const towerI = Math.floor(tower.y / 64);
+            const towerJ = Math.floor(tower.x / 64);
+            if (towerI === i && towerJ === j) {
+                return tower;
+            }
+        }
+    
+        return null;
+    }
+
+    damageEnemy(enemy, projectile){
+        this.damage = 20;
+        if (enemy.active === true && projectile.active === true) {
+            projectile.setActive(false);
+            projectile.setVisible(false);
+
+            enemy.recieveDamage(this.damage);
+        }
+    }
+
+
+
+    gameOver(){
+        this.scene.start("gameOver");
+    }
+
+
+
 }
 
 export default GameScene;
