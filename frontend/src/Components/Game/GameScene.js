@@ -20,6 +20,8 @@ const placementTilesData = [0, 0, 0, 342, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 class GameScene extends Phaser.Scene {
     constructor(){
         super("playGame");
+        this.wave = 0;
+        this.waveText = null;
     }
     
     create(){
@@ -27,9 +29,16 @@ class GameScene extends Phaser.Scene {
         this.background.setOrigin(0,0);
         this.add.text(20,20, "GameScene");
         this.map = placementTilesData;
+        
+        this.waveText = this.add.text(20, 20, `Wave: ${this.wave}`, {
+            fontFamily: 'Arial',
+            fontSize: '24px',
+            color: '#ffffff',
+            fontStyle: 'bold'
+        });
 
 
-        this.lives = 2;
+        this.playerLives = 2;
 
         // Path number 1 white
         const path1 = new Phaser.Curves.Path(147.166666666667,856)
@@ -66,6 +75,8 @@ class GameScene extends Phaser.Scene {
         this.physics.add.overlap(this.enemiesGroup, this.projectiles, (enemy, projectile) =>
             this.damageEnemy(enemy,projectile)
         );
+
+        this.startNextWave();
     
     }
     
@@ -85,7 +96,23 @@ class GameScene extends Phaser.Scene {
         }
 
         this.checkEnemiesReachedEnd();
+
+        if(this.totalEnemies === 0 && this.enemiesGroup.countActive() === 0){
+            this.startNextWave();
+        }
     }
+
+    startNextWave(){
+        this.wave++;
+        console.log(`Starting Wave ${this.wave}`);
+
+        this.totalEnemies = 5 + this.wave * 2;
+        this.nextEnemy = 0;
+
+        this.waveText.setText(`Wave: ${this.wave}`)
+    }
+
+
 
     canPlaceTower(i,j){
         if(this.map){
@@ -173,13 +200,13 @@ class GameScene extends Phaser.Scene {
         for (let i = 0; i < enemiesTab.length; i++) {
             const enemy = enemiesTab[i];
             if (enemy.active && enemy.follower.t >= 1){
-                this.lives--;
+                this.playerLives--;
                 enemy.setActive(false);
                 enemy.setVisible(false);
             }
             
         }
-        if(this.lives === 0){
+        if(this.playerLives === 0){
             this.gameOver();
         }
     }
