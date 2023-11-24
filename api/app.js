@@ -18,9 +18,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.use(cors(corsOptions));
-
-app.use('/users', usersRouter);
+app.use('/users', cors(corsOptions), usersRouter);
 app.use('/pizzas', pizzaRouter);
 app.use('/auths', authsRouter);
 

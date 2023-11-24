@@ -2,7 +2,16 @@ import { clearPage } from '../../utils/render';
 
 const LoginPage = () => {
   clearPage();
-  renderLoginForm();
+  fetch('/api/auths/login')
+    .then((response)=>{
+      if(!response.ok) throw new Error(`fetch error : ${response.status} : ${response.statusText}`);
+      return response.json();
+    })
+    .then(renderLoginForm())
+    .catch((err)=>{
+      // eslint-disable-next-line no-console
+      console.error('HomePage::error: ', err);
+    })
 };
 
 function renderLoginForm() {
@@ -35,7 +44,7 @@ function renderLoginForm() {
 
   const notYetHasDiv = document.createElement('div');
   const notYetAnAccount = document.createElement('p');
-  notYetHasDiv.innerHTML = 'Not yet an account ? <a href="/register">sign out.</a>';
+  notYetHasDiv.innerHTML = 'Not yet an account ? <a href="/register">sign up.</a>';
 
   const submit = document.createElement('input');
   submit.value = 'Sign up';
