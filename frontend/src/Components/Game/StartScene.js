@@ -8,7 +8,7 @@ import arrowPng from "../../assets/arrow.png"
 import crossbowSprite from "../../assets/spriteSheets/crossbow.png"
 import crossbowArrowSprite from "../../assets/spriteSheets/crossbowArrow.png"
 import arrowImpactSprite from "../../assets/spriteSheets/arrowImpact.png"
-import musicMenu from "../../"
+/* import musicMenu from "../.." */
 
 
 class StartScene extends Phaser.Scene {
