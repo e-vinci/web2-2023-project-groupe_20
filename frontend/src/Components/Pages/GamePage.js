@@ -13,6 +13,7 @@ const GamePage = () => {
       height: 768,
       autoCenter: Phaser.Scale.CENTER_BOTH,
       mode: Phaser.Scale.FIT,
+      Audio:true
     },
   
     scene: [StartScene, GameScene, GameOverScene],
