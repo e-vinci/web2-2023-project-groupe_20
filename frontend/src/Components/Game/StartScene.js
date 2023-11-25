@@ -8,7 +8,8 @@ import arrowPng from "../../assets/arrow.png"
 import crossbowSprite from "../../assets/spriteSheets/crossbow.png"
 import crossbowArrowSprite from "../../assets/spriteSheets/crossbowArrow.png"
 import arrowImpactSprite from "../../assets/spriteSheets/arrowImpact.png"
-/* import musicMenu from "../.." */
+import mainMenuMusic from "../../assets/audio/mainMusic.mp3"
+import backTrackSound from "../../assets/audio/backTrackSound.mp3"
 
 
 class StartScene extends Phaser.Scene {
@@ -41,7 +42,9 @@ class StartScene extends Phaser.Scene {
             frameWidth: 64,
             frameHeight: 64
         }); 
-        
+
+        this.load.audio("mainMenuMusic",[mainMenuMusic])
+        this.load.audio("backTrackSound",[backTrackSound])
     }
 
     create(){
@@ -55,6 +58,16 @@ class StartScene extends Phaser.Scene {
         this.background = this.add.image(0,0, "gameMenu");
         this.background.setDisplayOrigin(0,0)
         /* this.background.setOrigin(0,0) */
+
+        // Load sound
+        
+        this.menuMusic = this.sound.add("mainMenuMusic", {
+            loop:true
+        })
+        this.menuMusic.play()
+        this.backTrackSound = this.sound.add("backTrackSound",{
+            loop:true
+        })
 
         // Sprite's animations
         this.anims.create({
@@ -105,9 +118,11 @@ class StartScene extends Phaser.Scene {
         button.on('pointerout', () => { button.setFontSize(48); });
         button.on('pointerdown', () => {
             this.scene.start('playGame');
+            this.menuMusic.stop()
+            this.backTrackSound.play()
         });
 
-        const settingButton = this.add.text(this.scale.width/2, this.scale.height/1.5+50, 'Setting',
+        const settingButton = this.add.text(this.scale.width/2, this.scale.height/1.5+50, 'Settings',
         {
             fontFamily: 'Candara, Arial',
             fontSize: '48px',
@@ -121,6 +136,8 @@ class StartScene extends Phaser.Scene {
         settingButton.on('pointerdown',()=> {
             this.scene.start('setting');
         })
+
+        
 
     }
 }

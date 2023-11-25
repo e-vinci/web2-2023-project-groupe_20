@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import arrowSound from "../../assets/audio/arrowSound.mp3"
 
 class Projectile extends Phaser.GameObjects.Sprite{
     constructor(scene, x, y){
@@ -14,6 +15,16 @@ class Projectile extends Phaser.GameObjects.Sprite{
         
     }
 
+    preload(){
+        this.load.audio("arrowSound",[arrowSound])
+    }
+
+    create(){
+        this.arrowSound = this.sound.add("arrowSound")
+    }
+
+
+
     update(time, delta){
         this.lifeSpan -= delta;
 
@@ -23,6 +34,7 @@ class Projectile extends Phaser.GameObjects.Sprite{
         if (this.lifeSpan <= 0 ){
             this.setActive(false);
             this.setVisible(false);
+            this.destroy();
         }
     }
 
@@ -37,7 +49,8 @@ class Projectile extends Phaser.GameObjects.Sprite{
 
         this.dx = Math.cos(angle);
         this.dy = Math.sin(angle);
-
+        
+        this.arrowSound.play() 
         this.lifeSpan = 300;
     }
 

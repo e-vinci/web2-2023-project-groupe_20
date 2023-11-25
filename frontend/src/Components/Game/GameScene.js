@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 import Enemy from "./Enemy";
-import Tower from "./Tower";
+import Tower from "./Towers/Tower";
 import Projectile from "./Projectile";
 
 const placementTilesData = [0, 0, 0, 342, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,

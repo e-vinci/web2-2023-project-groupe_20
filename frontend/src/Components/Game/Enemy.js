@@ -48,12 +48,14 @@ class Enemy extends Phaser.GameObjects.Sprite{
 
     recieveDamage(damage) {
         this.hp -= damage;
-
+        this.drawnHealthBar();
+            
         if(this.hp <= 0) {
             this.setActive(false);
             this.setVisible(false);
+            this.destroy()
         }
-        this.drawnHealthBar();
+        
     }
 
     drawnHealthBar(){
