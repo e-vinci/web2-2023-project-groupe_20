@@ -1,17 +1,9 @@
 import { clearPage } from '../../utils/render';
+import Navigate from '../Router/Navigate';
 
 const LoginPage = () => {
   clearPage();
-  fetch('/api/auths/login')
-    .then((response)=>{
-      if(!response.ok) throw new Error(`fetch error : ${response.status} : ${response.statusText}`);
-      return response.json();
-    })
-    .then(renderLoginForm())
-    .catch((err)=>{
-      // eslint-disable-next-line no-console
-      console.error('HomePage::error: ', err);
-    })
+  renderLoginForm();
 };
 
 function renderLoginForm() {
@@ -51,6 +43,10 @@ function renderLoginForm() {
   submit.type = 'submit';
   submit.className = 'btn btn-primary';
 
+  const errorMessage = document.createElement('p');
+  errorMessage.id = 'errorMessage';
+  errorMessage.innerHTML = '';
+
   form.appendChild(formDiv);
   form.appendChild(title);
   form.appendChild(username);
@@ -58,7 +54,34 @@ function renderLoginForm() {
   form.appendChild(notYetHasDiv);
   notYetHasDiv.appendChild(notYetAnAccount);
   form.appendChild(submit);
+  form.appendChild(errorMessage);
+  form.addEventListener('submit', onLogin);
   main.appendChild(form);
+}
+
+async function onLogin(e) {
+  e.preventDefault();
+  const username = document.querySelector('#username').value;
+  const password = document.querySelector('#password').value;
+
+  const options = {
+    method: 'POST',
+    body: JSON.stringify({
+      username,
+      password,
+    }),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+
+  const response = await fetch('/api/auths/login', options);
+  if (!response.ok) {
+    const erroM = document.querySelector('#errorMessage');
+    erroM.innerHTML = 'Wrong username or wrong password';
+  }
+  const authenticatedUser = await response.json();
+  Navigate('/');
 }
 
 export default LoginPage;
