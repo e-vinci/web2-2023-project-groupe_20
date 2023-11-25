@@ -1,5 +1,7 @@
-import Phaser from "phaser";
-import Enemy from "./Enemy";
+import Phaser, { RIGHT } from "phaser";
+import Goblin from "./Enemies/Goblin";
+import Wolf from "./Enemies/Wolf";
+import HobGoblin from "./Enemies/HobGoblin";
 import Tower from "./Tower";
 import Projectile from "./Projectile";
 
@@ -30,9 +32,15 @@ class GameScene extends Phaser.Scene {
         this.background.setOrigin(0,0);
         this.add.text(20,20, "GameScene");
         this.map = placementTilesData;
-        this.playerLives = 1;
+        this.playerLives = 10;
         this.nextWaveTime = 0;
         
+        this.playerLivesText = this.add.text(1000, 20, `Lives: ${this.playerLives} / 10`, {
+            fontFamily: 'Arial',
+            fontSize: '24px',
+            color: '#ffffff',
+            fontStyle: 'bold'
+        });
         this.waveText = this.add.text(20, 20, `Wave: ${this.wave}`, {
             fontFamily: 'Arial',
             fontSize: '24px',
@@ -88,7 +96,8 @@ class GameScene extends Phaser.Scene {
 
     update(time, delta) {
         if(this.totalEnemies > 0 && time > this.nextEnemy){
-            const enemy = new Enemy(this, this.path1);
+            const enemytype = this.getEnemyTypeForWave();
+            const enemy = this.createEnemy(enemytype, this.path1)
             this.enemiesGroup.add(enemy);
             if (enemy){
                 enemy.setActive(true);
@@ -110,7 +119,11 @@ class GameScene extends Phaser.Scene {
     startNextWave(){
         this.wave++;
 
-        this.totalEnemies = this.wave * 2;
+        if (this.wave === 5){
+            this.totalEnemies = 1;
+        } else{
+            this.totalEnemies = this.wave * 2;
+        }
         this.nextEnemy = 0;
 
         this.waveText.setText(`Wave: ${this.wave}`);
@@ -183,7 +196,7 @@ class GameScene extends Phaser.Scene {
 
     createGroup(){
         this.enemiesGroup = this.physics.add.group({
-            classType: Enemy,
+            classType: Goblin,
             runChildUpdate: true
         });
 
@@ -202,6 +215,35 @@ class GameScene extends Phaser.Scene {
         });
     }
 
+    createEnemy(type, path) {
+        switch(type) {
+            case 'goblin':
+                return new Goblin(this, path);
+            case 'wolf':
+                return new Wolf(this, path);
+            case 'hobGoblin':
+                return new HobGoblin(this, path);
+            default: 
+            return null;
+        }
+    }
+
+    getEnemyTypeForWave() {
+        if (this.wave >= 1 && this.wave <= 2) {
+            return 'goblin';
+        }
+        if (this.wave >= 3 && this.wave <= 4) {
+            return 'wolf';
+        } 
+        if(this.wave === 5 ){
+            return 'hobGoblin';
+        }
+        if(this.wave >= 6){
+            return Phaser.Math.RND.pick(['goblin', 'wolf', 'hobGoblin'])
+        }
+        return 'goblin'
+    }
+
 
     checkEnemiesReachedEnd(){
         const enemiesTab = this.enemiesGroup.getChildren();
@@ -209,8 +251,8 @@ class GameScene extends Phaser.Scene {
             const enemy = enemiesTab[i];
             if (enemy.active && enemy.follower.t >= 1){
                 this.playerLives--;
-                enemy.setActive(false);
-                enemy.setVisible(false);
+                this.playerLivesText.setText(`Lives: ${this.playerLives} / 10`);
+                enemy.destroy();
                 enemy.healthBar.destroy();
             }
             
@@ -266,10 +308,9 @@ class GameScene extends Phaser.Scene {
 
     damageEnemy(enemy, projectile){
         this.damage = 30;
-        const reward = 15;
+        const reward = enemy.getReward();
         if (enemy.active === true && projectile.active === true) {
-            projectile.setActive(false);
-            projectile.setVisible(false);
+            projectile.destroy();
 
             enemy.recieveDamage(this.damage);
 

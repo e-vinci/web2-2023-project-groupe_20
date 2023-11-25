@@ -1,12 +1,13 @@
 import Phaser from "phaser";
 
-class Enemy extends Phaser.GameObjects.Sprite{
+class Goblin extends Phaser.GameObjects.Sprite{
     constructor(scene, path) {
         super(scene, path.getStartPoint().x, path.getStartPoint().y, 'goblin');
         scene.add.existing(this);
         this.play("goblin_anim");
         this.flipX= true;
         this.setScale(3);
+        this.reward = 15;
 
         this.path = path;
         this.follower = {t: 0, vec: new Phaser.Math.Vector2()};
@@ -20,7 +21,7 @@ class Enemy extends Phaser.GameObjects.Sprite{
         scene.physics.world.enable(this);
         this.body.setSize(20,20);
 
-      /*  // To be able to see every hitboxes (projectiles included !)
+      /*  // To be able to see goblin hitboxes (projectiles included !)
         this.body.debugBodyColor = 0xFF0000;
         scene.physics.add.existing(this);
         scene.physics.world.createDebugGraphic(); */
@@ -48,12 +49,11 @@ class Enemy extends Phaser.GameObjects.Sprite{
 
     recieveDamage(damage) {
         this.hp -= damage;
+        this.drawnHealthBar();
 
         if(this.hp <= 0) {
-            this.setActive(false);
-            this.setVisible(false);
+            this.destroy();
         }
-        this.drawnHealthBar();
     }
 
     drawnHealthBar(){
@@ -69,6 +69,10 @@ class Enemy extends Phaser.GameObjects.Sprite{
         const width = (this.hp / this.maxHp) * this.healthBarWidth;
         this.healthBar.fillRect(0, 0, width, this.healthBarHeight);
     }
+
+    getReward(){
+        return this.reward;
+    }
 }
 
-export default Enemy
+export default Goblin

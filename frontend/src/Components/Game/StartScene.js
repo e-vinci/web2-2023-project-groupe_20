@@ -1,7 +1,9 @@
 import Phaser from "phaser";
 import menuBG from "../../assets/menuBG.png"
 import towerDefenseMap from "../../assets/TowerDefenseMap.png"
-import enemy1Sprite from "../../assets/spriteSheets/S_Goblin_walk.png"
+import goblinSprite from "../../assets/spriteSheets/S_Goblin_walk.png"
+import wolfSprite from "../../assets/spriteSheets/S_Wolf.png"
+import hobGoblinSprite from "../../assets/spriteSheets/S_HobGoblin.png"
 import towerSprite from "../../assets/spriteSheets/tower.png"
 import starPng from "../../assets/star.png"
 import arrowPng from "../../assets/arrow.png"
@@ -21,7 +23,15 @@ class StartScene extends Phaser.Scene {
         this.load.image("gameMap", towerDefenseMap);
         this.load.image("arrow", arrowPng);
         this.load.image("star", starPng);
-        this.load.spritesheet("goblin", enemy1Sprite,{
+        this.load.spritesheet("goblin", goblinSprite,{
+            frameWidth: 48,
+            frameHeight: 48
+        });
+        this.load.spritesheet("wolf", wolfSprite,{
+            frameWidth: 48,
+            frameHeight: 48
+        });
+        this.load.spritesheet("hobGoblin", hobGoblinSprite,{
             frameWidth: 48,
             frameHeight: 48
         });
@@ -61,6 +71,19 @@ class StartScene extends Phaser.Scene {
             key: "goblin_anim",
             frames: this.anims.generateFrameNames("goblin"),
             frameRate: 10,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: "wolf_anim",
+            frames: this.anims.generateFrameNames("wolf"),
+            frameRate: 20,
+            repeat: -1
+        });
+        this.anims.create({
+            key: "hobGoblin_anim",
+            frames: this.anims.generateFrameNames("hobGoblin"),
+            frameRate: 3,
             repeat: -1
         });
 

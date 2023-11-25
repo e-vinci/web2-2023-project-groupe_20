@@ -21,8 +21,7 @@ class Projectile extends Phaser.GameObjects.Sprite{
         this.y += this.dy * (this.speed * delta);
 
         if (this.lifeSpan <= 0 ){
-            this.setActive(false);
-            this.setVisible(false);
+            this.destroy();
         }
     }
 
