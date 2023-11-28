@@ -14,27 +14,28 @@ function renderNavbar() {
   navbar.innerHTML = `
   <nav class="navbar navbar-expand-lg me-auto">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#"><img src="./img/logo2.png" style="height:50px; width:50px;" alt="Home"></a>
+      <a class="navbar-brand" href="#"><img src="./img/logo2.png" style="height:50px; width:50px;" alt="Home" data-uri="/"></a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="navbutton nav-link active" aria-current="page" href="#">Leaderboard</a>
+            <a class="navbutton nav-link active" aria-current="page" href="#" data-uri="/leaderboard">Leaderboard</a>
           </li>
         </ul>
         <ul class="navbar-nav navbar-right">
          <li class="nav-item">
-           <a class="navbutton nav-link active" href="#">Login</a>
+           <a class="navbutton nav-link active" href="#" data-uri="/login">Login</a>
          </li>
          <li class="nav-item">
-           <a class="navbutton nav-link active" href="#">Register</a>
+           <a class="navbutton nav-link active" href="#" data-uri="/register">Register</a>
          </li>
        </ul>
       </div>
     </div>
   </nav>
+
   `;
 };
 

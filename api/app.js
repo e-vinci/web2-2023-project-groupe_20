@@ -18,10 +18,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.use(cors(corsOptions));
-
-app.use('/pizzas', pizzasRouter);
+app.use('/users', cors(corsOptions), usersRouter);
+app.use('/pizzas', pizzaRouter);
 app.use('/auths', authsRouter);
-app.use('/users', usersRouter);
 
 module.exports = app;
