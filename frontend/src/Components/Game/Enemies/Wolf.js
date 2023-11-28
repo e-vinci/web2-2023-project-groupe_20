@@ -2,7 +2,7 @@ import Phaser from "phaser";
 
 class Wolf extends Phaser.GameObjects.Sprite{
     constructor(scene, path) {
-        super(scene, path.getStartPoint().x, path.getStartPoint().y, 'wolf');
+        super(scene, path.getStartPoint().x - 100, path.getStartPoint().y, 'wolf');
         scene.add.existing(this);
         this.play("wolf_anim");
         this.flipX= true;
@@ -20,6 +20,8 @@ class Wolf extends Phaser.GameObjects.Sprite{
 
         scene.physics.world.enable(this);
         this.body.setSize(30,20);
+        this.xOffset = Phaser.Math.Between(-50,50)
+        this.yOffset = Phaser.Math.Between(-50,50)
 
       /*  // To be able to see every hitboxes (projectiles included !)
         this.body.debugBodyColor = 0xFF0000;
@@ -33,7 +35,7 @@ class Wolf extends Phaser.GameObjects.Sprite{
         this.follower.t += 0.00009 * delta;
 
         this.path.getPoint(this.follower.t, this.follower.vec);
-        this.setPosition(this.follower.vec.x, this.follower.vec.y);
+        this.setPosition(this.follower.vec.x + this.xOffset, this.follower.vec.y + this.yOffset);
 
         this.healthBar.setPosition(this.x - this.healthBarWidth / 2, this.y - this.height / 2 - 10);
 

@@ -64,18 +64,35 @@ class GameScene extends Phaser.Scene {
         this.path1 = path1;
 
         const graphics = this.add.graphics();
-       graphics.lineStyle(3, 0xffffff, 1);
-        path1.draw(graphics);
+        graphics.lineStyle(3, 0xffffff, 1);
+    //    path1.draw(graphics);
 
         // Path number 2 green
-        const path2 = new Phaser.Curves.Path(96, -32)
-        path2.lineTo(96, 164);
-        path2.lineTo(480, 164);
-        path2.lineTo(480, 544);
+
+        const path2 = new Phaser.Curves.Path(-96, 166.667);
+        path2.lineTo(544, 166.667);
+        path2.lineTo(548, 422.667);
+        path2.lineTo(1118.67, 418.667);
+        path2.lineTo(1117.33, 681.333);
+        path2.lineTo(742.667, 678.667);
+        this.path2 = path2;
 
         const graphics2 = this.add.graphics();
         graphics2.lineStyle(2, 0x00ff00, 1);
-        path2.draw(graphics2);
+    //    path2.draw(graphics2);
+
+        const path3 = new Phaser.Curves.Path(1370.67, 102.667);
+        path3.lineTo(544,94.6667);
+        path3.lineTo(549.333,424);
+        path3.lineTo(1121.33,421.333);
+        path3.lineTo(1118.67,680);
+        path3.lineTo(737.333,676);
+        this.path3 = path3;
+
+        const graphics3 = this.add.graphics();
+        graphics3.lineStyle(3, 0xffffff, 1);
+    //    path3.draw(graphics3);
+
         this.createGroup();
         
         this.totalEnemies = 5;
@@ -97,7 +114,8 @@ class GameScene extends Phaser.Scene {
     update(time, delta) {
         if(this.totalEnemies > 0 && time > this.nextEnemy){
             const enemytype = this.getEnemyTypeForWave();
-            const enemy = this.createEnemy(enemytype, this.path1)
+            const path = this.getPathForWave();
+            const enemy = this.createEnemy(enemytype, path)
             this.enemiesGroup.add(enemy);
             if (enemy){
                 enemy.setActive(true);
@@ -122,7 +140,7 @@ class GameScene extends Phaser.Scene {
         if (this.wave === 5){
             this.totalEnemies = 1;
         } else{
-            this.totalEnemies = this.wave * 2;
+            this.totalEnemies = this.wave * 5;
         }
         this.nextEnemy = 0;
 
@@ -240,8 +258,24 @@ class GameScene extends Phaser.Scene {
         }
         if(this.wave >= 6){
             return Phaser.Math.RND.pick(['goblin', 'wolf', 'hobGoblin'])
-        }
+        } 
         return 'goblin'
+    }
+
+    getPathForWave() {
+        if (this.wave >= 1 && this.wave <= 2){
+            return this.path1;
+        }
+        if (this.wave >= 3 && this.wave <= 4){
+            return this.path2;
+        }
+        if (this.wave >= 5 && this.wave <= 10){
+            return Phaser.Math.RND.pick([this.path1, this.path2]);
+        }
+        if (this.wave > 10){
+            return Phaser.Math.RND.pick([this.path1, this.path2, this.path3]);
+        }
+        return this.path1;
     }
 
 
