@@ -1,15 +1,16 @@
 import Phaser from "phaser";
-import menuBG from "../../assets/menuBG.png"
-import towerDefenseMap from "../../assets/TowerDefenseMap.png"
-import goblinSprite from "../../assets/spriteSheets/S_Goblin_walk.png"
-import wolfSprite from "../../assets/spriteSheets/S_Wolf.png"
-import hobGoblinSprite from "../../assets/spriteSheets/S_HobGoblin.png"
-import towerSprite from "../../assets/spriteSheets/tower.png"
-import starPng from "../../assets/star.png"
-import arrowPng from "../../assets/arrow.png"
-import crossbowSprite from "../../assets/spriteSheets/crossbow.png"
-import crossbowArrowSprite from "../../assets/spriteSheets/crossbowArrow.png"
-import arrowImpactSprite from "../../assets/spriteSheets/arrowImpact.png"
+import menuBG from "../../../assets/menuBG.png"
+import towerDefenseMap from "../../../assets/TowerDefenseMap.png"
+import goblinSprite from "../../../assets/spriteSheets/S_Goblin_walk.png"
+import wolfSprite from "../../../assets/spriteSheets/S_Wolf.png"
+import hobGoblinSprite from "../../../assets/spriteSheets/S_HobGoblin.png"
+import towerSprite from "../../../assets/spriteSheets/tower.png"
+import crossbowSprite from "../../../assets/spriteSheets/crossbow.png"
+import crossbowArrowSprite from "../../../assets/spriteSheets/crossbowArrow.png"
+import arrowImpactSprite from "../../../assets/spriteSheets/arrowImpact.png"
+import pauseButtonSprite from "../../../assets/spriteSheets/UIPauseButton.png"
+import starPng from "../../../assets/star.png"
+import arrowPng from "../../../assets/arrow.png"
 /* import musicMenu from "../.." */
 
 
@@ -51,6 +52,10 @@ class StartScene extends Phaser.Scene {
             frameWidth: 64,
             frameHeight: 64
         }); 
+        this.load.spritesheet("pauseButton", pauseButtonSprite, {
+            frameWidth: 16,
+            frameHeight: 16
+        })
         
     }
 
@@ -111,6 +116,12 @@ class StartScene extends Phaser.Scene {
             frames: this.anims.generateFrameNames("arrowImpact"),
             frameRate: 10,
             repeat: -1
+        });
+        this.anims.create({
+            key: "pauseButton_anim",
+            frames: this.anims.generateFrameNames("pauseButton"),
+            frameRate: 15,
+            repeat: 0
         });
 
         // Button to next Scene

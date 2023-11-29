@@ -1,9 +1,9 @@
 import Phaser, { RIGHT } from "phaser";
-import Goblin from "./Enemies/Goblin";
-import Wolf from "./Enemies/Wolf";
-import HobGoblin from "./Enemies/HobGoblin";
-import Tower from "./Tower";
-import Projectile from "./Projectile";
+import Goblin from "../Enemies/Goblin";
+import Wolf from "../Enemies/Wolf";
+import HobGoblin from "../Enemies/HobGoblin";
+import Tower from "../Tower";
+import Projectile from "../Projectile";
 
 const placementTilesData = [0, 0, 0, 342, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 166, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -107,6 +107,25 @@ class GameScene extends Phaser.Scene {
         );
 
         this.startNextWave();
+
+        this.pauseButton = this.add.sprite(1230,50,"pauseButton");
+        this.pauseButton.setScale(3);
+        this.pauseButton.setInteractive();
+        this.pauseButton.on("pointerover", () => {
+            this.pauseButton.setTint(0xe0e0e0);
+        });
+        
+        this.pauseButton.on("pointerout", () => {
+            this.pauseButton.setTint(0xFFFFFF);
+        });
+        
+        this.pauseButton.on("pointerup", () => {
+            this.pauseButton.play("pauseButton_anim");
+            this.scene.pause();
+            this.scene.launch('pauseGame');
+        });
+        
+    
     
     }
     
@@ -355,7 +374,6 @@ class GameScene extends Phaser.Scene {
             }
         }
     }
-
 
 
     gameOver(){
