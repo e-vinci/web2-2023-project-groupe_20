@@ -9,8 +9,12 @@ import crossbowSprite from "../../../assets/spriteSheets/crossbow.png"
 import crossbowArrowSprite from "../../../assets/spriteSheets/crossbowArrow.png"
 import arrowImpactSprite from "../../../assets/spriteSheets/arrowImpact.png"
 import pauseButtonSprite from "../../../assets/spriteSheets/UIPauseButton.png"
+import times2ButtonSprite from "../../../assets/spriteSheets/UI2timeButton.png"
+import campFireSprite from "../../../assets/spriteSheets/campFire.png"
+import baseFlagSprite from "../../../assets/spriteSheets/baseFlag.png"
 import starPng from "../../../assets/star.png"
 import arrowPng from "../../../assets/arrow.png"
+import campPng from "../../../assets/camp.png"
 /* import musicMenu from "../.." */
 
 
@@ -20,6 +24,7 @@ class StartScene extends Phaser.Scene {
     }
 
     preload(){
+        this.load.image("base", campPng);
         this.load.image("gameMenu",menuBG);
         this.load.image("gameMap", towerDefenseMap);
         this.load.image("arrow", arrowPng);
@@ -55,6 +60,18 @@ class StartScene extends Phaser.Scene {
         this.load.spritesheet("pauseButton", pauseButtonSprite, {
             frameWidth: 16,
             frameHeight: 16
+        })
+        this.load.spritesheet("times2Button", times2ButtonSprite, {
+            frameWidth: 16,
+            frameHeight: 16
+        })
+        this.load.spritesheet("baseFlag", baseFlagSprite, {
+            frameWidth: 32,
+            frameHeight: 64
+        })
+        this.load.spritesheet("campFire", campFireSprite, {
+            frameWidth: 32,
+            frameHeight: 32
         })
         
     }
@@ -122,6 +139,26 @@ class StartScene extends Phaser.Scene {
             frames: this.anims.generateFrameNames("pauseButton"),
             frameRate: 15,
             repeat: 0
+        });
+        this.anims.create({
+            key: "times2Button_anim",
+            frames: this.anims.generateFrameNames("times2Button"),
+            frameRate: 15,
+            repeat: 0
+        });
+
+        this.anims.create({
+            key: "campFire_anim",
+            frames: this.anims.generateFrameNames("campFire"),
+            frameRate: 15,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: "baseFlag_anim",
+            frames: this.anims.generateFrameNames("baseFlag"),
+            frameRate: 15,
+            repeat: -1
         });
 
         // Button to next Scene

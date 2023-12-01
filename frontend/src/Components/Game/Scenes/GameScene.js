@@ -32,25 +32,34 @@ class GameScene extends Phaser.Scene {
         this.background.setOrigin(0,0);
         this.add.text(20,20, "GameScene");
         this.map = placementTilesData;
+        this.props();
         this.playerLives = 10;
         this.nextWaveTime = 0;
+        this.gameSpeed = 1;
+        this.uiContainer = this.add.container(this.game.config.width / 2, 20);
+
         
-        this.playerLivesText = this.add.text(1000, 20, `Lives: ${this.playerLives} / 10`, {
+        this.playerLivesText = this.add.text(-500, 20, `Lives: ${this.playerLives} / 10`, {
             fontFamily: 'Arial',
             fontSize: '24px',
             color: '#ffffff',
             fontStyle: 'bold'
         });
-        this.waveText = this.add.text(20, 20, `Wave: ${this.wave}`, {
+        this.waveText = this.add.text(0, 20, `Wave: ${this.wave}`, {
             fontFamily: 'Arial',
             fontSize: '24px',
             color: '#ffffff',
             fontStyle: 'bold'
         });
-        this.currencyText = this.add.text(10,10, `Currency: ${this.currency}`,{
+        this.currencyText = this.add.text(100,20, `Currency: ${this.currency}`,{
             fontSize: '20px',
             fill: '#ffffff'
         });
+        this.uiContainer.add(this.playerLivesText);
+        this.uiContainer.add(this.waveText);
+        this.uiContainer.add(this.currencyText);
+        this.add.existing(this.uiContainer);
+
 
 
         // Path number 1 white
@@ -108,23 +117,7 @@ class GameScene extends Phaser.Scene {
 
         this.startNextWave();
 
-        this.pauseButton = this.add.sprite(1230,50,"pauseButton");
-        this.pauseButton.setScale(3);
-        this.pauseButton.setInteractive();
-        this.pauseButton.on("pointerover", () => {
-            this.pauseButton.setTint(0xe0e0e0);
-        });
-        
-        this.pauseButton.on("pointerout", () => {
-            this.pauseButton.setTint(0xFFFFFF);
-        });
-        
-        this.pauseButton.on("pointerup", () => {
-            this.pauseButton.play("pauseButton_anim");
-            this.scene.pause();
-            this.scene.launch('pauseGame');
-        });
-        
+        this.buttonManager();        
     
     
     }
@@ -141,7 +134,7 @@ class GameScene extends Phaser.Scene {
                 enemy.setVisible(true);
                 enemy.startOnPath();
 
-                this.nextEnemy = time + Phaser.Math.Between(200,1000);
+                this.nextEnemy = time + Phaser.Math.Between(200,1000) /this.gameSpeed;
                 this.totalEnemies --;
             }
         }
@@ -373,6 +366,67 @@ class GameScene extends Phaser.Scene {
                 
             }
         }
+    }
+
+    buttonManager(){
+        // Pause button
+        this.pauseButton = this.add.sprite(1230,50,"pauseButton");
+        this.pauseButton.setScale(3);
+        this.pauseButton.setInteractive();
+        this.pauseButton.on("pointerover", () => {
+            this.pauseButton.setTint(0xe0e0e0);
+        });
+        
+        this.pauseButton.on("pointerout", () => {
+            this.pauseButton.setTint(0xFFFFFF);
+        });
+        
+        this.pauseButton.on("pointerup", () => {
+            this.pauseButton.play("pauseButton_anim");
+            this.scene.pause();
+            this.scene.launch('pauseGame');
+        });
+
+        // Fast forward button
+        this.fastForwardButton = this.add.sprite(1170, 50, "times2Button").setScale(3);
+        this.fastForwardButton.setInteractive();
+        this.fastForwardButton.on("pointerover", () => {
+            this.fastForwardButton.setTint(0xe0e0e0);
+        });
+        
+        this.fastForwardButton.on("pointerout", () => {
+            this.fastForwardButton.setTint(0xFFFFFF);
+        });
+        this.fastForwardButton.on("pointerup", () => {
+            this.fastForwardButton.play("times2Button_anim");
+            this.toggleFastForward();
+        });
+    }
+
+    toggleFastForward(){
+        this.fastForwardButton.play("times2Button_anim");
+        if (this.gameSpeed === 1) {
+            this.gameSpeed = 2;
+            
+        } else {
+            this.gameSpeed = 1;
+        }
+        this.time.timeScale = this.gameSpeed;
+        
+    }
+
+    props(){
+        this.base = this.add.image(700,656, "base").setScale(2);
+        this.base.flipX = true;
+        this.flagBase1 = this.add.sprite(809,577,"baseFlag");
+        this.flagBase1.flipX = true;
+        this.flagBase1.play("baseFlag_anim");
+        this.flagBase2 = this.add.sprite(809,739,"baseFlag");
+        this.flagBase2.flipX = true;
+        this.flagBase2.play("baseFlag_anim");
+        this.campFire = this.add.sprite(754, 680, "campFire").setScale(2);
+        this.campFire.play("campFire_anim");
+
     }
 
 
