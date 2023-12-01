@@ -1,4 +1,5 @@
 import { clearPage } from '../../utils/render';
+import Navigate from '../Router/Navigate';
 
 const RegisterPage = () => {
   clearPage();
@@ -50,6 +51,10 @@ function renderRegisterForm() {
   submit.className = 'btn btn-primary';
   /* submit.disabled = true; */
 
+  const errorMessage = document.createElement('p');
+  errorMessage.id = 'errorMessage';
+  errorMessage.innerHTML = '';
+
   form.appendChild(title);
   form.appendChild(username);
   form.appendChild(password);
@@ -57,7 +62,37 @@ function renderRegisterForm() {
   form.appendChild(alreadyHasDiv);
   alreadyHasDiv.appendChild(alReadyAnAccount);
   form.appendChild(submit);
+  form.appendChild(errorMessage);
+  form.addEventListener('submit', onRegister);
   main.appendChild(form);
+}
+
+async function onRegister(e) {
+  e.preventDefault();
+
+  const username = document.querySelector('#username').value;
+  const password = document.querySelector('#password').value;
+  const confirmPassword = document.querySelector('#confirmPassword').value;
+  const errorM = document.querySelector('#errorMessage');
+
+  const options = {
+    method: 'POST',
+    body: JSON.stringify({
+      username,
+      password,
+    }),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+
+  const response = await fetch('/api/auths/login', options);
+  if (!response.ok) {
+    const erroM = document.querySelector('#errorMessage');
+    erroM.innerHTML = 'Wrong username or wrong password';
+  }
+  const authenticatedUser = await response.json();
+  Navigate('/');
 }
 
 export default RegisterPage;

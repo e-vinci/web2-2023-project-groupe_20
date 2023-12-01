@@ -46,9 +46,9 @@ function renderLoginForm() {
   const errorMessage = document.createElement('p');
   errorMessage.id = 'errorMessage';
   errorMessage.innerHTML = '';
-
-  form.appendChild(formDiv);
-  form.appendChild(title);
+ 
+  main.appendChild(title);
+  formDiv.appendChild(form);
   form.appendChild(username);
   form.appendChild(password);
   form.appendChild(notYetHasDiv);
@@ -56,7 +56,7 @@ function renderLoginForm() {
   form.appendChild(submit);
   form.appendChild(errorMessage);
   form.addEventListener('submit', onLogin);
-  main.appendChild(form);
+  main.appendChild(formDiv);
 }
 
 async function onLogin(e) {
@@ -77,8 +77,8 @@ async function onLogin(e) {
 
   const response = await fetch('/api/auths/login', options);
   if (!response.ok) {
-    const erroM = document.querySelector('#errorMessage');
-    erroM.innerHTML = 'Wrong username or wrong password';
+    const errorM = document.querySelector('#errorMessage');
+    errorM.innerHTML = 'Wrong username or wrong password';
   }
   const authenticatedUser = await response.json();
   Navigate('/');
