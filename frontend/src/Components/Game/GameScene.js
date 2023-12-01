@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 import Enemy from "./Enemy";
 import Tower from "./Towers/Tower";
+import slowingTower from "./Towers/slowingTower";
 import Projectile from "./Projectile";
 
 const placementTilesData = [0, 0, 0, 342, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -223,7 +224,7 @@ class GameScene extends Phaser.Scene {
     addProjectile(x, y , angle){
         const projectile = new Projectile(this, 0, 0);
         this.projectiles.add(projectile);
-        projectile.fire(x, y, angle); 
+        projectile.fire(x, y, angle);
     }
 
     getEnemy(x, y , distance){
