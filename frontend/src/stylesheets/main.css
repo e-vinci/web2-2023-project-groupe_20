@@ -1,5 +1,17 @@
+body {
+    background-color: #1E665D;
+    margin:0;
+    height:95%
+}
+
+canvas {
+    display : block;   
+    margin : auto;
+}
+
 .navbar{
     background-color: #1C2B48;
+    margin-bottom:10px;
 }
 
 footer {
@@ -7,6 +19,7 @@ footer {
     background-color: #1C2B48;
     color: #FFFFFF;
     text-align: center;
+    margin-top:10px;
   }
 
 .navbutton {
@@ -29,7 +42,7 @@ footer {
 
 .navbar ul li:before {
     content: '';
-    background: #1E665D;
+    background: #FFFFFF;
     display: block;
     position: absolute;
     bottom: -3px;

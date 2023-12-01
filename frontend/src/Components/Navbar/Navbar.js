@@ -1,14 +1,10 @@
 // eslint-disable-next-line no-unused-vars
 import { Navbar as BootstrapNavbar } from 'bootstrap';
-import IndexPage from '../Pages/HomePage';
-import LoginPage from '../Pages/LoginPage';
-import RegisterPage from '../Pages/RegisterPage';
 
 import logoImage from '../../img/logo.png';
 
 const Navbar = () => {
   renderNavbar();
-  onNavBarClick();
 }
 
 function renderNavbar() {
@@ -44,25 +40,5 @@ function renderNavbar() {
   `;
 };
 
-function onNavBarClick() {
-  const navItems = document.querySelectorAll('.nav-link');
-
-  navItems.forEach((item) => {
-    item.addEventListener('click', (e) => {
-      // eslint-disable-next-line no-console
-      console.log(`click on ${e.target.innerHTML} navbar item`);
-      if (e.target.innerHTML === '') {
-        IndexPage();
-      // eslint-disable-next-line spaced-comment
-      } /*else if (e.target.innerHTML === 'Leaderboard') {
-        LeaderboardPage();
-      }*/ else if (e.target.innerHTML === 'Login') {
-        LoginPage();
-      } else if (e.target.innerHTML === 'Register') {
-        RegisterPage();
-      }
-    });
-  });
-}
 
 export default Navbar;
