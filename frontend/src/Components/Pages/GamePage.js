@@ -15,7 +15,7 @@ const GamePage = () => {
       mode: Phaser.Scale.FIT,
       Audio:true
     },
-  
+
     scene: [StartScene, GameScene, GameOverScene],
     pixelArt: true,
     physics: {
