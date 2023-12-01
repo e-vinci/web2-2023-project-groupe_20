@@ -4,7 +4,7 @@ import IndexPage from '../Pages/HomePage';
 import LoginPage from '../Pages/LoginPage';
 import RegisterPage from '../Pages/RegisterPage';
 
-import logoImage from '../../img/logo1.png';
+import logoImage from '../../img/logo.png';
 
 const Navbar = () => {
   renderNavbar();

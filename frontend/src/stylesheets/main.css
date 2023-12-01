@@ -1,6 +1,13 @@
-.navbar {
+.navbar{
     background-color: #1C2B48;
 }
+
+footer {
+    height: 20px;
+    background-color: #1C2B48;
+    color: #FFFFFF;
+    text-align: center;
+  }
 
 .navbutton {
     color:#1E665D;
