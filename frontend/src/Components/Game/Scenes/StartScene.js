@@ -10,6 +10,10 @@ class StartScene extends Phaser.Scene {
 
     create(){
 
+         // Load map
+         this.background = this.add.image(0,0, "gameMenu");
+         this.background.setDisplayOrigin(0,0)
+
         // Button to next Scene
         const button = this.add.text(this.scale.width/2, this.scale.height/1.5, 'Start',
             {

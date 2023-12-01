@@ -64,10 +64,8 @@ class PreloadScene extends Phaser.Scene {
             width : 1280,
             height:768
         }
-
-        // Load map
-        this.background = this.add.image(0,0, "gameMenu");
-        this.background.setDisplayOrigin(0,0)
+    
+        this.menuSound.add("arrowSound")
 
         // Sprite's animations
         this.anims.create({
