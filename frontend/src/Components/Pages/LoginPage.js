@@ -46,7 +46,7 @@ function renderLoginForm() {
   const errorMessage = document.createElement('p');
   errorMessage.id = 'errorMessage';
   errorMessage.innerHTML = '';
- 
+
   main.appendChild(title);
   formDiv.appendChild(form);
   form.appendChild(username);
@@ -63,6 +63,7 @@ async function onLogin(e) {
   e.preventDefault();
   const username = document.querySelector('#username').value;
   const password = document.querySelector('#password').value;
+  const errorM = document.querySelector('#errorMessage');
 
   const options = {
     method: 'POST',
@@ -76,11 +77,16 @@ async function onLogin(e) {
   };
 
   const response = await fetch('/api/auths/login', options);
-  if (!response.ok) {
-    const errorM = document.querySelector('#errorMessage');
-    errorM.innerHTML = 'Wrong username or wrong password';
-  }
   const authenticatedUser = await response.json();
+  
+  if (response.status === 400) {
+    errorM.innerHTML = 'There is a field missing'
+  } else if (response.status === 401) {
+    errorM.innerHTML = 'Wrong username or wrong password';
+  } else if (!response.ok) {
+    throw new Error(`fetch error : ${response.status} : ${response.statusText}`);
+  }
+
   Navigate('/');
 }
 

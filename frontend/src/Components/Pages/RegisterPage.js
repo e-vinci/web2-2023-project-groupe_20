@@ -24,20 +24,20 @@ function renderRegisterForm() {
   username.type = 'text';
   username.id = 'username';
   username.placeholder = 'Username';
-  username.required = true;
+  /* username.required = true; */
   username.className = 'form-control mb-3';
 
   const password = document.createElement('input');
   password.type = 'password';
   password.id = 'password';
-  password.required = true;
+ /*  password.required = true; */
   password.placeholder = 'Password';
   password.className = 'form-control mb-3';
 
   const confirmPassword = document.createElement('input');
   confirmPassword.type = 'password';
   confirmPassword.id = 'confirmPassword';
-  confirmPassword.required = true;
+  /* confirmPassword.required = true; */
   confirmPassword.placeholder = 'Confirm your password';
   confirmPassword.className = 'form-control mb-3';
 
@@ -86,13 +86,18 @@ async function onRegister(e) {
     },
   };
 
-  const response = await fetch('/api/auths/login', options);
+  const response = await fetch('/api/auths/register', options);
+  
+  if (response.status === 400) {
+    errorM.innerHTML = 'There is a field missing';
+  } else if (response.status === 409) {
+    errorM.innerHTML = 'This username already exists';
+  }
   if (!response.ok) {
-    const erroM = document.querySelector('#errorMessage');
-    erroM.innerHTML = 'Wrong username or wrong password';
+    throw new Error(`fetch error : ${response.status} : ${response.statusText}`);
   }
   const authenticatedUser = await response.json();
-  Navigate('/');
+  Navigate('/login');
 }
 
 export default RegisterPage;
