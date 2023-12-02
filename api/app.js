@@ -20,6 +20,6 @@ app.use(cookieParser());
 
 app.use('/users', cors(corsOptions), usersRouter);
 app.use('/pizzas', pizzaRouter);
-app.use('/auths', authsRouter);
+app.use('/auths', cors(corsOptions), authsRouter);
 
 module.exports = app;
