@@ -8,18 +8,17 @@ import towerSprite from "../../../assets/spriteSheets/tower.png"
 import crossbowSprite from "../../../assets/spriteSheets/crossbow.png"
 import crossbowArrowSprite from "../../../assets/spriteSheets/crossbowArrow.png"
 import arrowImpactSprite from "../../../assets/spriteSheets/arrowImpact.png"
-import pauseButtonSprite from "../../../assets/spriteSheets/UIPauseButton.png"
-import times2ButtonSprite from "../../../assets/spriteSheets/UI2timeButton.png"
+import pauseButtonSprite from "../../../assets/spriteSheets/UI/UIPauseButton.png"
+import times2ButtonSprite from "../../../assets/spriteSheets/UI/UI2timeButton.png"
 import campFireSprite from "../../../assets/spriteSheets/campFire.png"
 import baseFlagSprite from "../../../assets/spriteSheets/baseFlag.png"
 import starPng from "../../../assets/star.png"
 import arrowPng from "../../../assets/arrow.png"
 import campPng from "../../../assets/camp.png"
-/* import musicMenu from "../.." */
 import slowingTower from "../../../assets/spriteSheets/slowingTower/slowingTowerWeapon.png"
 import slowingTowerProjectile from "../../../assets/spriteSheets/slowingTower/slowingTowerProjectile.png"
 import slowingTowerProjectileImpact from "../../../assets/spriteSheets/slowingTower/slowingTowerProjectileImpact.png"
-import soundIcon from "../../../assets/soundIcon.png"
+import soundButtonSprite from "../../../assets/spriteSheets/UI/UISoundButton.png"
 import mainMenuMusic from "../../../assets/audio/mainMusic.mp3"
 import backTrackSound from "../../../assets/audio/backTrackSound.mp3"
 import arrowSound from "../../../assets/audio/arrowSound.mp3"
@@ -36,6 +35,7 @@ class StartScene extends Phaser.Scene {
         this.load.image("gameMap", towerDefenseMap);
         this.load.image("arrow", arrowPng);
         this.load.image("star", starPng);
+        
         this.load.spritesheet("goblin", goblinSprite,{
             frameWidth: 48,
             frameHeight: 48
@@ -71,6 +71,10 @@ class StartScene extends Phaser.Scene {
         this.load.spritesheet("times2Button", times2ButtonSprite, {
             frameWidth: 16,
             frameHeight: 16
+        })
+        this.load.spritesheet("menuSoundButton",soundButtonSprite,{
+            frameWidth:16,
+            frameHeight:17
         })
         this.load.spritesheet("baseFlag", baseFlagSprite, {
             frameWidth: 32,
@@ -111,10 +115,11 @@ class StartScene extends Phaser.Scene {
         this.background.setDisplayOrigin(0,0)
         /* this.background.setOrigin(0,0) */
 
-        // Load sound
+        // Load menu sound
         
         this.menuMusic = this.sound.add("mainMenuMusic", {
-            loop:true
+            loop:true,
+            volume:0.05
         })
         this.menuMusic.play()
         this.backTrackSound = this.sound.add("backTrackSound",{
@@ -196,6 +201,12 @@ class StartScene extends Phaser.Scene {
             frameRate: 15,
             repeat: 0
         });
+        this.anims.create({
+            key:"soundButton_anim",
+            frame: this.anims.generateFrameNames("menuSoundButton"),
+            frameRate:15,
+            repeat:0
+        })
 
         this.anims.create({
             key: "campFire_anim",
@@ -233,17 +244,26 @@ class StartScene extends Phaser.Scene {
         button.on('pointerout', () => { button.setFontSize(48); });
         button.on('pointerdown', () => {
             this.scene.start('playGame');
-            this.menuMusic.stop()
-            this.backTrackSound.play()
+            this.menuMusic.destroy()
         });
 
-        const soundIconButton = this.add.image(0, 0, 'soundIcon');
-        soundIconButton.setInteractive();
-        soundIconButton.setDisplayOrigin(0, 0);
-        soundIconButton.setPosition(sizeMap.width - 100, sizeMap.height - 750);
+        this.soundButton = this.add.sprite(1230,50,"menuSoundButton").setFrame(2);
+        this.soundButton.setScale(3);
+        this.soundButton.setInteractive();
+        this.soundButton.on("pointerover", () => {
+            this.soundButton.setTint(0xe0e0e0);
+        });
         
-        soundIconButton.on('pointerdown',()=>{
-            
+        this.soundButton.on("pointerout", () => {
+            this.soundButton.setTint(0xFFFFFF);
+        });
+
+        this.soundButton.on("pointerdown", () => {
+            this.soundButton.setFrame(1);
+        });
+        
+        this.soundButton.on("pointerup", () => {
+            this.soundButton.setFrame(0)
             if(this.menuMusic.isPlaying){
                 this.menuMusic.stop()
             }else{
@@ -252,6 +272,7 @@ class StartScene extends Phaser.Scene {
             
         })
         this.menuMusic.isPlaying = this.menuMusic.isPaused
+
     }
 }
 
