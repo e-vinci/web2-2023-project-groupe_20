@@ -1,9 +1,10 @@
-import Phaser, { RIGHT } from "phaser";
+import Phaser from "phaser";
 import Goblin from "../Enemies/Goblin";
 import Wolf from "../Enemies/Wolf";
 import HobGoblin from "../Enemies/HobGoblin";
-import Tower from "../Tower";
 import Projectile from "../Projectile";
+import Tower from "../Towers/Tower";
+import slowingTower from "../Towers/slowingTower";
 
 const placementTilesData = [0, 0, 0, 342, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 166, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -311,7 +312,7 @@ class GameScene extends Phaser.Scene {
     addProjectile(x, y , angle){
         const projectile = new Projectile(this, 0, 0);
         this.projectiles.add(projectile);
-        projectile.fire(x, y, angle); 
+        projectile.fire(x, y, angle);
     }
 
     getEnemy(x, y , distance){

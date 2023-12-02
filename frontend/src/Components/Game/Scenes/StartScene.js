@@ -16,6 +16,13 @@ import starPng from "../../../assets/star.png"
 import arrowPng from "../../../assets/arrow.png"
 import campPng from "../../../assets/camp.png"
 /* import musicMenu from "../.." */
+import slowingTower from "../../../assets/spriteSheets/slowingTower/slowingTowerWeapon.png"
+import slowingTowerProjectile from "../../../assets/spriteSheets/slowingTower/slowingTowerProjectile.png"
+import slowingTowerProjectileImpact from "../../../assets/spriteSheets/slowingTower/slowingTowerProjectileImpact.png"
+import soundIcon from "../../../assets/soundIcon.png"
+import mainMenuMusic from "../../../assets/audio/mainMusic.mp3"
+import backTrackSound from "../../../assets/audio/backTrackSound.mp3"
+import arrowSound from "../../../assets/audio/arrowSound.mp3"
 
 
 class StartScene extends Phaser.Scene {
@@ -74,6 +81,22 @@ class StartScene extends Phaser.Scene {
             frameHeight: 32
         })
         
+        this.load.spritesheet("slowingTower",slowingTower,{
+            frameWidth:96,
+            frameHeight:96
+        })
+        this.load.spritesheet("slowingTowerProjectile", slowingTowerProjectile, {
+            frameWidth: 16,
+            frameHeight: 16
+        });
+        this.load.spritesheet("slowingTowerProjectileImpact", slowingTowerProjectileImpact, {
+            frameWidth: 64,
+            frameHeight: 64
+        }); 
+
+        this.load.audio("mainMenuMusic",[mainMenuMusic])
+        this.load.audio("backTrackSound",[backTrackSound])
+        this.load.audio("arrowSound",[arrowSound])
     }
 
     create(){
@@ -83,10 +106,21 @@ class StartScene extends Phaser.Scene {
             height:768
         }
 
-        // Load map
+        // Load Menu
         this.background = this.add.image(0,0, "gameMenu");
         this.background.setDisplayOrigin(0,0)
         /* this.background.setOrigin(0,0) */
+
+        // Load sound
+        
+        this.menuMusic = this.sound.add("mainMenuMusic", {
+            loop:true
+        })
+        this.menuMusic.play()
+        this.backTrackSound = this.sound.add("backTrackSound",{
+            loop:true
+        })
+
 
         // Sprite's animations
         this.anims.create({
@@ -117,17 +151,33 @@ class StartScene extends Phaser.Scene {
         });
 
         this.anims.create({
+            key:"slowingTower_anim",
+            frames: this.anims.generateFrameNames("slowingTower"),
+            frameRate:25,
+            repeat:-1
+        })
+
+        this.anims.create({
             key: "crossbow_anim",
             frames: this.anims.generateFrameNames("crossbow"),
             frameRate: 10,
             repeat: -1
         });
+
+        this.anims.create({
+            key: "slowingTowerWeapon_anim",
+            frames : this.anims.generateFrameNames("slowingTowerWeapon"),
+            framesRate:25,
+            repeat:-1
+        })
+
         this.anims.create({
             key: "crossbowArrow_anim",
             frames: this.anims.generateFrameNames("crossbowArrow"),
             frameRate: 10,
             repeat: -1
         });
+
         this.anims.create({
             key: "arrowImpact_anim",
             frames: this.anims.generateFrameNames("arrowImpact"),
@@ -161,6 +211,13 @@ class StartScene extends Phaser.Scene {
             repeat: -1
         });
 
+        this.anims.create({
+            key: "slowingTowerWeaponImpact_anim",
+            frames: this.anims.generateFrameNames("slowingTowerWeaponImpact"),
+            frameRate: 25,
+            repeat: -1
+        });
+
         // Button to next Scene
         const button = this.add.text(this.scale.width/2, this.scale.height/1.5, 'Start',
             {
@@ -176,23 +233,25 @@ class StartScene extends Phaser.Scene {
         button.on('pointerout', () => { button.setFontSize(48); });
         button.on('pointerdown', () => {
             this.scene.start('playGame');
+            this.menuMusic.stop()
+            this.backTrackSound.play()
         });
 
-        const settingButton = this.add.text(this.scale.width/2, this.scale.height/1.5+50, 'Setting',
-        {
-            fontFamily: 'Candara, Arial',
-            fontSize: '48px',
-            color: '#ffffff',
-            fontStyle: 'bold',
-
-        }).setOrigin(0.5);
-        settingButton.setInteractive();
-        settingButton.on('pointerover',() => {settingButton.setFontSize(60);});
-        settingButton.on('pointerout', () => {settingButton.setFontSize(48); });
-        settingButton.on('pointerdown',()=> {
-            this.scene.start('setting');
+        const soundIconButton = this.add.image(0, 0, "soundIcon");
+        soundIconButton.setInteractive();
+        soundIconButton.setDisplayOrigin(0, 0);
+        soundIconButton.setPosition(sizeMap.width - 100, sizeMap.height - 750);
+        
+        soundIconButton.on('pointerdown',()=>{
+            
+            if(this.menuMusic.isPlaying){
+                this.menuMusic.stop()
+            }else{
+                this.menuMusic.play()
+            }
+            
         })
-
+        this.menuMusic.isPlaying = this.menuMusic.isPaused
     }
 }
 
