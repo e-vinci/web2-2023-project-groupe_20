@@ -12,9 +12,6 @@ function renderLoginForm() {
   const form = document.createElement('form');
   form.className = 'p-5';
 
-  const formDiv = document.createElement('div');
-  formDiv.id = 'formDiv';
-
   const title = document.createElement('h1');
   title.className = 'text-center';
   title.innerHTML = 'Login';
@@ -24,13 +21,11 @@ function renderLoginForm() {
   username.type = 'text';
   username.id = 'username';
   username.placeholder = 'Username';
- /*  username.required = true; */
   username.className = 'form-control mb-3';
 
   const password = document.createElement('input');
   password.type = 'password';
   password.id = 'password';
-  /* password.required = true; */
   password.placeholder = 'Password';
   password.className = 'form-control mb-3';
 
@@ -47,8 +42,7 @@ function renderLoginForm() {
   errorMessage.id = 'errorMessage';
   errorMessage.innerHTML = '';
 
-  main.appendChild(title);
-  formDiv.appendChild(form);
+  
   form.appendChild(username);
   form.appendChild(password);
   form.appendChild(notYetHasDiv);
@@ -56,7 +50,9 @@ function renderLoginForm() {
   form.appendChild(submit);
   form.appendChild(errorMessage);
   form.addEventListener('submit', onLogin);
-  main.appendChild(formDiv);
+  
+  main.appendChild(title);
+  main.appendChild(form);
 }
 
 async function onLogin(e) {

@@ -12,9 +12,6 @@ function renderRegisterForm() {
   const form = document.createElement('form');
   form.className = 'p-5';
 
-  const formDiv = document.createElement('div');
-  formDiv.id = 'formDiv';
-
   const title = document.createElement('h1');
   title.innerHTML = 'Register';
   title.id = 'titleForm';
@@ -24,20 +21,17 @@ function renderRegisterForm() {
   username.type = 'text';
   username.id = 'username';
   username.placeholder = 'Username';
-  /* username.required = true; */
   username.className = 'form-control mb-3';
 
   const password = document.createElement('input');
   password.type = 'password';
   password.id = 'password';
- /*  password.required = true; */
   password.placeholder = 'Password';
   password.className = 'form-control mb-3';
 
   const confirmPassword = document.createElement('input');
   confirmPassword.type = 'password';
   confirmPassword.id = 'confirmPassword';
-  /* confirmPassword.required = true; */
   confirmPassword.placeholder = 'Confirm your password';
   confirmPassword.className = 'form-control mb-3';
 
@@ -49,13 +43,12 @@ function renderRegisterForm() {
   submit.value = 'Sign up';
   submit.type = 'submit';
   submit.className = 'btn btn-primary';
-  /* submit.disabled = true; */
 
   const errorMessage = document.createElement('p');
   errorMessage.id = 'errorMessage';
   errorMessage.innerHTML = '';
 
-  form.appendChild(title);
+  
   form.appendChild(username);
   form.appendChild(password);
   form.appendChild(confirmPassword);
@@ -64,6 +57,8 @@ function renderRegisterForm() {
   form.appendChild(submit);
   form.appendChild(errorMessage);
   form.addEventListener('submit', onRegister);
+  
+  main.appendChild(title);
   main.appendChild(form);
 }
 
@@ -75,7 +70,7 @@ async function onRegister(e) {
   const confirmPassword = document.querySelector('#confirmPassword').value;
   const errorM = document.querySelector('#errorMessage');
 
-  if(password !== confirmPassword){
+  if (password !== confirmPassword) {
     errorM.innerHTML = 'Your passwords are not the same';
     throw new Error('Wrong confirmation password');
   }
@@ -92,7 +87,7 @@ async function onRegister(e) {
   };
 
   const response = await fetch('/api/auths/register', options);
-  
+
   if (response.status === 400) {
     errorM.innerHTML = 'There is a field missing';
   } else if (response.status === 409) {
