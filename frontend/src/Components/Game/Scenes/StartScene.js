@@ -237,7 +237,7 @@ class StartScene extends Phaser.Scene {
             this.backTrackSound.play()
         });
 
-        const soundIconButton = this.add.image(0, 0, "soundIcon");
+        const soundIconButton = this.add.image(0, 0, 'soundIcon');
         soundIconButton.setInteractive();
         soundIconButton.setDisplayOrigin(0, 0);
         soundIconButton.setPosition(sizeMap.width - 100, sizeMap.height - 750);

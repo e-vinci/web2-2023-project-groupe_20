@@ -64,7 +64,7 @@ class GameScene extends Phaser.Scene {
 
 
         // Path number 1 white
-        const path1 = new Phaser.Curves.Path(147.166666666667,856)
+        const path1 = new Phaser.Curves.Path(147.166666666667,750)
         path1.lineTo(161.833333333333, 542.666666666667);
         path1.lineTo(545.166666666667, 545.333333333333);
         path1.lineTo(560,94.6666666666667);
