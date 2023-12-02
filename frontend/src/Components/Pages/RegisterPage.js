@@ -75,6 +75,11 @@ async function onRegister(e) {
   const confirmPassword = document.querySelector('#confirmPassword').value;
   const errorM = document.querySelector('#errorMessage');
 
+  if(password !== confirmPassword){
+    errorM.innerHTML = 'Your passwords are not the same';
+    throw new Error('Wrong confirmation password');
+  }
+
   const options = {
     method: 'POST',
     body: JSON.stringify({

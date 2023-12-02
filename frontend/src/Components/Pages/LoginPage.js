@@ -24,13 +24,13 @@ function renderLoginForm() {
   username.type = 'text';
   username.id = 'username';
   username.placeholder = 'Username';
-  username.required = true;
+ /*  username.required = true; */
   username.className = 'form-control mb-3';
 
   const password = document.createElement('input');
   password.type = 'password';
   password.id = 'password';
-  password.required = true;
+  /* password.required = true; */
   password.placeholder = 'Password';
   password.className = 'form-control mb-3';
 
@@ -77,16 +77,16 @@ async function onLogin(e) {
   };
 
   const response = await fetch('/api/auths/login', options);
-  const authenticatedUser = await response.json();
-  
+
   if (response.status === 400) {
-    errorM.innerHTML = 'There is a field missing'
+    errorM.innerHTML = 'There is a field missing';
   } else if (response.status === 401) {
     errorM.innerHTML = 'Wrong username or wrong password';
-  } else if (!response.ok) {
+  }
+  if(!response.ok) {
     throw new Error(`fetch error : ${response.status} : ${response.statusText}`);
   }
-
+  const authenticatedUser = await response.json();
   Navigate('/');
 }
 
