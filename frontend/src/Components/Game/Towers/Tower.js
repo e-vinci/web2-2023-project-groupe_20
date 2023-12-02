@@ -1,5 +1,4 @@
 import Phaser from "phaser";
-import StartScene from "../StartScene";
 
 class Tower extends Phaser.GameObjects.Sprite{
     constructor(scene, x, y, map) {

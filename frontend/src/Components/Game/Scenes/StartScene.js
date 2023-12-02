@@ -1,20 +1,28 @@
 import Phaser from "phaser";
-import menuBG from "../../assets/menuBG.png"
-import towerDefenseMap from "../../assets/TowerDefenseMap.png"
-import enemy1Sprite from "../../assets/spriteSheets/S_Goblin_walk.png"
-import towerSprite from "../../assets/spriteSheets/tower.png"
-import starPng from "../../assets/star.png"
-import arrowPng from "../../assets/arrow.png"
-import crossbowSprite from "../../assets/spriteSheets/crossbow.png"
-import crossbowArrowSprite from "../../assets/spriteSheets/crossbowArrow.png"
-import arrowImpactSprite from "../../assets/spriteSheets/arrowImpact.png"
-import slowingTower from "../../assets/spriteSheets/slowingTower/slowingTowerWeapon.png"
-import slowingTowerProjectile from "../../assets/spriteSheets/slowingTower/slowingTowerProjectile.png"
-import slowingTowerProjectileImpact from "../../assets/spriteSheets/slowingTower/slowingTowerProjectileImpact.png"
-import soundIcon from "../../assets/soundIcon.png"
-import mainMenuMusic from "../../assets/audio/mainMusic.mp3"
-import backTrackSound from "../../assets/audio/backTrackSound.mp3"
-import arrowSound from "../../assets/audio/arrowSound.mp3"
+import menuBG from "../../../assets/menuBG.png"
+import towerDefenseMap from "../../../assets/TowerDefenseMap.png"
+import goblinSprite from "../../../assets/spriteSheets/S_Goblin_walk.png"
+import wolfSprite from "../../../assets/spriteSheets/S_Wolf.png"
+import hobGoblinSprite from "../../../assets/spriteSheets/S_HobGoblin.png"
+import towerSprite from "../../../assets/spriteSheets/tower.png"
+import crossbowSprite from "../../../assets/spriteSheets/crossbow.png"
+import crossbowArrowSprite from "../../../assets/spriteSheets/crossbowArrow.png"
+import arrowImpactSprite from "../../../assets/spriteSheets/arrowImpact.png"
+import pauseButtonSprite from "../../../assets/spriteSheets/UIPauseButton.png"
+import times2ButtonSprite from "../../../assets/spriteSheets/UI2timeButton.png"
+import campFireSprite from "../../../assets/spriteSheets/campFire.png"
+import baseFlagSprite from "../../../assets/spriteSheets/baseFlag.png"
+import starPng from "../../../assets/star.png"
+import arrowPng from "../../../assets/arrow.png"
+import campPng from "../../../assets/camp.png"
+/* import musicMenu from "../.." */
+import slowingTower from "../../../assets/spriteSheets/slowingTower/slowingTowerWeapon.png"
+import slowingTowerProjectile from "../../../assets/spriteSheets/slowingTower/slowingTowerProjectile.png"
+import slowingTowerProjectileImpact from "../../../assets/spriteSheets/slowingTower/slowingTowerProjectileImpact.png"
+import soundIcon from "../../../assets/soundIcon.png"
+import mainMenuMusic from "../../../assets/audio/mainMusic.mp3"
+import backTrackSound from "../../../assets/audio/backTrackSound.mp3"
+import arrowSound from "../../../assets/audio/arrowSound.mp3"
 
 
 class StartScene extends Phaser.Scene {
@@ -23,12 +31,20 @@ class StartScene extends Phaser.Scene {
     }
 
     preload(){
+        this.load.image("base", campPng);
         this.load.image("gameMenu",menuBG);
         this.load.image("gameMap", towerDefenseMap);
         this.load.image("arrow", arrowPng);
         this.load.image("star", starPng);
-        this.load.image("soundIcon",soundIcon)
-        this.load.spritesheet("goblin", enemy1Sprite,{
+        this.load.spritesheet("goblin", goblinSprite,{
+            frameWidth: 48,
+            frameHeight: 48
+        });
+        this.load.spritesheet("wolf", wolfSprite,{
+            frameWidth: 48,
+            frameHeight: 48
+        });
+        this.load.spritesheet("hobGoblin", hobGoblinSprite,{
             frameWidth: 48,
             frameHeight: 48
         });
@@ -48,6 +64,23 @@ class StartScene extends Phaser.Scene {
             frameWidth: 64,
             frameHeight: 64
         }); 
+        this.load.spritesheet("pauseButton", pauseButtonSprite, {
+            frameWidth: 16,
+            frameHeight: 16
+        })
+        this.load.spritesheet("times2Button", times2ButtonSprite, {
+            frameWidth: 16,
+            frameHeight: 16
+        })
+        this.load.spritesheet("baseFlag", baseFlagSprite, {
+            frameWidth: 32,
+            frameHeight: 64
+        })
+        this.load.spritesheet("campFire", campFireSprite, {
+            frameWidth: 32,
+            frameHeight: 32
+        })
+        
         this.load.spritesheet("slowingTower",slowingTower,{
             frameWidth:96,
             frameHeight:96
@@ -98,6 +131,19 @@ class StartScene extends Phaser.Scene {
         });
 
         this.anims.create({
+            key: "wolf_anim",
+            frames: this.anims.generateFrameNames("wolf"),
+            frameRate: 20,
+            repeat: -1
+        });
+        this.anims.create({
+            key: "hobGoblin_anim",
+            frames: this.anims.generateFrameNames("hobGoblin"),
+            frameRate: 3,
+            repeat: -1
+        });
+
+        this.anims.create({
             key: "tower_anim",
             frames: this.anims.generateFrameNames("tower"),
             frameRate: 10,
@@ -136,6 +182,32 @@ class StartScene extends Phaser.Scene {
             key: "arrowImpact_anim",
             frames: this.anims.generateFrameNames("arrowImpact"),
             frameRate: 10,
+            repeat: -1
+        });
+        this.anims.create({
+            key: "pauseButton_anim",
+            frames: this.anims.generateFrameNames("pauseButton"),
+            frameRate: 15,
+            repeat: 0
+        });
+        this.anims.create({
+            key: "times2Button_anim",
+            frames: this.anims.generateFrameNames("times2Button"),
+            frameRate: 15,
+            repeat: 0
+        });
+
+        this.anims.create({
+            key: "campFire_anim",
+            frames: this.anims.generateFrameNames("campFire"),
+            frameRate: 15,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: "baseFlag_anim",
+            frames: this.anims.generateFrameNames("baseFlag"),
+            frameRate: 15,
             repeat: -1
         });
 

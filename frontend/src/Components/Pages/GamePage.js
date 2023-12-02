@@ -1,7 +1,8 @@
 import Phaser from 'phaser';
-import StartScene from '../Game/StartScene';
-import GameScene from '../Game/GameScene';
-import GameOverScene from '../Game/GameOverScene';
+import StartScene from '../Game/Scenes/StartScene';
+import GameScene from '../Game/Scenes/GameScene';
+import GameOverScene from '../Game/Scenes/GameOverScene';
+import PauseGameScene from '../Game/Scenes/PauseGameScene';
 
 let game;
 
@@ -15,8 +16,8 @@ const GamePage = () => {
       mode: Phaser.Scale.FIT,
       Audio:true
     },
-
-    scene: [StartScene, GameScene, GameOverScene],
+  
+    scene: [StartScene, GameScene, GameOverScene,PauseGameScene],
     pixelArt: true,
     physics: {
       default: "arcade",
