@@ -8,7 +8,7 @@ import towerSprite from "../../../assets/spriteSheets/tower.png"
 import crossbowSprite from "../../../assets/spriteSheets/crossbow.png"
 import crossbowArrowSprite from "../../../assets/spriteSheets/crossbowArrow.png"
 import arrowImpactSprite from "../../../assets/spriteSheets/arrowImpact.png"
-import pauseButtonSprite from "../../../assets/spriteSheets/UIPauseButton.png"
+import pauseButtonSprite from "../../../assets/spriteSheets/UI/UIPauseButton.png"
 import starPng from "../../../assets/star.png"
 import arrowPng from "../../../assets/arrow.png"
 
