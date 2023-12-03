@@ -44,16 +44,8 @@ class PreloadScene extends Phaser.Scene {
         const centerX = this.cameras.main.width / 2 - progressBarWidth / 2;
         const centerY = this.cameras.main.height / 2 - progressBarHeight / 2;
 
-        // Créer la boîte de la barre de chargement
-        this.progressBox = this.add.graphics();
-        this.progressBox.fillStyle(0x222222, 0.8);
-        this.progressBox.fillRect(centerX, centerY, progressBarWidth, progressBarHeight);
-
         // Créer la barre de chargement
         this.progressBar = this.add.graphics();
-
-        // Charger les ressources ici
-        // this.load.image('nomImage', 'chemin/vers/limage.png');
 
         // Mettre à jour la barre de chargement
         this.load.on('progress', (value) => {
