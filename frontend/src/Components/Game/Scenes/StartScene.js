@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 
+
 class StartScene extends Phaser.Scene {
     constructor() {
         super("bootgame")

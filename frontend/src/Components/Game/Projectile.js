@@ -11,8 +11,8 @@ class Projectile extends Phaser.GameObjects.Sprite{
 
         scene.add.existing(this);
         this.play("crossbowArrow_anim");
-        
     }
+
 
     update(time, delta){
         this.lifeSpan -= delta;
@@ -20,13 +20,15 @@ class Projectile extends Phaser.GameObjects.Sprite{
         this.x += this.dx * (this.speed * delta);
         this.y += this.dy * (this.speed * delta);
 
+
         if (this.lifeSpan <= 0 ){
+            this.setActive(false);
+            this.setVisible(false);
             this.destroy();
         }
     }
 
     fire(x, y, angle){
-        
         this.angle = (angle + Math.PI / 2 ) * Phaser.Math.RAD_TO_DEG;
         
         this.setActive(true);
