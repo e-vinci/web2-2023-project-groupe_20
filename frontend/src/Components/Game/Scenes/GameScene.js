@@ -39,6 +39,13 @@ class GameScene extends Phaser.Scene {
         this.gameSpeed = 1;
         this.uiContainer = this.add.container(this.game.config.width / 2, 20);
 
+        // Creating backTrackSound
+        this.backTrackSound = this.sound.add("backTrackSound",{
+            loop:true,
+            volume:0.05
+        })
+        this.backTrackSound.play()
+
         
         this.playerLivesText = this.add.text(-500, 20, `Lives: ${this.playerLives} / 10`, {
             fontFamily: 'Arial',
@@ -402,6 +409,33 @@ class GameScene extends Phaser.Scene {
             this.fastForwardButton.play("times2Button_anim");
             this.toggleFastForward();
         });
+
+
+        this.soundButton = this.add.sprite(1110,51,"menuSoundButton").setFrame(2);
+        this.soundButton.setScale(3);
+        this.soundButton.setInteractive();
+        this.soundButton.on("pointerover", () => {
+            this.soundButton.setTint(0xe0e0e0);
+        });
+        
+        this.soundButton.on("pointerout", () => {
+            this.soundButton.setTint(0xFFFFFF);
+        });
+
+        this.soundButton.on("pointerdown", () => {
+            this.soundButton.setFrame(1);
+        });
+        
+        this.soundButton.on("pointerup", () => {
+            this.soundButton.setFrame(0)
+            if(this.backTrackSound.isPlaying){
+                this.backTrackSound.stop()
+            }else{
+                this.backTrackSound.play()
+            }
+            
+        })
+        this.backTrackSound.isPlaying = !this.backTrackSound.isPlaying
     }
 
     toggleFastForward(){
