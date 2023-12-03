@@ -1,8 +1,5 @@
 import Phaser from "phaser";
 
-/* import musicMenu from "../.." */
-
-
 class StartScene extends Phaser.Scene {
     constructor() {
         super("bootgame")
