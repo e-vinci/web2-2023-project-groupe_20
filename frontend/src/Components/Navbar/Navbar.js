@@ -34,6 +34,9 @@ const Navbar = () => {
                 <a class="nav-link" href="#" data-uri="/game">Game</a>
               </li>
               <li class="nav-item">
+                <a class="nav-link" href="#" data-uri="/leaderboard">LeaderboardPage</a>
+              </li>
+              <li class="nav-item">
                 <a class="nav-link" href="#" data-uri="/login">LoginPage</a>
               </li>
               <li class="nav-item">

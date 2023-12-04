@@ -11,10 +11,17 @@ const router = express.Router();
 /* Read all the scores from the leaderboard
 */
 router.get('/', (req, res) => {
-  const scores = readAllScores();
-  const ordererLeaderboard = [...scores].sort((a, b) => b.scora - a.score);
+  const orderByScore = req?.query?.order?.includes('score') ? req.query.order : undefined;
 
-  return res.json(ordererLeaderboard);
+  let orderedLeaderboard;
+
+  const scores = readAllScores();
+
+  if (orderByScore) orderedLeaderboard = [...scores].sort((a, b) => a.score.localeCompare(b.score));
+
+  if (orderByScore === '-score') orderedLeaderboard = orderedLeaderboard.reverse();
+
+  return res.json(orderedLeaderboard ?? scores);
 });
 
 // Create a score to be added to the leaderboard.

@@ -3,7 +3,7 @@ const { parse, serialize } = require('../utils/json');
 
 const jsonDbPath = path.join(__dirname, '/../data/scores.json');
 
-const leaderboard = [
+const Leaderboard = [
   {
     id: 1,
     username: 'MohamedT',
@@ -37,13 +37,13 @@ const leaderboard = [
 ];
 
 function readAllScores() {
-  const scores = parse(jsonDbPath, leaderboard);
+  const scores = parse(jsonDbPath, Leaderboard);
 
   return scores;
 }
 
 function createOneScore(username, wave, score) {
-  const scores = parse(jsonDbPath, leaderboard);
+  const scores = parse(jsonDbPath, Leaderboard);
 
   const createdScore = {
     id: getNextId(),
@@ -60,7 +60,7 @@ function createOneScore(username, wave, score) {
 }
 
 function getNextId() {
-  const scores = parse(jsonDbPath, leaderboard);
+  const scores = parse(jsonDbPath, Leaderboard);
   const lastItemIndex = scores?.length !== 0 ? scores.length - 1 : undefined;
   if (lastItemIndex === undefined) return 1;
   const lastId = scores[lastItemIndex]?.id;
@@ -70,7 +70,7 @@ function getNextId() {
 
 function deleteOneScore(id) {
   const idNumber = parseInt(id, 10);
-  const scores = parse(jsonDbPath, leaderboard);
+  const scores = parse(jsonDbPath, Leaderboard);
   const foundIndex = scores.findIndex((score) => score.id === idNumber);
   if (foundIndex < 0) return undefined;
   const deletedScores = scores.splice(foundIndex, 1);
