@@ -39,6 +39,7 @@ class GameScene extends Phaser.Scene {
         this.gameSpeed = 1;
         this.uiContainer = this.add.container(this.game.config.width / 2, 20);
 
+
         // Creating backTrackSound
         this.backTrackSound = this.sound.add("backTrackSound",{
             loop:true,
@@ -46,31 +47,49 @@ class GameScene extends Phaser.Scene {
         })
         this.backTrackSound.play()
 
+        this.heart = this.add.image(400,830,"Heart")
+        this.playerLivesText = this.add.text(-200,788, `: ${this.playerLives} / 10`, {
+            fontFamily: 'Arial',
+            fontSize: '24px',
+            color: '#ffffff',
+            fontStyle: 'bold'
+        });
+        this.waveText = this.add.text(-50, 788, `Wave: ${this.wave}`, {
+            fontFamily: 'Arial',
+            fontSize: '24px',
+            color: '#ffffff',
+            fontStyle: 'bold'
+        });
+
+        this.gold = this.add.image(80,820,"goldCoin")
+        this.currencyText = this.add.text(-530, 788, `: ${this.currency}`,{
+            fontFamily: 'Arial',
+            fontSize: '24px',
+            color: '#ffffff',
+            fontStyle: 'bold'
+        });
         
-        this.playerLivesText = this.add.text(-500, 20, `Lives: ${this.playerLives} / 10`, {
-            fontFamily: 'Arial',
-            fontSize: '24px',
-            color: '#ffffff',
-            fontStyle: 'bold'
-        });
-        this.waveText = this.add.text(0, 20, `Wave: ${this.wave}`, {
-            fontFamily: 'Arial',
-            fontSize: '24px',
-            color: '#ffffff',
-            fontStyle: 'bold'
-        });
-        this.currencyText = this.add.text(100,20, `Currency: ${this.currency}`,{
-            fontSize: '20px',
-            fill: '#ffffff'
-        });
         this.uiContainer.add(this.playerLivesText);
         this.uiContainer.add(this.waveText);
         this.uiContainer.add(this.currencyText);
         this.add.existing(this.uiContainer);
 
+        this.InitialPosition = [{x:900,y:820,key:'crossbow'} , {x:1000,y:820,key:'slowingTower'}]
+
+        this.shopCrossBow = this.add.image(900,820,"crossbow").setInteractive({draggable :true
+        })
+        this.crossBowPrice = this.add.text(883,840,'150$')
+        this.shopSlowingTower = this.add.image(1000,820,"slowingTower").setInteractive({draggable :true})
+        this.slowingTowerPrice = this.add.text(985,840,'250$')
+
+        this.input.on('drag',(pointer,gameObject,dragX,dragY) => {
+            gameObject.setPosition(dragX,dragY)
+        });
+        
 
 
         // Path number 1 white
+
         const path1 = new Phaser.Curves.Path(147.166666666667,750)
         path1.lineTo(161.833333333333, 542.666666666667);
         path1.lineTo(545.166666666667, 545.333333333333);
@@ -305,7 +324,7 @@ class GameScene extends Phaser.Scene {
             const enemy = enemiesTab[i];
             if (enemy.active && enemy.follower.t >= 1){
                 this.playerLives--;
-                this.playerLivesText.setText(`Lives: ${this.playerLives} / 10`);
+                this.playerLivesText.setText(`: ${this.playerLives} / 10`);
                 enemy.destroy();
                 enemy.healthBar.destroy();
             }
@@ -375,6 +394,27 @@ class GameScene extends Phaser.Scene {
             }
         }
     }
+/** 
+    startDrag(pointer,targets){
+        this.input.off('pointerdown',this.startDrag,this)
+        // eslint-disable-next-line prefer-destructuring
+        this.dragObj = targets[0]
+        this.input.on('pointermove',this.doDrag,this)
+        this.input.on('pointerdown',this.stopDrag,this)
+    }
+    
+    doDrag(pointer){
+        // eslint-disable-next-line no-unused-expressions
+        this.dragObj.x = pointer.x;
+        this.dragObj.y = pointer.y;
+    }
+
+    stopDrag(){
+        this.input.on('pointerdown',this.startDrag,this)
+        this.input.off('pointermove',this.doDrag,this)
+        this.input.off('pointerup',this.stopDrag,this)
+    }
+    */
 
     buttonManager(){
         // Pause button

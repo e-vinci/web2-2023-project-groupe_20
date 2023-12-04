@@ -20,6 +20,8 @@ import slowingTower from "../../../assets/spriteSheets/slowingTower/slowingTower
 import slowingTowerProjectile from "../../../assets/spriteSheets/slowingTower/slowingTowerProjectile.png"
 import slowingTowerProjectileImpact from "../../../assets/spriteSheets/slowingTower/slowingTowerProjectileImpact.png"
 import soundButtonSprite from "../../../assets/spriteSheets/UI/UISoundButton.png"
+import goldCoin from "../../../assets/goldCoin.png"
+import Heart from '../../../assets/Heart.png';
 import mainMenuMusic from "../../../assets/audio/mainMusic.mp3"
 import backTrackSound from "../../../assets/audio/backTrackSound.mp3"
 import arrowSound from "../../../assets/audio/arrowSound.mp3"
@@ -60,6 +62,8 @@ class PreloadScene extends Phaser.Scene {
         this.load.image("gameMap", towerDefenseMap);
         this.load.image("arrow", arrowPng);
         this.load.image("star", starPng);
+        this.load.image("goldCoin",goldCoin);
+        this.load.image("Heart",Heart);
 
         this.load.spritesheet("goblin", goblinSprite,{
             frameWidth: 48,
