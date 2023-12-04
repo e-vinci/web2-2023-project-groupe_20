@@ -34,14 +34,17 @@ const Navbar = () => {
                 <a class="nav-link" href="#" data-uri="/game">Game</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#" data-uri="/new">New Page</a>
-              </li>                        
+                <a class="nav-link" href="#" data-uri="/login">LoginPage</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#" data-uri="/register">RegisterPage</a>
+              </li>                         
             </ul>
           </div>
         </div>
       </nav>
-  `;
+      `;
   navbarWrapper.innerHTML = navbar;
-};
+}
 
 export default Navbar;
