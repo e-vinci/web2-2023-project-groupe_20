@@ -6,7 +6,6 @@ import logoImage from '../../img/logo.png';
 const Navbar = () => {
   renderNavbar();
 }
-
 function renderNavbar() {
   const navbar = document.querySelector('#navbarWrapper');
   navbar.innerHTML = `
