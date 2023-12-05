@@ -55,6 +55,7 @@ function renderLoginForm() {
   main.appendChild(form);
 }
 
+
 async function onLogin(e) {
   e.preventDefault();
   const username = document.querySelector('#username').value;
