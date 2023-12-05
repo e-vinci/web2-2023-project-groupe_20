@@ -11,6 +11,8 @@ import crossbowArrowSprite from "../../../assets/spriteSheets/crossbowArrow.png"
 import arrowImpactSprite from "../../../assets/spriteSheets/arrowImpact.png"
 import pauseButtonSprite from "../../../assets/spriteSheets/UI/UIPauseButton.png"
 import times2ButtonSprite from "../../../assets/spriteSheets/UI/UI2timeButton.png"
+import musicToMuteButtonSprite from "../../../assets/spriteSheets/UI/UIMusicButtonToMutted.png"
+import mutedMusicToMusicButton from "../../../assets/spriteSheets/UI/UIMutedMusicButtonToMusic.png"
 import campFireSprite from "../../../assets/spriteSheets/campFire.png"
 import baseFlagSprite from "../../../assets/spriteSheets/baseFlag.png"
 import starPng from "../../../assets/star.png"
@@ -23,11 +25,17 @@ import soundButtonSprite from "../../../assets/spriteSheets/UI/UISoundButton.png
 import mainMenuMusic from "../../../assets/audio/mainMusic.mp3"
 import backTrackSound from "../../../assets/audio/backTrackSound.mp3"
 import arrowSound from "../../../assets/audio/arrowSound.mp3"
+import bgmSound from "../../../assets/audio/Plain_Sight_Regular.mp3"
+import buttonSFX from "../../../assets/audio/Minimalist10.mp3"
 
 class PreloadScene extends Phaser.Scene {
     constructor(){
         super("Preload")
     }
+
+    init() {
+        this.readyCount = 0;
+      }
 
     preload(){
 
@@ -35,7 +43,9 @@ class PreloadScene extends Phaser.Scene {
             width : 1280,
             height:768
         }
-
+        
+        
+/*
        // Dimensions de la barre de chargement
         const progressBarWidth = 400;
         const progressBarHeight = 50;
@@ -60,8 +70,7 @@ class PreloadScene extends Phaser.Scene {
             this.progressBar.clear();
             this.progressBar.fillStyle(0xffffff, 1);
             this.progressBar.fillRect(centerX, centerY, progressBarWidth * value, progressBarHeight);
-        });
-
+        }); */
 
         this.load.image("base", campPng);
         this.load.image("gameMenu",menuBG);
@@ -105,6 +114,14 @@ class PreloadScene extends Phaser.Scene {
             frameWidth: 16,
             frameHeight: 16
         })
+        this.load.spritesheet("musicToMuteButton", musicToMuteButtonSprite, {
+            frameWidth: 16,
+            frameHeight: 16
+        })
+        this.load.spritesheet("mutedToMusicButton", mutedMusicToMusicButton, {
+            frameWidth: 16,
+            frameHeight: 16
+        })
         this.load.spritesheet("menuSoundButton",soundButtonSprite,{
             frameWidth:16,
             frameHeight:17
@@ -134,12 +151,12 @@ class PreloadScene extends Phaser.Scene {
         this.load.audio("mainMenuMusic",[mainMenuMusic])
         this.load.audio("backTrackSound",[backTrackSound])
         this.load.audio("arrowSound",[arrowSound])
+        this.load.audio("bgm", bgmSound)
+        this.load.audio("buttonSFX", buttonSFX);
+        this.createPreloader();
     }
 
     create(){
-
-
-
         // Sprite's animations
         this.anims.create({
             key: "goblin_anim",
@@ -220,6 +237,18 @@ class PreloadScene extends Phaser.Scene {
             frameRate:15,
             repeat:0
         })
+        this.anims.create({
+            key:"musicToMute_anim",
+            frame: this.anims.generateFrameNames("musicToMuteButton"),
+            frameRate:15,
+            repeat:0
+        })
+        this.anims.create({
+            key:"muteToMusic_anim",
+            frame: this.anims.generateFrameNames("muteToMusicButton"),
+            frameRate:15,
+            repeat:0
+        })
 
         this.anims.create({
             key: "campFire_anim",
@@ -243,22 +272,85 @@ class PreloadScene extends Phaser.Scene {
         });
 
          // Create continue Button
-        const button = this.add.text(this.scale.width/2, this.scale.height/1.5, 'Continue',
-            {
-                fontFamily: 'Candara, Arial',
-                fontSize: '48px',
-                color: '#ffffff',
-                fontStyle: 'bold'
-                
-            }
-        ).setOrigin(0.5);
-        button.setInteractive();
-        button.on('pointerover', () => { button.setFontSize(60); });
-        button.on('pointerout', () => { button.setFontSize(48); });
-        button.on('pointerdown', () => {
-            this.scene.start('bootgame');
+    }
+
+    createPreloader() {
+
+        const {width} = this.cameras.main;
+        const {height} = this.cameras.main;
+
+        this.add.image(width / 2, height / 2 - 130, "logo").setScale(0.1);
+    
+        // display progress bar
+        const progressBar = this.add.graphics();
+        const progressBox = this.add.graphics();
+        progressBox.fillStyle(0x222222, 0.8);
+        progressBox.fillRect(width / 2 - 160, height / 2 - 30, 320, 50);
+    
+        // loading text
+        const loadingText = this.make.text({
+          x: width / 2,
+          y: height / 2 - 50,
+          text: "Loading...",
+          style: {
+            font: "20px monospace",
+            fill: "#ffffff"
+          }
+        });
+        loadingText.setOrigin(0.5, 0.5);
+    
+        // percent text
+        const percentText = this.make.text({
+          x: width / 2,
+          y: height / 2 - 5,
+          text: "0%",
+          style: {
+            font: "18px monospace",
+            fill: "#ffffff"
+          }
+        });
+        percentText.setOrigin(0.5, 0.5);
+    
+        // loading assets text
+        const assetText = this.make.text({
+          x: width / 2,
+          y: height / 2 + 50,
+          text: "",
+          style: {
+            font: "18px monospace",
+            fill: "#ffffff"
+          }
+        });
+        assetText.setOrigin(0.5, 0.5);
+    
+        // update progress bar
+        this.load.on("progress", value => {
+          percentText.setText(`${parseInt(value * 100, 10)}%`);
+          progressBar.clear();
+          progressBar.fillStyle(0xffffff, 1);
+          progressBar.fillRect(width / 2 - 150, height / 2 - 20, 300 * value, 30);
+        });
+    
+        // update file progress text
+        this.load.on("fileprogress", file => {
+          assetText.setText(`Loading asset: ${file.key}`);
+        });
+    
+        // remove progressbar when complete
+        this.load.on("complete", file => {
+          progressBox.destroy();
+          progressBar.destroy();
+          assetText.destroy();
+          loadingText.destroy();
+          percentText.destroy();
+          this.ready();
         });
     }
+
+    ready() {
+        this.scene.start('title');
+      }
+    
 
 
 
