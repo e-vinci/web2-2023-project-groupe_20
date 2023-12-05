@@ -1,13 +1,13 @@
-import Phaser from "phaser";
+import Phaser, { GameObjects } from "phaser";
 import Goblin from "../Enemies/Goblin";
 import Wolf from "../Enemies/Wolf";
 import HobGoblin from "../Enemies/HobGoblin";
 import Projectile from "../Projectile";
 import Tower from "../Towers/Tower";
-import slowingTower from "../Towers/slowingTower";
+import AOETower from "../Towers/AOETower";
 
 const placementTilesData = [0, 0, 0, 342, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 166, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 342, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 342, 0, 0, 0, 0, 342, 0, 0, 0, 0, 0, 0, 0, 342, 0, 0, 0, 0, 0,
@@ -25,7 +25,7 @@ class GameScene extends Phaser.Scene {
         super("playGame");
         this.wave = 0;
         this.waveText = null;
-        this.currency = 250;
+        this.currency = 10000;
     }
     
     create(){
@@ -74,17 +74,12 @@ class GameScene extends Phaser.Scene {
         this.uiContainer.add(this.currencyText);
         this.add.existing(this.uiContainer);
 
-        this.InitialPosition = [{x:900,y:820,key:'crossbow'} , {x:1000,y:820,key:'slowingTower'}]
 
-        this.shopCrossBow = this.add.image(900,820,"crossbow").setInteractive({draggable :true
-        })
-        this.crossBowPrice = this.add.text(883,840,'150$')
-        this.shopSlowingTower = this.add.image(1000,820,"slowingTower").setInteractive({draggable :true})
-        this.slowingTowerPrice = this.add.text(985,840,'250$')
-
-        this.input.on('drag',(pointer,gameObject,dragX,dragY) => {
-            gameObject.setPosition(dragX,dragY)
-        });
+        this.shopCrossBow = this.add.image(900,810,"crossbow").setTint(0x666666)
+        this.crossBowPrice = this.add.text(883,840,'125|)')
+        this.shopAOETower = this.add.image(1000,810,"slowingTower").setTint(0x666666)
+        this.slowingTowerPrice = this.add.text(985,840,'250')
+        this.soldingButton = this.add.text(1200,810,"SOLD").setInteractive()
         
 
 
@@ -134,7 +129,7 @@ class GameScene extends Phaser.Scene {
         this.totalEnemies = 5;
         this.nextEnemy = 0;
 
-        this.input.on('pointerdown', pointer => this.placeTowers(pointer));
+        this.input.on('pointerdown', pointer => this.placeTowers(pointer,GameObjects));
         this.showTowerRange();
         this.showTowerPlacement();
 
@@ -196,7 +191,81 @@ class GameScene extends Phaser.Scene {
         return false;
     }
     
+    placeTowers(pointer,GameObject){
+        const i = Math.floor(pointer.y / 64)
+        const j = Math.floor(pointer.x /64)
 
+        if(this.canPlaceTower(i,j)){
+            this.currentPosition = {i,j}
+            this.shopCrossBow.setInteractive().setScale(1.3).setTint('0xffffff')
+            this.shopAOETower.setInteractive().setScale(1.3).setTint('0xffffff')
+            
+            this.shopCrossBow.on('pointerover',() => {
+                this.shopCrossBow.setScale(1.5)
+            })
+
+            this.shopCrossBow.on('pointerout',() => {
+                this.shopCrossBow.setScale(1.3)
+            })
+
+            this.shopCrossBow.on('pointerup',()=>{
+                if(this.currency >= 125){
+                    const existingTower = this.getTowerAt(this.currentPosition.i,this.currentPosition.j);
+                    if (!existingTower) {
+                        this.placeArrowTower(this.currentPosition.i,this.currentPosition.j) 
+                    }            
+                }
+                this.shopCrossBow.setScale(1.3).setTint(0x666666)
+            })
+
+            this.shopAOETower.on('pointerover',() => {
+                this.shopAOETower.setScale(1.5)
+            })
+
+            this.shopAOETower.on('pointerout',() => {
+                this.shopAOETower.setScale(1.3)
+            })
+
+            this.shopAOETower.on('pointerup',()=>{
+                if(this.currency >= 250 ){
+                    const existingTower = this.getTowerAt(i, j);
+                    if (!existingTower) {
+                        this.placeAOETower(this.currentPosition.i,this.currentPosition.j)
+                    }
+                }
+            })
+        }   
+        
+    }
+
+    placeArrowTower(i,j){
+        this.currency -= 125;
+        this.currencyText.setText(`: ${this.currency}`);
+
+        let tower = this.towers.getFirstDead();
+        if(!tower){
+            tower = new Tower(this, 0, 0, this.map);
+            this.towers.add(tower);
+        }
+        tower.setActive(true);
+        tower.setVisible(true);
+        tower.place(this.currentPosition.i,this.currentPosition.j);
+    }
+
+    placeAOETower(i,j){
+        this.currency -= 250
+        this.currencyText.setText(`: ${this.currency}`);
+        let tower = this.towers.getFirstDead();
+        if(!tower){
+            tower = new AOETower(this, 0, 0, this.map);
+            this.towers.add(tower);
+        }
+        tower.setActive(true);
+        tower.setVisible(true);
+        tower.place(i,j);
+
+    }
+/*  
     placeTowers(pointer) {
         const i = Math.floor(pointer.y / 64);
         const j = Math.floor(pointer.x / 64);
@@ -204,7 +273,7 @@ class GameScene extends Phaser.Scene {
 
        if (this.canPlaceTower(i,j) && this.currency >= towerCost){
         this.currency -= towerCost;
-        this.currencyText.setText(`Currency: ${this.currency}`);
+        this.currencyText.setText(`: ${this.currency}`);
 
         const index = i * 20 + j;
         let tower = this.towers.getFirstDead();
@@ -216,7 +285,8 @@ class GameScene extends Phaser.Scene {
         tower.setVisible(true);
         tower.place(i,j);
        }
-    }
+    } 
+*/
 
     showTowerRange() {
         this.input.on("pointermove", pointer => {
@@ -389,32 +459,12 @@ class GameScene extends Phaser.Scene {
 
             if(!enemy.active) {
                 this.currency += reward;
-                this.currencyText.setText(`Currency: ${this.currency}`);
+                this.currencyText.setText(`: ${this.currency}`);
                 
             }
         }
     }
-/** 
-    startDrag(pointer,targets){
-        this.input.off('pointerdown',this.startDrag,this)
-        // eslint-disable-next-line prefer-destructuring
-        this.dragObj = targets[0]
-        this.input.on('pointermove',this.doDrag,this)
-        this.input.on('pointerdown',this.stopDrag,this)
-    }
-    
-    doDrag(pointer){
-        // eslint-disable-next-line no-unused-expressions
-        this.dragObj.x = pointer.x;
-        this.dragObj.y = pointer.y;
-    }
 
-    stopDrag(){
-        this.input.on('pointerdown',this.startDrag,this)
-        this.input.off('pointermove',this.doDrag,this)
-        this.input.off('pointerup',this.stopDrag,this)
-    }
-    */
 
     buttonManager(){
         // Pause button

@@ -1,15 +1,15 @@
 import Phaser from "phaser";
 
-class slowingTower extends Phaser.GameObjects.Sprite{
-    constructor(scene,x,y,map,price){
+class AOETower extends Phaser.GameObjects.Sprite{
+    constructor(scene,x,y,map){
         super(scene,x,y,map)
         this.nextTic = 0
         this.map=map
-        this.price = 250
+
 
         this.scene.add.existing(this)
         this.rangedGraphics = scene.add.graphics()
-        this.play("slowingTowerWeapon_anim")
+        this.play("AOETowerWeapon_anim")
         this.anims.stop()
     }
 
@@ -34,7 +34,7 @@ class slowingTower extends Phaser.GameObjects.Sprite{
         if (time > this.nextTic) {
             const enemy = this.scene.getEnemy(this.x,this.y, 200)
             if(enemy){
-                this.play("slowingTowerWeapon_anim")
+                this.play("AOETowerWeapon_anim")
             } else {
                 this.anims.stop()
             }
@@ -63,4 +63,4 @@ class slowingTower extends Phaser.GameObjects.Sprite{
     }
 }
 
-export default slowingTower
+export default AOETower
