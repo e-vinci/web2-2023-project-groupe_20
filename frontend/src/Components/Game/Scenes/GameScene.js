@@ -39,8 +39,13 @@ class GameScene extends Phaser.Scene {
         this.gameSpeed = 1;
         this.uiContainer = this.add.container(this.game.config.width / 2, 20);
 
+        this.buttonSFX = this.sound.add("buttonSFX",{
+            loop: false,
+            volume: 0.2
+        })
+
         // Creating backTrackSound
-        this.backTrackSound = this.sound.add("backTrackSound",{
+        this.backTrackSound = this.sound.add("bgm",{
             loop:true,
             volume:0.05
         })
@@ -390,18 +395,20 @@ class GameScene extends Phaser.Scene {
         });
         
         this.pauseButton.on("pointerup", () => {
+            this.buttonSFX.play();
+            this.backTrackSound.stop();
             this.pauseButton.play("pauseButton_anim");
             this.scene.pause();
             this.scene.launch('pauseGame');
         });
-
+/*
         // Fast forward button
         this.fastForwardButton = this.add.sprite(1170, 50, "times2Button").setScale(3);
         this.fastForwardButton.setInteractive();
         this.fastForwardButton.on("pointerover", () => {
             this.fastForwardButton.setTint(0xe0e0e0);
         });
-        
+      
         this.fastForwardButton.on("pointerout", () => {
             this.fastForwardButton.setTint(0xFFFFFF);
         });
@@ -409,9 +416,9 @@ class GameScene extends Phaser.Scene {
             this.fastForwardButton.play("times2Button_anim");
             this.toggleFastForward();
         });
+*/  
 
-
-        this.soundButton = this.add.sprite(1110,51,"menuSoundButton").setFrame(2);
+        this.soundButton = this.add.sprite(1170,50,"musicToMuteButton").setFrame(0);
         this.soundButton.setScale(3);
         this.soundButton.setInteractive();
         this.soundButton.on("pointerover", () => {
@@ -423,6 +430,7 @@ class GameScene extends Phaser.Scene {
         });
 
         this.soundButton.on("pointerdown", () => {
+            this.buttonSFX.play();
             this.soundButton.setFrame(1);
         });
         
@@ -431,6 +439,7 @@ class GameScene extends Phaser.Scene {
             if(this.backTrackSound.isPlaying){
                 this.backTrackSound.stop()
             }else{
+                this.soundButton.setTexture("mutedToMusicButton").setFrame(2);
                 this.backTrackSound.play()
             }
             

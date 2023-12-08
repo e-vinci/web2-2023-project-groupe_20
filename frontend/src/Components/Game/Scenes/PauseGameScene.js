@@ -6,6 +6,14 @@ class PauseGameScene extends Phaser.Scene{
     }
 
     create(){
+        this.buttonSFX = this.sound.add("buttonSFX",{
+            loop: false,
+            volume: 0.2
+        })
+        this.backTrackSound = this.sound.add("bgm",{
+            loop:true,
+            volume:0.05
+        })
         this.pauseButton = this.add.sprite(1230,50,"pauseButton");
         this.pauseButton.setScale(3);
         this.pauseButton.play("pauseButton_anim");
@@ -19,10 +27,12 @@ class PauseGameScene extends Phaser.Scene{
         });
         
         this.pauseButton.on("pointerup", () => {
+            this.buttonSFX.play();
             this.pauseButton.play("pauseButton_anim");
             this.scene.resume('playGame');
             this.scene.stop();
         });
+        this.backTrackSound.isPlaying = !this.backTrackSound.isPlaying
     }
 
 }

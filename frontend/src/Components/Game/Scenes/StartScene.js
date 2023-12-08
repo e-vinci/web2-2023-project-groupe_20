@@ -2,11 +2,15 @@ import Phaser from "phaser";
 
 class StartScene extends Phaser.Scene {
     constructor() {
-        super("bootgame")
+        super("title")
     }
 
 
     create(){
+        this.buttonSFX = this.sound.add("buttonSFX",{
+            loop: false,
+            volume: 0.2
+        })
 
         // Load menu sound
         
@@ -40,7 +44,33 @@ class StartScene extends Phaser.Scene {
             this.menuMusic.destroy()
         });
 
-        this.soundButton = this.add.sprite(1230,50,"menuSoundButton").setFrame(2);
+  /*      this.musicButton = this.add.sprite(1230,50, "musicToMuteButton");
+        this.musicButton.setScale(3);
+        this.musicButton.setInteractive();
+        this.musicButton.on("pointerover", () => {
+            this.musicButton.setTint(0xe0e0e0);
+        });
+        
+        this.musicButton.on("pointerout", () => {
+            this.musicButton.setTint(0xFFFFFF);
+        });
+        this.musicButton.on("pointerup", () => {
+            if(this.menuMusic.isPlaying){
+                this.musicButton.play("musicToMute_anim");
+                this.menuMusic.pause();
+                
+            }
+            else{
+                this.musicButton.play("mutedToMusic_anim");
+                this.menuMusic.play();
+                
+            }
+            
+        }); */
+
+        
+
+        this.soundButton = this.add.sprite(1230,50,"musicToMuteButton").setFrame(0);
         this.soundButton.setScale(3);
         this.soundButton.setInteractive();
         this.soundButton.on("pointerover", () => {
@@ -52,6 +82,7 @@ class StartScene extends Phaser.Scene {
         });
 
         this.soundButton.on("pointerdown", () => {
+            this.buttonSFX.play();
             this.soundButton.setFrame(1);
         });
         
@@ -60,10 +91,11 @@ class StartScene extends Phaser.Scene {
             if(this.menuMusic.isPlaying){
                 this.menuMusic.stop()
             }else{
+                this.soundButton.setTexture("mutedToMusicButton").setFrame(2);
                 this.menuMusic.play()
             }
             
-        })
+        }) 
         this.menuMusic.isPlaying = !this.menuMusic.isPlaying
 
     }
