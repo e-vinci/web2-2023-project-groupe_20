@@ -34,7 +34,7 @@ class GameScene extends Phaser.Scene {
         this.add.text(20,20, "GameScene");
         this.map = placementTilesData;
         this.props();
-        this.playerLives = 10;
+        this.playerLives = 100;
         this.nextWaveTime = 0;
         this.gameSpeed = 1;
         this.uiContainer = this.add.container(this.game.config.width / 2, 20);
@@ -99,7 +99,9 @@ class GameScene extends Phaser.Scene {
         this.shopCrossBow = this.add.image(900,810,"crossbow").setTint(0x666666)
         this.crossBowPrice = this.add.text(883,840,'125')
         this.shopAOETower = this.add.image(1000,810,"slowingTower").setTint(0x666666)
+        this.shopAOETower.setVisible(false)
         this.slowingTowerPrice = this.add.text(985,840,'250')
+        this.slowingTowerPrice.setVisible(false)
 
         // this.soldingButton = this.add.text(1200,810,"SOLD").setInteractive()
         
