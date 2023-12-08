@@ -34,7 +34,7 @@ class GameScene extends Phaser.Scene {
         this.add.text(20,20, "GameScene");
         this.map = placementTilesData;
         this.props();
-        this.playerLives = 100;
+        this.playerLives = 10;
         this.nextWaveTime = 0;
         this.gameSpeed = 1;
         this.uiContainer = this.add.container(this.game.config.width / 2, 20);

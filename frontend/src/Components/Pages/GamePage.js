@@ -9,6 +9,13 @@ let game;
 
 const GamePage = () => {
 
+  const phaserGame = `
+  <div id="gameDiv" class="d-flex justify-content-center">
+  </div>`;
+
+  const main = document.querySelector('main');
+  main.innerHTML = phaserGame;
+
   const config = {
     scale: {
       width: 1280,
@@ -25,7 +32,11 @@ const GamePage = () => {
       arcade: {
         debug: false
       }
-    }
+    },
+    parent: 'gameDiv',
+    dom: {
+        createContainer: true
+    },
   }
 
   if (game) game.destroy(true);
