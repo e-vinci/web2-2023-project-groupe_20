@@ -1,13 +1,13 @@
-import Phaser from "phaser";
+import Phaser, { GameObjects } from "phaser";
 import Goblin from "../Enemies/Goblin";
 import Wolf from "../Enemies/Wolf";
 import HobGoblin from "../Enemies/HobGoblin";
 import Projectile from "../Projectile";
 import Tower from "../Towers/Tower";
-import slowingTower from "../Towers/slowingTower";
+import AOETower from "../Towers/AOETower";
 
 const placementTilesData = [0, 0, 0, 342, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 166, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 342, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 342, 0, 0, 0, 0, 342, 0, 0, 0, 0, 0, 0, 0, 342, 0, 0, 0, 0, 0,
@@ -25,7 +25,7 @@ class GameScene extends Phaser.Scene {
         super("playGame");
         this.wave = 0;
         this.waveText = null;
-        this.currency = 250;
+        this.currency = 100000;
     }
     
     create(){
@@ -38,6 +38,8 @@ class GameScene extends Phaser.Scene {
         this.nextWaveTime = 0;
         this.gameSpeed = 1;
         this.uiContainer = this.add.container(this.game.config.width / 2, 20);
+        this.sellMode = false;
+
 
         this.buttonSFX = this.sound.add("buttonSFX",{
             loop: false,
@@ -51,31 +53,67 @@ class GameScene extends Phaser.Scene {
         })
         this.backTrackSound.play()
 
+        this.heart = this.add.image(400,830,"Heart")
+        this.playerLivesText = this.add.text(-200,788, `: ${this.playerLives} / 10`, {
+            fontFamily: 'Arial',
+            fontSize: '24px',
+            color: '#ffffff',
+            fontStyle: 'bold'
+        });
+        this.waveText = this.add.text(-50, 788, `Wave: ${this.wave}`, {
+            fontFamily: 'Arial',
+            fontSize: '24px',
+            color: '#ffffff',
+            fontStyle: 'bold'
+        });
+
+        this.gold = this.add.image(80,820,"goldCoin")
+        this.currencyText = this.add.text(-530, 788, `: ${this.currency}`,{
+            fontFamily: 'Arial',
+            fontSize: '24px',
+            color: '#ffffff',
+            fontStyle: 'bold'
+        });
+
+        this.shop = this.add.text(150 ,788,"SHOP",{
+            fontFamily: 'Arial',
+            fontSize:'24px',
+            color: '#ffffff',
+            fontStyle:'bold'
+        })
+
+        this.shopMode = this.add.text(1100, 810 ,"SELL Mode",{
+            fontSize:'24px',
+            fontStyle:'bold'
+        }).setInteractive().on('pointerup',()=>{
+            this.sellMode = !this.sellMode
+        }).on('pointerover',()=>{
+            this.shopMode.setFontStyle('')
+        }).on('pointerout',()=>{
+            this.shopMode.setFontStyle('bold')
+        })
         
-        this.playerLivesText = this.add.text(-500, 20, `Lives: ${this.playerLives} / 10`, {
-            fontFamily: 'Arial',
-            fontSize: '24px',
-            color: '#ffffff',
-            fontStyle: 'bold'
-        });
-        this.waveText = this.add.text(0, 20, `Wave: ${this.wave}`, {
-            fontFamily: 'Arial',
-            fontSize: '24px',
-            color: '#ffffff',
-            fontStyle: 'bold'
-        });
-        this.currencyText = this.add.text(100,20, `Currency: ${this.currency}`,{
-            fontSize: '20px',
-            fill: '#ffffff'
-        });
+        
         this.uiContainer.add(this.playerLivesText);
         this.uiContainer.add(this.waveText);
         this.uiContainer.add(this.currencyText);
+        this.uiContainer.add(this.shop)
         this.add.existing(this.uiContainer);
+        
+        
+        this.shopCrossBow = this.add.image(900,810,"crossbow").setTint(0x666666)
+        this.crossBowPrice = this.add.text(883,840,'125')
+        this.shopAOETower = this.add.image(1000,810,"slowingTower").setTint(0x666666)
+        this.shopAOETower.setVisible(false)
+        this.slowingTowerPrice = this.add.text(985,840,'250')
+        this.slowingTowerPrice.setVisible(false)
 
+        // this.soldingButton = this.add.text(1200,810,"SOLD").setInteractive()
+        
 
 
         // Path number 1 white
+
         const path1 = new Phaser.Curves.Path(147.166666666667,750)
         path1.lineTo(161.833333333333, 542.666666666667);
         path1.lineTo(545.166666666667, 545.333333333333);
@@ -120,7 +158,9 @@ class GameScene extends Phaser.Scene {
         this.totalEnemies = 5;
         this.nextEnemy = 0;
 
-        this.input.on('pointerdown', pointer => this.placeTowers(pointer));
+        
+
+
         this.showTowerRange();
         this.showTowerPlacement();
 
@@ -152,10 +192,22 @@ class GameScene extends Phaser.Scene {
             }
         }
 
+        if(this.sellMode === true){
+            this.input.off('pointerdown').on('pointerdown', pointer => this.sellTower(pointer));
+        }else if (this.sellMode === false){
+            this.input.off('pointerdown').on('pointerdown', pointer => this.placeTowers(pointer, GameObjects));
+        }
+
         this.checkEnemiesReachedEnd();
 
         if(this.totalEnemies === 0 && this.enemiesGroup.countActive() === 0){
             this.startNextWave();
+        }
+
+        if(this.sellMode === true) 
+            this.shopMode.setTint(0x97FF00)
+        else{
+            this.shopMode.setTint(0xffffff)
         }
     }
 
@@ -182,27 +234,75 @@ class GameScene extends Phaser.Scene {
         return false;
     }
     
-
-    placeTowers(pointer) {
+    placeTowers(pointer, GameObject){
         const i = Math.floor(pointer.y / 64);
         const j = Math.floor(pointer.x / 64);
-        const towerCost = 125;
+    
+        if(this.canPlaceTower(i, j)){
+            this.currentPosition = {i, j};
+            this.setupShopTower(this.shopCrossBow, 125, 'Arrow');
+            this.setupShopTower(this.shopAOETower, 250, 'AOETower');
+        }
+    }
 
-       if (this.canPlaceTower(i,j) && this.currency >= towerCost){
-        this.currency -= towerCost;
-        this.currencyText.setText(`Currency: ${this.currency}`);
+    sellTower(pointer){
+        const i = Math.floor(pointer.y / 64)
+        const j = Math.floor(pointer.x / 64)
+        this.tower = this.getTowerAt(i,j)
 
-        const index = i * 20 + j;
+            if(this.tower){
+                const sellAmount = this.tower.cost;
+                this.currency += parseInt(sellAmount,10);
+                this.currencyText.setText(`: ${this.currency}`);
+
+                const index = i * 20 + j;
+                this.map[index] = 342;
+
+                if(this.currentPosition && this.currentPosition.i === i && this.currentPosition.j ===j)
+                    this.currentPosition = null;
+                
+                this.tower.showRange(false)
+                this.tower.setActive(false).setVisible(false).destroy();
+            }
+        }
+
+setupShopTower(shopTower, cost, towerType){
+
+    shopTower.setInteractive().setScale(1.3).setTint('0xffffff');
+    shopTower.on('pointerover', () => shopTower.setScale(1.5));
+    shopTower.on('pointerout', () => shopTower.setScale(1.3));
+
+    shopTower.on('pointerup', () => {
+        if(this.currency >= cost){
+            const existingTower = this.getTowerAt(this.currentPosition.i, this.currentPosition.j);
+            if (!existingTower) {
+                this.placeTower(this.currentPosition.i, this.currentPosition.j, towerType);
+            }
+        }
+        shopTower.setScale(1.3).setTint(0x666666);
+    });
+}
+
+    placeTower(i, j, towerType){
+        const cost = towerType === 'Arrow' ? 125 : 250;
+        this.currency -= cost;
+        this.currencyText.setText(`: ${this.currency}`);
+    
         let tower = this.towers.getFirstDead();
         if(!tower){
-            tower = new Tower(this, 0, 0, this.map);
+            if(towerType === 'Arrow'){
+                tower = new Tower(this, 0, 0, this.map);
+            } else if(towerType ==='AOETower'){
+                tower = new AOETower(this, 0, 0, this.map);
+            }   
             this.towers.add(tower);
         }
         tower.setActive(true);
         tower.setVisible(true);
-        tower.place(i,j);
-       }
+        tower.place(i, j);
     }
+
+
 
     showTowerRange() {
         this.input.on("pointermove", pointer => {
@@ -310,7 +410,7 @@ class GameScene extends Phaser.Scene {
             const enemy = enemiesTab[i];
             if (enemy.active && enemy.follower.t >= 1){
                 this.playerLives--;
-                this.playerLivesText.setText(`Lives: ${this.playerLives} / 10`);
+                this.playerLivesText.setText(`: ${this.playerLives} / 10`);
                 enemy.destroy();
                 enemy.healthBar.destroy();
             }
@@ -375,11 +475,12 @@ class GameScene extends Phaser.Scene {
 
             if(!enemy.active) {
                 this.currency += reward;
-                this.currencyText.setText(`Currency: ${this.currency}`);
+                this.currencyText.setText(`: ${this.currency}`);
                 
             }
         }
     }
+
 
     buttonManager(){
         // Pause button

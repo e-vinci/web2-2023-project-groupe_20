@@ -21,7 +21,7 @@ const GamePage = () => {
   const config = {
     scale: {
       width: 1280,
-      height: 768,
+      height: 868,
       autoCenter: Phaser.Scale.CENTER_BOTH,
       mode: Phaser.Scale.FIT,
       Audio:true

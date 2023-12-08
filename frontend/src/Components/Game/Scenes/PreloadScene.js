@@ -2,26 +2,32 @@ import Phaser from "phaser";
 
 import menuBG from "../../../assets/menuBG.png"
 import towerDefenseMap from "../../../assets/TowerDefenseMap.png"
+
 import goblinSprite from "../../../assets/spriteSheets/S_Goblin_walk.png"
 import wolfSprite from "../../../assets/spriteSheets/S_Wolf.png"
 import hobGoblinSprite from "../../../assets/spriteSheets/S_HobGoblin.png"
+
 import towerSprite from "../../../assets/spriteSheets/tower.png"
 import crossbowSprite from "../../../assets/spriteSheets/crossbow.png"
+import arrowPng from "../../../assets/arrow.png"
 import crossbowArrowSprite from "../../../assets/spriteSheets/crossbowArrow.png"
 import arrowImpactSprite from "../../../assets/spriteSheets/arrowImpact.png"
+import AOETower from "../../../assets/spriteSheets/slowingTower/AOETowerWeapon.png"
+import AOETowerProjectile from "../../../assets/spriteSheets/slowingTower/AOETowerProjectile.png"
+import AOETowerProjectileImpact from "../../../assets/spriteSheets/slowingTower/AOETowerProjectileImpact.png"
+
 import pauseButtonSprite from "../../../assets/spriteSheets/UI/UIPauseButton.png"
 import times2ButtonSprite from "../../../assets/spriteSheets/UI/UI2timeButton.png"
 import musicToMuteButtonSprite from "../../../assets/spriteSheets/UI/UIMusicButtonToMutted.png"
 import mutedMusicToMusicButton from "../../../assets/spriteSheets/UI/UIMutedMusicButtonToMusic.png"
+import soundButtonSprite from "../../../assets/spriteSheets/UI/UISoundButton.png"
 import campFireSprite from "../../../assets/spriteSheets/campFire.png"
 import baseFlagSprite from "../../../assets/spriteSheets/baseFlag.png"
 import starPng from "../../../assets/star.png"
-import arrowPng from "../../../assets/arrow.png"
 import campPng from "../../../assets/camp.png"
-import slowingTower from "../../../assets/spriteSheets/slowingTower/slowingTowerWeapon.png"
-import slowingTowerProjectile from "../../../assets/spriteSheets/slowingTower/slowingTowerProjectile.png"
-import slowingTowerProjectileImpact from "../../../assets/spriteSheets/slowingTower/slowingTowerProjectileImpact.png"
-import soundButtonSprite from "../../../assets/spriteSheets/UI/UISoundButton.png"
+import goldCoin from "../../../assets/goldCoin.png"
+import Heart from '../../../assets/Heart.png';
+
 import mainMenuMusic from "../../../assets/audio/mainMusic.mp3"
 import backTrackSound from "../../../assets/audio/backTrackSound.mp3"
 import arrowSound from "../../../assets/audio/arrowSound.mp3"
@@ -43,40 +49,14 @@ class PreloadScene extends Phaser.Scene {
             width : 1280,
             height:768
         }
-        
-        
-/*
-       // Dimensions de la barre de chargement
-        const progressBarWidth = 400;
-        const progressBarHeight = 50;
-
-        // Position centrale
-        const centerX = this.cameras.main.width / 2 - progressBarWidth / 2;
-        const centerY = this.cameras.main.height / 2 - progressBarHeight / 2;
-
-        // Créer la boîte de la barre de chargement
-        this.progressBox = this.add.graphics();
-        this.progressBox.fillStyle(0x222222, 0.8);
-        this.progressBox.fillRect(centerX, centerY, progressBarWidth, progressBarHeight);
-
-        // Créer la barre de chargement
-        this.progressBar = this.add.graphics();
-
-        // Charger les ressources ici
-        // this.load.image('nomImage', 'chemin/vers/limage.png');
-
-        // Mettre à jour la barre de chargement
-        this.load.on('progress', (value) => {
-            this.progressBar.clear();
-            this.progressBar.fillStyle(0xffffff, 1);
-            this.progressBar.fillRect(centerX, centerY, progressBarWidth * value, progressBarHeight);
-        }); */
 
         this.load.image("base", campPng);
         this.load.image("gameMenu",menuBG);
         this.load.image("gameMap", towerDefenseMap);
         this.load.image("arrow", arrowPng);
         this.load.image("star", starPng);
+        this.load.image("goldCoin",goldCoin);
+        this.load.image("Heart",Heart);
 
         this.load.spritesheet("goblin", goblinSprite,{
             frameWidth: 48,
@@ -135,15 +115,15 @@ class PreloadScene extends Phaser.Scene {
             frameHeight: 32
         })
         
-        this.load.spritesheet("slowingTower",slowingTower,{
+        this.load.spritesheet("AOETower",AOETower,{
             frameWidth:96,
             frameHeight:96
         })
-        this.load.spritesheet("slowingTowerProjectile", slowingTowerProjectile, {
+        this.load.spritesheet("AOETowerProjectile", AOETowerProjectile, {
             frameWidth: 16,
             frameHeight: 16
         });
-        this.load.spritesheet("slowingTowerProjectileImpact", slowingTowerProjectileImpact, {
+        this.load.spritesheet("AOETowerProjectileImpact", AOETowerProjectileImpact, {
             frameWidth: 64,
             frameHeight: 64
         }); 
@@ -186,8 +166,8 @@ class PreloadScene extends Phaser.Scene {
         });
 
         this.anims.create({
-            key:"slowingTower_anim",
-            frames: this.anims.generateFrameNames("slowingTower"),
+            key:"AOETower_anim",
+            frames: this.anims.generateFrameNames("AOETower"),
             frameRate:25,
             repeat:-1
         })
@@ -200,8 +180,8 @@ class PreloadScene extends Phaser.Scene {
         });
 
         this.anims.create({
-            key: "slowingTowerWeapon_anim",
-            frames : this.anims.generateFrameNames("slowingTowerWeapon"),
+            key: "AOETowerWeapon_anim",
+            frames : this.anims.generateFrameNames("AOETowerWeapon"),
             framesRate:25,
             repeat:-1
         })
@@ -217,6 +197,12 @@ class PreloadScene extends Phaser.Scene {
             key: "arrowImpact_anim",
             frames: this.anims.generateFrameNames("arrowImpact"),
             frameRate: 10,
+            repeat: -1
+        });
+        this.anims.create({
+            key: "AOETowerWeaponImpact_anim",
+            frames: this.anims.generateFrameNames("AOETowerWeaponImpact"),
+            frameRate: 25,
             repeat: -1
         });
         this.anims.create({
@@ -264,12 +250,7 @@ class PreloadScene extends Phaser.Scene {
             repeat: -1
         });
 
-        this.anims.create({
-            key: "slowingTowerWeaponImpact_anim",
-            frames: this.anims.generateFrameNames("slowingTowerWeaponImpact"),
-            frameRate: 25,
-            repeat: -1
-        });
+
 
          // Create continue Button
     }
