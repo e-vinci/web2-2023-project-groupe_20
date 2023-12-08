@@ -5,7 +5,7 @@ class AOETower extends Phaser.GameObjects.Sprite{
         super(scene,x,y,map)
         this.nextTic = 0
         this.map=map
-
+        this.cost = 250
 
         this.scene.add.existing(this)
         this.rangedGraphics = scene.add.graphics()

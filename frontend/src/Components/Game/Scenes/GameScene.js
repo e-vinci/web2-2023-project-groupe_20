@@ -25,7 +25,7 @@ class GameScene extends Phaser.Scene {
         super("playGame");
         this.wave = 0;
         this.waveText = null;
-        this.currency = 10000;
+        this.currency = 100000;
     }
     
     create(){
@@ -38,6 +38,7 @@ class GameScene extends Phaser.Scene {
         this.nextWaveTime = 0;
         this.gameSpeed = 1;
         this.uiContainer = this.add.container(this.game.config.width / 2, 20);
+        this.sellMode = false;
 
 
         // Creating backTrackSound
@@ -68,18 +69,39 @@ class GameScene extends Phaser.Scene {
             color: '#ffffff',
             fontStyle: 'bold'
         });
+
+        this.shop = this.add.text(150 ,788,"SHOP",{
+            fontFamily: 'Arial',
+            fontSize:'24px',
+            color: '#ffffff',
+            fontStyle:'bold'
+        })
+
+        this.shopMode = this.add.text(1100, 810 ,"SELL Mode",{
+            fontSize:'24px',
+            fontStyle:'bold'
+        }).setInteractive().on('pointerup',()=>{
+            this.sellMode = !this.sellMode
+        }).on('pointerover',()=>{
+            this.shopMode.setFontStyle('')
+        }).on('pointerout',()=>{
+            this.shopMode.setFontStyle('bold')
+        })
+        
         
         this.uiContainer.add(this.playerLivesText);
         this.uiContainer.add(this.waveText);
         this.uiContainer.add(this.currencyText);
+        this.uiContainer.add(this.shop)
         this.add.existing(this.uiContainer);
-
-
+        
+        
         this.shopCrossBow = this.add.image(900,810,"crossbow").setTint(0x666666)
-        this.crossBowPrice = this.add.text(883,840,'125|)')
+        this.crossBowPrice = this.add.text(883,840,'125')
         this.shopAOETower = this.add.image(1000,810,"slowingTower").setTint(0x666666)
         this.slowingTowerPrice = this.add.text(985,840,'250')
-        this.soldingButton = this.add.text(1200,810,"SOLD").setInteractive()
+
+        // this.soldingButton = this.add.text(1200,810,"SOLD").setInteractive()
         
 
 
@@ -129,7 +151,9 @@ class GameScene extends Phaser.Scene {
         this.totalEnemies = 5;
         this.nextEnemy = 0;
 
-        this.input.on('pointerdown', pointer => this.placeTowers(pointer,GameObjects));
+        
+
+
         this.showTowerRange();
         this.showTowerPlacement();
 
@@ -161,10 +185,22 @@ class GameScene extends Phaser.Scene {
             }
         }
 
+        if(this.sellMode === true){
+            this.input.off('pointerdown').on('pointerdown', pointer => this.sellTower(pointer));
+        }else if (this.sellMode === false){
+            this.input.off('pointerdown').on('pointerdown', pointer => this.placeTowers(pointer, GameObjects));
+        }
+
         this.checkEnemiesReachedEnd();
 
         if(this.totalEnemies === 0 && this.enemiesGroup.countActive() === 0){
             this.startNextWave();
+        }
+
+        if(this.sellMode === true) 
+            this.shopMode.setTint(0x97FF00)
+        else{
+            this.shopMode.setTint(0xffffff)
         }
     }
 
@@ -191,102 +227,75 @@ class GameScene extends Phaser.Scene {
         return false;
     }
     
-    placeTowers(pointer,GameObject){
-        const i = Math.floor(pointer.y / 64)
-        const j = Math.floor(pointer.x /64)
-
-        if(this.canPlaceTower(i,j)){
-            this.currentPosition = {i,j}
-            this.shopCrossBow.setInteractive().setScale(1.3).setTint('0xffffff')
-            this.shopAOETower.setInteractive().setScale(1.3).setTint('0xffffff')
-            
-            this.shopCrossBow.on('pointerover',() => {
-                this.shopCrossBow.setScale(1.5)
-            })
-
-            this.shopCrossBow.on('pointerout',() => {
-                this.shopCrossBow.setScale(1.3)
-            })
-
-            this.shopCrossBow.on('pointerup',()=>{
-                if(this.currency >= 125){
-                    const existingTower = this.getTowerAt(this.currentPosition.i,this.currentPosition.j);
-                    if (!existingTower) {
-                        this.placeArrowTower(this.currentPosition.i,this.currentPosition.j) 
-                    }            
-                }
-                this.shopCrossBow.setScale(1.3).setTint(0x666666)
-            })
-
-            this.shopAOETower.on('pointerover',() => {
-                this.shopAOETower.setScale(1.5)
-            })
-
-            this.shopAOETower.on('pointerout',() => {
-                this.shopAOETower.setScale(1.3)
-            })
-
-            this.shopAOETower.on('pointerup',()=>{
-                if(this.currency >= 250 ){
-                    const existingTower = this.getTowerAt(i, j);
-                    if (!existingTower) {
-                        this.placeAOETower(this.currentPosition.i,this.currentPosition.j)
-                    }
-                }
-            })
-        }   
-        
-    }
-
-    placeArrowTower(i,j){
-        this.currency -= 125;
-        this.currencyText.setText(`: ${this.currency}`);
-
-        let tower = this.towers.getFirstDead();
-        if(!tower){
-            tower = new Tower(this, 0, 0, this.map);
-            this.towers.add(tower);
-        }
-        tower.setActive(true);
-        tower.setVisible(true);
-        tower.place(this.currentPosition.i,this.currentPosition.j);
-    }
-
-    placeAOETower(i,j){
-        this.currency -= 250
-        this.currencyText.setText(`: ${this.currency}`);
-        let tower = this.towers.getFirstDead();
-        if(!tower){
-            tower = new AOETower(this, 0, 0, this.map);
-            this.towers.add(tower);
-        }
-        tower.setActive(true);
-        tower.setVisible(true);
-        tower.place(i,j);
-
-    }
-/*  
-    placeTowers(pointer) {
+    placeTowers(pointer, GameObject){
         const i = Math.floor(pointer.y / 64);
         const j = Math.floor(pointer.x / 64);
-        const towerCost = 125;
+    
+        if(this.canPlaceTower(i, j)){
+            this.currentPosition = {i, j};
+            this.setupShopTower(this.shopCrossBow, 125, 'Arrow');
+            this.setupShopTower(this.shopAOETower, 250, 'AOETower');
+        }
+    }
 
-       if (this.canPlaceTower(i,j) && this.currency >= towerCost){
-        this.currency -= towerCost;
+    sellTower(pointer){
+        const i = Math.floor(pointer.y / 64)
+        const j = Math.floor(pointer.x / 64)
+        this.tower = this.getTowerAt(i,j)
+
+            if(this.tower){
+                const sellAmount = this.tower.cost;
+                this.currency += parseInt(sellAmount,10);
+                this.currencyText.setText(`: ${this.currency}`);
+
+                const index = i * 20 + j;
+                this.map[index] = 342;
+
+                if(this.currentPosition && this.currentPosition.i === i && this.currentPosition.j ===j)
+                    this.currentPosition = null;
+                
+                this.tower.showRange(false)
+                this.tower.setActive(false).setVisible(false).destroy();
+            }
+        }
+
+setupShopTower(shopTower, cost, towerType){
+
+    shopTower.setInteractive().setScale(1.3).setTint('0xffffff');
+    shopTower.on('pointerover', () => shopTower.setScale(1.5));
+    shopTower.on('pointerout', () => shopTower.setScale(1.3));
+
+    shopTower.on('pointerup', () => {
+        if(this.currency >= cost){
+            const existingTower = this.getTowerAt(this.currentPosition.i, this.currentPosition.j);
+            if (!existingTower) {
+                this.placeTower(this.currentPosition.i, this.currentPosition.j, towerType);
+            }
+        }
+        shopTower.setScale(1.3).setTint(0x666666);
+    });
+}
+
+    placeTower(i, j, towerType){
+        const cost = towerType === 'Arrow' ? 125 : 250;
+        this.currency -= cost;
         this.currencyText.setText(`: ${this.currency}`);
-
-        const index = i * 20 + j;
+    
         let tower = this.towers.getFirstDead();
         if(!tower){
-            tower = new Tower(this, 0, 0, this.map);
+            if(towerType === 'Arrow'){
+                tower = new Tower(this, 0, 0, this.map);
+            } else if(towerType ==='AOETower'){
+                tower = new AOETower(this, 0, 0, this.map);
+            }   
             this.towers.add(tower);
         }
         tower.setActive(true);
         tower.setVisible(true);
-        tower.place(i,j);
-       }
-    } 
-*/
+        tower.place(i, j);
+    }
+
+
 
     showTowerRange() {
         this.input.on("pointermove", pointer => {
