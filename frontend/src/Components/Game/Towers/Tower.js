@@ -1,10 +1,14 @@
 import Phaser from "phaser";
 
 class Tower extends Phaser.GameObjects.Sprite{
-    constructor(scene, x, y, map) {
+    constructor(scene, x, y, map,cost,type) {
         super(scene, x, y, "crossbow");
+        
         this.nextTic = 0;
         this.map = map;
+        
+        this.cost = '125'
+        this.type = 'Arrow'
 
         this.scene.add.existing(this);
         this.rangeGraphics = scene.add.graphics();
