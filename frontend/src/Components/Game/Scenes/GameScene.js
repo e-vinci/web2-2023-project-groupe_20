@@ -31,10 +31,9 @@ class GameScene extends Phaser.Scene {
     create(){
         this.background = this.add.image(0,0, "gameMap");
         this.background.setOrigin(0,0);
-        this.add.text(20,20, "GameScene");
         this.map = placementTilesData;
         this.props();
-        this.playerLives = 10;
+        this.playerLives = 100000;
         this.nextWaveTime = 0;
         this.gameSpeed = 1;
         this.uiContainer = this.add.container(this.game.config.width / 2, 20);
@@ -518,7 +517,6 @@ setupShopTower(shopTower, cost, towerType){
             this.toggleFastForward();
         });
 */  
-
         this.soundButton = this.add.sprite(1170,50,"musicToMuteButton").setFrame(0);
         this.soundButton.setScale(3);
         this.soundButton.setInteractive();
@@ -546,6 +544,25 @@ setupShopTower(shopTower, cost, towerType){
             
         })
         this.backTrackSound.isPlaying = !this.backTrackSound.isPlaying
+
+        this.tutoButton = this.add.sprite(1110,50,"tutoButton");
+        this.tutoButton.setScale(3);
+        this.tutoButton.setInteractive();
+        this.tutoButton.on("pointerover", () => {
+            this.tutoButton.setTint(0xe0e0e0);
+        });
+
+        this.tutoButton.on("pointerout", () => {
+            this.tutoButton.setTint(0xFFFFFF);
+        });
+
+        this.tutoButton.on("pointerup", () => {
+            this.buttonSFX.play();
+            this.backTrackSound.stop();
+            this.tutoButton.play("tutoButton_anim");
+            this.scene.pause();
+            this.scene.launch('tutoGame');
+        });
     }
 
     toggleFastForward(){

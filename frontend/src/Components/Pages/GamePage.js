@@ -5,6 +5,7 @@ import StartScene from '../Game/Scenes/StartScene';
 import GameScene from '../Game/Scenes/GameScene';
 import GameOverScene from '../Game/Scenes/GameOverScene';
 import PauseGameScene from '../Game/Scenes/PauseGameScene';
+import TutorialGameScene from '../Game/Scenes/TutorialGameScene';
 
 
 let game;
@@ -27,7 +28,7 @@ const GamePage = () => {
       Audio:true
     },
   
-    scene: [BootScene,PreloadScene,StartScene, GameScene, GameOverScene,PauseGameScene],
+    scene: [BootScene,PreloadScene,StartScene, GameScene, GameOverScene,PauseGameScene, TutorialGameScene],
     pixelArt: true,
     physics: {
       default: "arcade",
