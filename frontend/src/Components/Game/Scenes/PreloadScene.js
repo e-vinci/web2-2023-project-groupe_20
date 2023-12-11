@@ -2,6 +2,7 @@ import Phaser from "phaser";
 
 import menuBG from "../../../assets/menuBG.png"
 import towerDefenseMap from "../../../assets/TowerDefenseMap.png"
+import tutoPagePng from "../../../assets/tutoPage.png"
 
 import goblinSprite from "../../../assets/spriteSheets/S_Goblin_walk.png"
 import wolfSprite from "../../../assets/spriteSheets/S_Wolf.png"
@@ -21,6 +22,7 @@ import times2ButtonSprite from "../../../assets/spriteSheets/UI/UI2timeButton.pn
 import musicToMuteButtonSprite from "../../../assets/spriteSheets/UI/UIMusicButtonToMutted.png"
 import mutedMusicToMusicButton from "../../../assets/spriteSheets/UI/UIMutedMusicButtonToMusic.png"
 import soundButtonSprite from "../../../assets/spriteSheets/UI/UISoundButton.png"
+import tutoButtonSprite from "../../../assets/spriteSheets/UI/UITutoButton.png"
 import campFireSprite from "../../../assets/spriteSheets/campFire.png"
 import baseFlagSprite from "../../../assets/spriteSheets/baseFlag.png"
 import starPng from "../../../assets/star.png"
@@ -57,6 +59,7 @@ class PreloadScene extends Phaser.Scene {
         this.load.image("star", starPng);
         this.load.image("goldCoin",goldCoin);
         this.load.image("Heart",Heart);
+        this.load.image("tutoPage", tutoPagePng);
 
         this.load.spritesheet("goblin", goblinSprite,{
             frameWidth: 48,
@@ -105,6 +108,10 @@ class PreloadScene extends Phaser.Scene {
         this.load.spritesheet("menuSoundButton",soundButtonSprite,{
             frameWidth:16,
             frameHeight:17
+        })
+        this.load.spritesheet("tutoButton", tutoButtonSprite, {
+            frameWidth: 16,
+            frameHeight: 16
         })
         this.load.spritesheet("baseFlag", baseFlagSprite, {
             frameWidth: 32,
@@ -232,6 +239,13 @@ class PreloadScene extends Phaser.Scene {
         this.anims.create({
             key:"muteToMusic_anim",
             frame: this.anims.generateFrameNames("muteToMusicButton"),
+            frameRate:15,
+            repeat:0
+        })
+
+        this.anims.create({
+            key:"tutoButton_anim",
+            frames: this.anims.generateFrameNames("tutoButton"),
             frameRate:15,
             repeat:0
         })
