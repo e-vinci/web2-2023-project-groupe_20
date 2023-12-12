@@ -9,13 +9,13 @@ Content-Type: application/json
     "password":"admin"
 }
 
-### Login the default admin
+### Login an account
 POST {{baseUrl}}/auths/login
 Content-Type: application/json
 
 {
-    "username":"admin",
-    "password":"admin"
+    "username":"ZwinGo",
+    "password":"ZwinGo2023"
 }
 
 
