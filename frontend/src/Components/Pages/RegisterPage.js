@@ -1,3 +1,4 @@
+import { setAuthenticatedUser } from '../../utils/auths';
 import { clearPage } from '../../utils/render';
 import Navigate from '../Router/Navigate';
 

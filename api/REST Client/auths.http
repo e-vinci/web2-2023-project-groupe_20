@@ -24,8 +24,8 @@ POST {{baseUrl}}/auths/register
 Content-Type: application/json
 
 {
-    "username":"manager",
-    "password":"manager"
+    "username":"ZwinGo",
+    "password":"ZwinGo2023"
 }
 
 ### Login the manager user
