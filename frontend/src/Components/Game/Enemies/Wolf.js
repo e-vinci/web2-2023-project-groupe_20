@@ -1,7 +1,7 @@
 import Phaser from "phaser";
 
 class Wolf extends Phaser.GameObjects.Sprite{
-    constructor(scene, path) {
+    constructor(scene, path, wolfDeath = "wolfDeath") {
         super(scene, path.getStartPoint().x - 100, path.getStartPoint().y, 'wolf');
         scene.add.existing(this);
         this.play("wolf_anim");
@@ -9,6 +9,7 @@ class Wolf extends Phaser.GameObjects.Sprite{
         this.setScale(2);
         this.reward = 10;
         this.score = 10;
+        this.wolfDeath = wolfDeath;
 
         this.path = path;
         this.follower = {t: 0, vec: new Phaser.Math.Vector2()};
@@ -56,8 +57,14 @@ class Wolf extends Phaser.GameObjects.Sprite{
         this.drawnHealthBar();
 
         if(this.hp <= 0) {
-            this.destroy();
+            this.healthBar.destroy();
+            this.setTexture(this.wolfDeath);
+            this.play("wolfDeath_anim").once('animationcomplete', this.kill);
         }
+    }
+
+    kill(){
+        this.destroy();
     }
 
     drawnHealthBar(){
