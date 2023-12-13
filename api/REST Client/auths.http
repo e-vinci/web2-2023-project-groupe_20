@@ -19,7 +19,7 @@ Content-Type: application/json
 }
 
 
-### Create the manager user
+### Create a duplicate user
 POST {{baseUrl}}/auths/register
 Content-Type: application/json
 
@@ -28,11 +28,11 @@ Content-Type: application/json
     "password":"ZwinGo2023"
 }
 
-### Login the manager user
+### Login the user
 POST {{baseUrl}}/auths/login
 Content-Type: application/json
 
 {
-    "username":"manager",
-    "password":"manager"
+    "username":"ZwinGo",
+    "password":"ZwinGo2023"
 }

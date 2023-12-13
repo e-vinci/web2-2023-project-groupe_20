@@ -31,9 +31,4 @@ router.post('/login', async (req, res) => {
   return res.json(authenticatedUser);
 });
 
-/* Logout a user */
-/* router.post('/logout', async (req, res) => {
-
-}) */
-
 module.exports = router;
