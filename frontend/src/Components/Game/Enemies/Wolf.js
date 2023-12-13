@@ -8,6 +8,7 @@ class Wolf extends Phaser.GameObjects.Sprite{
         this.flipX= true;
         this.setScale(2);
         this.reward = 10;
+        this.score = 10;
 
         this.path = path;
         this.follower = {t: 0, vec: new Phaser.Math.Vector2()};
@@ -75,6 +76,10 @@ class Wolf extends Phaser.GameObjects.Sprite{
     
     getReward(){
         return this.reward;
+    }
+
+    getScore(){
+        return this.score;
     }
 
 }

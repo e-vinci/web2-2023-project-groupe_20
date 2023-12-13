@@ -27,8 +27,8 @@ import campFireSprite from "../../../assets/spriteSheets/campFire.png"
 import baseFlagSprite from "../../../assets/spriteSheets/baseFlag.png"
 import starPng from "../../../assets/star.png"
 import campPng from "../../../assets/camp.png"
-import goldCoin from "../../../assets/goldCoin.png"
-import Heart from '../../../assets/Heart.png';
+import coinSprite from "../../../assets/spriteSheets/coin.png"
+import heartSprite from "../../../assets/spriteSheets/heart.png"
 
 import mainMenuMusic from "../../../assets/audio/mainMusic.mp3"
 import backTrackSound from "../../../assets/audio/backTrackSound.mp3"
@@ -57,8 +57,6 @@ class PreloadScene extends Phaser.Scene {
         this.load.image("gameMap", towerDefenseMap);
         this.load.image("arrow", arrowPng);
         this.load.image("star", starPng);
-        this.load.image("goldCoin",goldCoin);
-        this.load.image("Heart",Heart);
         this.load.image("tutoPage", tutoPagePng);
 
         this.load.spritesheet("goblin", goblinSprite,{
@@ -134,6 +132,14 @@ class PreloadScene extends Phaser.Scene {
             frameWidth: 64,
             frameHeight: 64
         }); 
+        this.load.spritesheet("coin", coinSprite, {
+          frameWidth: 16,
+          frameHeight: 16  
+        })
+        this.load.spritesheet("heart", heartSprite, {
+            frameWidth: 16,
+            frameHeight: 16  
+          })
 
         this.load.audio("mainMenuMusic",[mainMenuMusic])
         this.load.audio("backTrackSound",[backTrackSound])
@@ -264,8 +270,20 @@ class PreloadScene extends Phaser.Scene {
             repeat: -1
         });
 
+        this.anims.create({
+            key: "coin_anim",
+            frames: this.anims.generateFrameNames("coin"),
+            frameRate: 15,
+            repeat: 0
+        });
 
-
+        this.anims.create({
+            key: "heart_anim",
+            frames: this.anims.generateFrameNames("heart"),
+            frameRate: 15,
+            repeat: 0
+        });
+        
          // Create continue Button
     }
 

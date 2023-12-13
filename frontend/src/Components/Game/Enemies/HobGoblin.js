@@ -8,6 +8,7 @@ class HobGoblin extends Phaser.GameObjects.Sprite{
         this.flipX= true;
         this.setScale(4);
         this.reward = 50;
+        this.score = 50;
 
         this.path = path;
         this.follower = {t: 0, vec: new Phaser.Math.Vector2()};
@@ -73,6 +74,10 @@ class HobGoblin extends Phaser.GameObjects.Sprite{
 
     getReward(){
         return this.reward;
+    }
+
+    getScore(){
+        return this.score;
     }
 }
 
