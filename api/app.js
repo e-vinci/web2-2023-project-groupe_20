@@ -8,7 +8,6 @@ const corsOptions = {
 };
 
 const usersRouter = require('./routes/users');
-const pizzaRouter = require('./routes/pizzas');
 const authsRouter = require('./routes/auths');
 
 const app = express();
@@ -19,7 +18,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use('/users', cors(corsOptions), usersRouter);
-app.use('/pizzas', pizzaRouter);
 app.use('/auths', cors(corsOptions), authsRouter);
 
 module.exports = app;
