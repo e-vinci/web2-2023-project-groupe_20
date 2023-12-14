@@ -29,7 +29,7 @@ class GameScene extends Phaser.Scene {
     create(){
         this.wave = 0;
         this.waveText = null;
-        this.currency = 100000;
+        this.currency = 250;
         this.score = 0;
         this.background = this.add.image(0,0, "gameMap");
         this.background.setOrigin(0,0);
