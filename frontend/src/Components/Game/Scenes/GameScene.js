@@ -478,7 +478,7 @@ class GameScene extends Phaser.Scene {
                 
             }
         }
-        console.log(this.getEnemy(projectile.x,projectile.y,111000))
+        console.log(this.getEnemy(projectile.x,projectile.y,1000))
     }
 
     damageAllEnemyInZone(enemy,projectile){
