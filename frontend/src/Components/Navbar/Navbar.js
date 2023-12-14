@@ -7,7 +7,6 @@ import logoImage from '../../img/logo.png';
 const Navbar = () => {
   renderNavbar();
 }
-
 function renderNavbar() {
   const authenticatedUser = getAuthenticatedUser();
 

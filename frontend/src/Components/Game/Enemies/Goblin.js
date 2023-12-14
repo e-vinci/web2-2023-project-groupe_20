@@ -8,6 +8,7 @@ class Goblin extends Phaser.GameObjects.Sprite{
         this.flipX= true;
         this.setScale(3);
         this.reward = 15;
+        this.score = 20;
 
 
         this.path = path;
@@ -76,6 +77,10 @@ class Goblin extends Phaser.GameObjects.Sprite{
 
     getReward(){
         return this.reward;
+    }
+
+    getScore() {
+        return this.score;
     }
 }
 
