@@ -5,7 +5,9 @@ import towerDefenseMap from "../../../assets/TowerDefenseMap.png"
 import tutoPagePng from "../../../assets/tutoPage.png"
 
 import goblinSprite from "../../../assets/spriteSheets/S_Goblin_walk.png"
+import goblinDeathSprite from "../../../assets/spriteSheets/S_GoblinDeath.png"
 import wolfSprite from "../../../assets/spriteSheets/S_Wolf.png"
+import wolfDeathSprite from "../../../assets/spriteSheets/S_WolfDeath.png"
 import hobGoblinSprite from "../../../assets/spriteSheets/S_HobGoblin.png"
 
 import towerSprite from "../../../assets/spriteSheets/tower.png"
@@ -63,7 +65,15 @@ class PreloadScene extends Phaser.Scene {
             frameWidth: 48,
             frameHeight: 48
         });
+        this.load.spritesheet("goblinDeath", goblinDeathSprite,{
+            frameWidth: 48,
+            frameHeight: 48
+        });
         this.load.spritesheet("wolf", wolfSprite,{
+            frameWidth: 48,
+            frameHeight: 48
+        });
+        this.load.spritesheet("wolfDeath", wolfDeathSprite,{
             frameWidth: 48,
             frameHeight: 48
         });
@@ -159,10 +169,23 @@ class PreloadScene extends Phaser.Scene {
         });
 
         this.anims.create({
+            key: "goblinDeath_anim",
+            frames: this.anims.generateFrameNames("goblinDeath"),
+            frameRate: 50,
+            repeat: 0
+        });
+
+        this.anims.create({
             key: "wolf_anim",
             frames: this.anims.generateFrameNames("wolf"),
             frameRate: 20,
             repeat: -1
+        });
+        this.anims.create({
+            key: "wolfDeath_anim",
+            frames: this.anims.generateFrameNames("wolfDeath"),
+            frameRate: 60,
+            repeat: 0
         });
         this.anims.create({
             key: "hobGoblin_anim",

@@ -483,7 +483,7 @@ setupShopTower(shopTower, cost, towerType){
 
             enemy.recieveDamage(this.damage);
 
-            if(!enemy.active) {
+            if(!enemy.isAlive()) {
                 this.score += score;
                 const scoreFormated = this.zeroPad(6);
                 this.scoreText.setText(`Score: ${scoreFormated}`);

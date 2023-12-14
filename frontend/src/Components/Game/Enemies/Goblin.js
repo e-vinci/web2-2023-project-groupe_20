@@ -1,7 +1,7 @@
 import Phaser from "phaser";
 
 class Goblin extends Phaser.GameObjects.Sprite{
-    constructor(scene, path) {
+    constructor(scene, path, goblinDeath = "goblinDeath") {
         super(scene, path.getStartPoint().x , path.getStartPoint().y , 'goblin');
         scene.add.existing(this);
         this.play("goblin_anim");
@@ -9,6 +9,8 @@ class Goblin extends Phaser.GameObjects.Sprite{
         this.setScale(3);
         this.reward = 15;
         this.score = 20;
+        this.goblinDeath = goblinDeath;
+        this.alive = true;
 
 
         this.path = path;
@@ -57,9 +59,16 @@ class Goblin extends Phaser.GameObjects.Sprite{
         this.drawnHealthBar();
 
         if(this.hp <= 0) {
-            this.destroy();
+            this.alive = false;
+            this.healthBar.destroy();
+            this.setTexture(this.goblinDeath);
+            this.play("goblinDeath_anim").once('animationcomplete', this.kill);
         }
     }
+
+    kill() {
+        this.destroy();
+     }
 
     drawnHealthBar(){
         if(this.healthBar) {
@@ -81,6 +90,10 @@ class Goblin extends Phaser.GameObjects.Sprite{
 
     getScore() {
         return this.score;
+    }
+
+    isAlive() {
+        return this.alive;
     }
 }
 
