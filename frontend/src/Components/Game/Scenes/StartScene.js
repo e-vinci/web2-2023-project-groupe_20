@@ -43,32 +43,7 @@ class StartScene extends Phaser.Scene {
             this.scene.start('playGame');
             this.menuMusic.destroy()
         });
-
-  /*      this.musicButton = this.add.sprite(1230,50, "musicToMuteButton");
-        this.musicButton.setScale(3);
-        this.musicButton.setInteractive();
-        this.musicButton.on("pointerover", () => {
-            this.musicButton.setTint(0xe0e0e0);
-        });
-        
-        this.musicButton.on("pointerout", () => {
-            this.musicButton.setTint(0xFFFFFF);
-        });
-        this.musicButton.on("pointerup", () => {
-            if(this.menuMusic.isPlaying){
-                this.musicButton.play("musicToMute_anim");
-                this.menuMusic.pause();
-                
-            }
-            else{
-                this.musicButton.play("mutedToMusic_anim");
-                this.menuMusic.play();
-                
-            }
             
-        }); */
-
-        
 
         this.soundButton = this.add.sprite(1230,50,"musicToMuteButton").setFrame(0);
         this.soundButton.setScale(3);
@@ -90,7 +65,7 @@ class StartScene extends Phaser.Scene {
             this.soundButton.setFrame(0)
             if(this.menuMusic.isPlaying){
                 this.menuMusic.stop()
-            }else{
+            }else {
                 this.soundButton.setTexture("mutedToMusicButton").setFrame(2);
                 this.menuMusic.play()
             }

@@ -53,7 +53,7 @@ class GameScene extends Phaser.Scene {
             loop:true,
             volume:0.05
         })
-        this.backTrackSound.play()
+        
 
         this.heart = this.add.sprite(400,820,"heart").setScale(4);
         this.playerLivesText = this.add.text(-200,788, `: ${this.playerLives} / 10`, {
@@ -239,8 +239,8 @@ class GameScene extends Phaser.Scene {
     
         if(this.canPlaceTower(i, j)){
             this.currentPosition = {i, j};
-            this.setupShopTower(this.shopCrossBow, 125, 'Arrow');
-            this.setupShopTower(this.shopAOETower, 250, 'AOETower');
+            this.setupShopTower(this.shopCrossBow, 125, 'Arrow')
+            this.setupShopTower(this.shopAOETower, 250, 'AOETower')
         }
     }
 
@@ -299,6 +299,8 @@ class GameScene extends Phaser.Scene {
         tower.setActive(true);
         tower.setVisible(true);
         tower.place(i, j);
+        this.shopAOETower.setTint(0x666666).disableInteractive()
+        this.shopCrossBow.setTint(0x666666).disableInteractive()
     }
 
 
@@ -493,15 +495,8 @@ class GameScene extends Phaser.Scene {
                 
             }
         }
-        console.log(this.getEnemy(projectile.x,projectile.y,1000))
     }
 
-    damageAllEnemyInZone(enemy,projectile){
-        this.damage = projectile.damage
-        this.zone = projectile.zone
-        
-
-    }
 
     zeroPad(size){
         let stringNumber = String(this.score);
@@ -532,22 +527,9 @@ class GameScene extends Phaser.Scene {
             this.scene.pause();
             this.scene.launch('pauseGame');
         });
-/*
-        // Fast forward button
-        this.fastForwardButton = this.add.sprite(1170, 50, "times2Button").setScale(3);
-        this.fastForwardButton.setInteractive();
-        this.fastForwardButton.on("pointerover", () => {
-            this.fastForwardButton.setTint(0xe0e0e0);
-        });
-      
-        this.fastForwardButton.on("pointerout", () => {
-            this.fastForwardButton.setTint(0xFFFFFF);
-        });
-        this.fastForwardButton.on("pointerup", () => {
-            this.fastForwardButton.play("times2Button_anim");
-            this.toggleFastForward();
-        });
-*/  
+
+        // SoundButton music on/off
+        
         this.soundButton = this.add.sprite(1170,50,"musicToMuteButton").setFrame(0);
         this.soundButton.setScale(3);
         this.soundButton.setInteractive();
@@ -567,10 +549,10 @@ class GameScene extends Phaser.Scene {
         this.soundButton.on("pointerup", () => {
             this.soundButton.setFrame(0)
             if(this.backTrackSound.isPlaying){
-                this.backTrackSound.stop()
-            }else{
+                this.backTrackSound.pause()
+            }else if (!this.backTrackSound.isPlaying){
                 this.soundButton.setTexture("mutedToMusicButton").setFrame(2);
-                this.backTrackSound.play()
+                this.backTrackSound.resume()
             }
             
         })
