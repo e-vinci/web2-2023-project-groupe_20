@@ -1,5 +1,7 @@
+import { setAuthenticatedUser } from '../../utils/auths';
 import { clearPage } from '../../utils/render';
 import Navigate from '../Router/Navigate';
+import Navbar from '../Navbar/Navbar';
 
 const RegisterPage = () => {
   clearPage();
@@ -97,7 +99,11 @@ async function onRegister(e) {
     throw new Error(`fetch error : ${response.status} : ${response.statusText}`);
   }
   const authenticatedUser = await response.json();
-  Navigate('/login');
+  setAuthenticatedUser(authenticatedUser);
+
+  Navbar();
+  
+  Navigate('/');
 }
 
 export default RegisterPage;
