@@ -25,10 +25,8 @@ class GameScene extends Phaser.Scene {
         super("playGame");
         this.wave = 0;
         this.waveText = null;
-        this.currency = 100000;
-    }
-    
-    create(){
+        this.currency = 250;
+        this.score = 0;
         this.background = this.add.image(0,0, "gameMap");
         this.background.setOrigin(0,0);
         this.map = placementTilesData;
