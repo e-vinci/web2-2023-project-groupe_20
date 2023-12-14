@@ -4,7 +4,7 @@ const logger = require('morgan');
 const cors = require('cors');
 
 const corsOptions = {
-  origin: ['http://localhost:8080/', 'https://niromin.github.io/ShadowFortress/'],
+  origin: ['http://localhost:8080/', 'https://niromin.github.io'],
 };
 
 const usersRouter = require('./routes/users');
