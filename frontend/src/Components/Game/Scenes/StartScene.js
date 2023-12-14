@@ -43,7 +43,7 @@ class StartScene extends Phaser.Scene {
             this.scene.start('playGame');
             this.menuMusic.destroy()
         });
-            
+
 
         this.soundButton = this.add.sprite(1230,50,"musicToMuteButton").setFrame(0);
         this.soundButton.setScale(3);
@@ -65,7 +65,7 @@ class StartScene extends Phaser.Scene {
             this.soundButton.setFrame(0)
             if(this.menuMusic.isPlaying){
                 this.menuMusic.stop()
-            }else {
+            }else if(!this.menuMusic.isPlaying){
                 this.soundButton.setTexture("mutedToMusicButton").setFrame(2);
                 this.menuMusic.play()
             }
