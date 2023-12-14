@@ -1,19 +1,16 @@
 import Phaser from "phaser";
 
 class Projectile extends Phaser.GameObjects.Sprite{
-    constructor(scene, x, y,damage,zone){
+    constructor(scene, x, y){
         super(scene, x, y, 'AOETowerProjectile');
         
         this.dx = 0;
         this.dy = 0;
         this.lifeSpan = 0;
-        this.damage = 90;
-        this.zone = 10000;
-        this.speed = Phaser.Math.GetSpeed(600,1);
-        
+        this.speed = Phaser.Math.GetSpeed(600, 1);
 
         scene.add.existing(this);
-        this.play("AOETowerProjectile_anim");
+        this.play("AOETowerProjectile");
     }
 
 
