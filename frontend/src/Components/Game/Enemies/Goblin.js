@@ -10,6 +10,7 @@ class Goblin extends Phaser.GameObjects.Sprite{
         this.reward = 15;
         this.score = 20;
         this.goblinDeath = goblinDeath;
+        this.alive = true;
 
 
         this.path = path;
@@ -58,6 +59,7 @@ class Goblin extends Phaser.GameObjects.Sprite{
         this.drawnHealthBar();
 
         if(this.hp <= 0) {
+            this.alive = false;
             this.healthBar.destroy();
             this.setTexture(this.goblinDeath);
             this.play("goblinDeath_anim").once('animationcomplete', this.kill);
@@ -88,6 +90,10 @@ class Goblin extends Phaser.GameObjects.Sprite{
 
     getScore() {
         return this.score;
+    }
+
+    isAlive() {
+        return this.alive;
     }
 }
 

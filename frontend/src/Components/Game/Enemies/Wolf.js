@@ -10,6 +10,7 @@ class Wolf extends Phaser.GameObjects.Sprite{
         this.reward = 10;
         this.score = 10;
         this.wolfDeath = wolfDeath;
+        this.alive = true;
 
         this.path = path;
         this.follower = {t: 0, vec: new Phaser.Math.Vector2()};
@@ -57,6 +58,7 @@ class Wolf extends Phaser.GameObjects.Sprite{
         this.drawnHealthBar();
 
         if(this.hp <= 0) {
+            this.alive = false;
             this.healthBar.destroy();
             this.setTexture(this.wolfDeath);
             this.play("wolfDeath_anim").once('animationcomplete', this.kill);
@@ -87,6 +89,10 @@ class Wolf extends Phaser.GameObjects.Sprite{
 
     getScore(){
         return this.score;
+    }
+
+    isAlive(){
+        return this.alive;
     }
 
 }
