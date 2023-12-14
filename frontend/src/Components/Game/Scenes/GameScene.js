@@ -24,14 +24,12 @@ const placementTilesData = [0, 0, 0, 342, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 class GameScene extends Phaser.Scene {
     constructor(){
         super("playGame");
-        
-    }
-    
-    create(){
         this.wave = 0;
         this.waveText = null;
         this.currency = 100000;
-        this.score = 0;
+    }
+    
+    create(){
         this.background = this.add.image(0,0, "gameMap");
         this.background.setOrigin(0,0);
         this.map = placementTilesData;
@@ -55,7 +53,7 @@ class GameScene extends Phaser.Scene {
         })
         this.backTrackSound.play()
 
-        this.heart = this.add.sprite(400,820,"heart").setScale(4);
+        this.heart = this.add.image(400,830,"Heart")
         this.playerLivesText = this.add.text(-200,788, `: ${this.playerLives} / 10`, {
             fontFamily: 'Arial',
             fontSize: '24px',
@@ -69,15 +67,8 @@ class GameScene extends Phaser.Scene {
             fontStyle: 'bold'
         });
 
-        this.gold = this.add.sprite(80,820,"coin").setScale(2);
+        this.gold = this.add.image(80,820,"goldCoin")
         this.currencyText = this.add.text(-530, 788, `: ${this.currency}`,{
-            fontFamily: 'Arial',
-            fontSize: '24px',
-            color: '#ffffff',
-            fontStyle: 'bold'
-        });
-
-        this.scoreText = this.add.text(0, 0, `Score:`, {
             fontFamily: 'Arial',
             fontSize: '24px',
             color: '#ffffff',
@@ -408,7 +399,6 @@ class GameScene extends Phaser.Scene {
         for (let i = 0; i < enemiesTab.length; i++) {
             const enemy = enemiesTab[i];
             if (enemy.active && enemy.follower.t >= 1){
-                this.heart.play("heart_anim");
                 this.playerLives--;
                 this.playerLivesText.setText(`: ${this.playerLives} / 10`);
                 enemy.destroy();
@@ -477,23 +467,17 @@ class GameScene extends Phaser.Scene {
     damageEnemy(enemy, projectile){
         this.damage = projectile.damage
         const reward = enemy.getReward();
-        const score = enemy.getScore();
         if (enemy.active === true && projectile.active === true) {
             projectile.destroy();
 
             enemy.recieveDamage(this.damage);
 
-            if(!enemy.isAlive()) {
-                this.score += score;
-                const scoreFormated = this.zeroPad(6);
-                this.scoreText.setText(`Score: ${scoreFormated}`);
-                this.gold.play("coin_anim");
+            if(!enemy.active) {
                 this.currency += reward;
                 this.currencyText.setText(`: ${this.currency}`);
                 
             }
         }
-        console.log(this.getEnemy(projectile.x,projectile.y,1000))
     }
 
     damageAllEnemyInZone(enemy,projectile){
@@ -501,14 +485,6 @@ class GameScene extends Phaser.Scene {
         this.zone = projectile.zone
         
 
-    }
-
-    zeroPad(size){
-        let stringNumber = String(this.score);
-        while(stringNumber.length < (size || 2)){
-            stringNumber = `0${stringNumber}`;
-        }
-        return stringNumber;
     }
 
 
@@ -574,9 +550,8 @@ class GameScene extends Phaser.Scene {
             }
             
         })
-
         this.backTrackSound.isPlaying = !this.backTrackSound.isPlaying
-
+                
 
         this.tutoButton = this.add.sprite(1110,50,"tutoButton");
         this.tutoButton.setScale(3);
@@ -626,7 +601,6 @@ class GameScene extends Phaser.Scene {
 
 
     gameOver(){
-        this.backTrackSound.stop();
         this.scene.start("gameOver");
     }
 
