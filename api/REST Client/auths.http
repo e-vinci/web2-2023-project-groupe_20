@@ -27,3 +27,21 @@ Content-Type: application/json
     "username":"ZwinGo",
     "password":"ZwinGo2023"
 }
+
+### Create another user
+POST {{baseUrl}}/auths/register
+Content-Type: application/json
+
+{
+    "username":"McheikIsUgly",
+    "password":"McheikIsUgly2023"
+}
+
+### Create another user
+POST {{baseUrl}}/auths/register
+Content-Type: application/json
+
+{
+    "username":"GabEstBeau",
+    "password":"GabEstBeau2023"
+}
