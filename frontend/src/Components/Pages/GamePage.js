@@ -1,9 +1,12 @@
 import Phaser from 'phaser';
+import BootScene from '../Game/Scenes/BootScene';
+import PreloadScene from '../Game/Scenes/PreloadScene'
 import StartScene from '../Game/Scenes/StartScene';
 import GameScene from '../Game/Scenes/GameScene';
 import GameOverScene from '../Game/Scenes/GameOverScene';
 import PauseGameScene from '../Game/Scenes/PauseGameScene';
-import PreloadScene from '../Game/Scenes/PreloadScene'
+import TutorialGameScene from '../Game/Scenes/TutorialGameScene';
+
 
 let game;
 
@@ -19,13 +22,13 @@ const GamePage = () => {
   const config = {
     scale: {
       width: 1280,
-      height: 768,
+      height: 868,
       autoCenter: Phaser.Scale.CENTER_BOTH,
       mode: Phaser.Scale.FIT,
       Audio:true
     },
   
-    scene: [PreloadScene,StartScene, GameScene, GameOverScene,PauseGameScene],
+    scene: [BootScene,PreloadScene,StartScene, GameScene, GameOverScene,PauseGameScene, TutorialGameScene],
     pixelArt: true,
     physics: {
       default: "arcade",
