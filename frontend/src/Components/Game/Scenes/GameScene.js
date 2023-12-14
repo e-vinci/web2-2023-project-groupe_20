@@ -23,6 +23,10 @@ const placementTilesData = [0, 0, 0, 342, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 class GameScene extends Phaser.Scene {
     constructor(){
         super("playGame");
+        
+    }
+    
+    create(){
         this.wave = 0;
         this.waveText = null;
         this.currency = 250;
@@ -50,7 +54,7 @@ class GameScene extends Phaser.Scene {
         })
         this.backTrackSound.play()
 
-        this.heart = this.add.image(400,830,"Heart")
+        this.heart = this.add.sprite(400,820,"heart").setScale(4);
         this.playerLivesText = this.add.text(-200,788, `: ${this.playerLives} / 10`, {
             fontFamily: 'Arial',
             fontSize: '24px',
@@ -64,8 +68,15 @@ class GameScene extends Phaser.Scene {
             fontStyle: 'bold'
         });
 
-        this.gold = this.add.image(80,820,"goldCoin")
+        this.gold = this.add.sprite(80,820,"coin").setScale(2);
         this.currencyText = this.add.text(-530, 788, `: ${this.currency}`,{
+            fontFamily: 'Arial',
+            fontSize: '24px',
+            color: '#ffffff',
+            fontStyle: 'bold'
+        });
+
+        this.scoreText = this.add.text(0, 0, `Score:`, {
             fontFamily: 'Arial',
             fontSize: '24px',
             color: '#ffffff',
@@ -406,6 +417,7 @@ setupShopTower(shopTower, cost, towerType){
         for (let i = 0; i < enemiesTab.length; i++) {
             const enemy = enemiesTab[i];
             if (enemy.active && enemy.follower.t >= 1){
+                this.heart.play("heart_anim");
                 this.playerLives--;
                 this.playerLivesText.setText(`: ${this.playerLives} / 10`);
                 enemy.destroy();
@@ -465,12 +477,17 @@ setupShopTower(shopTower, cost, towerType){
     damageEnemy(enemy, projectile){
         this.damage = 30;
         const reward = enemy.getReward();
+        const score = enemy.getScore();
         if (enemy.active === true && projectile.active === true) {
             projectile.destroy();
 
             enemy.recieveDamage(this.damage);
 
-            if(!enemy.active) {
+            if(!enemy.isAlive()) {
+                this.score += score;
+                const scoreFormated = this.zeroPad(6);
+                this.scoreText.setText(`Score: ${scoreFormated}`);
+                this.gold.play("coin_anim");
                 this.currency += reward;
                 this.currencyText.setText(`: ${this.currency}`);
                 
@@ -478,11 +495,12 @@ setupShopTower(shopTower, cost, towerType){
         }
     }
 
-    damageAllEnemyInZone(enemy,projectile){
-        this.damage = projectile.damage
-        this.zone = projectile.zone
-        
-
+    zeroPad(size){
+        let stringNumber = String(this.score);
+        while(stringNumber.length < (size || 2)){
+            stringNumber = `0${stringNumber}`;
+        }
+        return stringNumber;
     }
 
 
@@ -548,8 +566,6 @@ setupShopTower(shopTower, cost, towerType){
             }
             
         })
-        this.backTrackSound.isPlaying = !this.backTrackSound.isPlaying
-                
 
         this.tutoButton = this.add.sprite(1110,50,"tutoButton");
         this.tutoButton.setScale(3);
@@ -599,6 +615,7 @@ setupShopTower(shopTower, cost, towerType){
 
 
     gameOver(){
+        this.backTrackSound.stop();
         this.scene.start("gameOver");
     }
 
