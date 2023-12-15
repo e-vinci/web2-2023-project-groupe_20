@@ -39,7 +39,7 @@ function renderRegisterForm() {
 
   const alreadyHasDiv = document.createElement('div');
   const alReadyAnAccount = document.createElement('p');
-  alreadyHasDiv.innerHTML = 'Already have an account ? <a href="/login">sign in.</a>';
+  alreadyHasDiv.innerHTML = 'Already have an account ? <a data-uri="/login">sign in.</a>';
 
   const submit = document.createElement('input');
   submit.value = 'Sign up';
