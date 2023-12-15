@@ -8,11 +8,13 @@ class HobGoblin extends Phaser.GameObjects.Sprite{
         this.flipX= true;
         this.setScale(4);
         this.reward = 50;
+        this.score = 50;
 
         this.path = path;
         this.follower = {t: 0, vec: new Phaser.Math.Vector2()};
         this.hp = 500;
         this.maxHp = 500;
+        this.alive = true;
 
         this.healthBarHeight = 5;
         this.healthBarWidth = 50;
@@ -53,6 +55,7 @@ class HobGoblin extends Phaser.GameObjects.Sprite{
         this.drawnHealthBar();
 
         if(this.hp <= 0) {
+            this.alive = false;
             this.destroy();
         }
     }
@@ -73,6 +76,14 @@ class HobGoblin extends Phaser.GameObjects.Sprite{
 
     getReward(){
         return this.reward;
+    }
+
+    getScore(){
+        return this.score;
+    }
+
+    isAlive(){
+        return this.alive;
     }
 }
 
