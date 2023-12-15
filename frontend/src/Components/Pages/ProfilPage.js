@@ -8,7 +8,11 @@ const profilPage = () => {
     renderProfilPage();
 };
 
-function renderProfilPage() {
+async function renderProfilPage() {
+    const user = getAuthenticatedUser();
+    const userRecord = await fetch('/api/scores/score', user);
+
+
     const main = document.querySelector('main');
     
     const title = document.createElement('h1');

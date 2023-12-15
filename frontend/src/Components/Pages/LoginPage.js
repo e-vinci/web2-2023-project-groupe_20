@@ -35,7 +35,7 @@ function renderLoginForm() {
 
   const notYetHasDiv = document.createElement('div');
   const notYetAnAccount = document.createElement('p');
-  notYetHasDiv.innerHTML = 'Not yet an account ? <a data-uri="/register">sign up.</a>';
+  notYetHasDiv.innerHTML = 'Not yet an account ? <a href = "/register">sign up.</a>';
 
   const submit = document.createElement('input');
   submit.value = 'Sign up';
