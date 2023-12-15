@@ -627,8 +627,6 @@ setupShopTower(shopTower, cost, towerType){
         const {score} = this;
         const {wave} = this;
         const { username, token } = getAuthenticatedUser();
-        console.log('wave: ', wave);
-        console.log("score:", score);
         const options = {
             method: 'POST',
             body: JSON.stringify({
