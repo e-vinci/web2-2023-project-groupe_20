@@ -6,7 +6,6 @@ import Projectile from "../Projectile";
 import Tower from "../Towers/Tower";
 import AOETower from "../Towers/AOETower";
 import { getAuthenticatedUser, isAuthenticated  } from "../../../utils/auths"
-import { post } from "../../../../../api/routes/scores";
 
 const placementTilesData = [0, 0, 0, 342, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
