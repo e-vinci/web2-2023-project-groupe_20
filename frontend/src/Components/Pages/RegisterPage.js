@@ -52,45 +52,6 @@ function renderRegisterForm() {
   const privacyPolicyP = document.createElement('p');
   privacyPolicyP.innerHTML = 'By continuing, you confirm that you have read and understand the <a href="https://policies.google.com/privacy?hl=en-US" target="_blank style="color:white";>Privacy Policy.</a>'
 
-  // eslint-disable-next-line spaced-comment
-  /***************************************************************************************
-   *   Author: QuocAnDg
-   *   Availability: https://github.com/e-vinci/web2-2022-project-group-13/blob/main/frontend/src/Components/Pages/RegisterPage.js
-   *
-   ************************************************************************************** */
-  // Le rgpd a été repris à partir de ce code et nous avons ensuite modifier certaine chose.
-
-  /* privacyPolicyDiv.innerHTML = `<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">privacy
-  policy</button>
-  <div class="modal" id="myModal">
-    <div class="modal-dialog">
-      <div class="modal-content">
-      <p>
-      ARTICLE 1: PREAMBLE<br>
-      Information to minors: We keep the information you declare to us (a nickname) 
-      in order to be able to communicate with you about your account, 
-      solve security problems that could affect your account. When you create your account, 
-      we ask you to enter an account name and a password: this account name and password will 
-      allow you to access the game. Please note: this account name and password must remain secret. 
-      You do not have the right to access and rectify your data. To exercise this right and obtain communication 
-      or deletion of your information, write to us, with the help of your parents, by email, shadowfortress@gmail.com.
-      <p>
-      ARTICLE 2: DATA RETENTION<br>
-      We keep your personal data for as long as necessary for the fulfilment of the purposes set out herein, 
-      in compliance with the legislation in force. To know your rights to erasure, please consult the article 'Your rights'.
-      <p>
-      ARTICLE 3: SECURITY<br>
-      The Company implements the appropriate technical and organizational measures, with regard to the nature of the data and 
-      the risks presented by the processing, to guarantee a high level of data security and, in particular, to prevent them from 
-      being distorted, damaged or accessed by unauthorized third parties. To this end, Bcrypt technology is used for the encryption 
-      of certain data, physical and logical data backup procedures are implemented and a protocol is used to secure access through data 
-      encryption (HTTPS). The Company reserves the right to take legal action against any person who attempts to access personal information 
-      that does not belong to the Company.
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-    </div>
-  </div>`; */
-
   form.appendChild(username);
   form.appendChild(password);
   form.appendChild(confirmPassword);
