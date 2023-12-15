@@ -31,9 +31,9 @@ function renderLoginForm() {
   password.placeholder = 'Password';
   password.className = 'form-control mb-3';
 
-  const notYetHasDiv = document.createElement('div');
+  
   const notYetAnAccount = document.createElement('p');
-  notYetHasDiv.innerHTML = 'Not yet an account ? <a href="/register">sign up.</a>';
+  notYetAnAccount.innerHTML = 'Not yet an account ? <a href="/register">sign up.</a>';
 
   const submit = document.createElement('input');
   submit.value = 'Sign up';
@@ -47,8 +47,7 @@ function renderLoginForm() {
   
   form.appendChild(username);
   form.appendChild(password);
-  form.appendChild(notYetHasDiv);
-  notYetHasDiv.appendChild(notYetAnAccount);
+  form.appendChild(notYetAnAccount);
   form.appendChild(submit);
   form.appendChild(errorMessage);
   form.addEventListener('submit', onLogin);
