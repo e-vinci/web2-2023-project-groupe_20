@@ -1,6 +1,7 @@
 import { getAuthenticatedUser } from '../../utils/auths';
 import Navigate from '../Router/Navigate';
 import { clearPage } from '../../utils/render';
+import logoProfil from '../../img/userImage.png';
 
 const profilPage = () => {
     if(!getAuthenticatedUser()) Navigate('/');
@@ -10,7 +11,11 @@ const profilPage = () => {
 
 async function renderProfilPage() {
     const user = getAuthenticatedUser();
+    const {username} = user;
     const userRecord = await fetch('/api/scores/score', user);
+    const {gamesPlayed} = userRecord.length();
+    const {highestRound} = userRecord.round;
+    const {bestScore} = userRecord.score;
 
 
     const main = document.querySelector('main');
@@ -20,40 +25,34 @@ async function renderProfilPage() {
     const baseSection = document.createElement('section');
 
     baseSection.className = 'vh-100';
-    baseSection.style.background = '#9de2ff'
+    baseSection.style.background = '#1E665D'
 
-    baseSection.innerHTML = `<div class="container py-5 h-100">
+  baseSection.innerHTML = `<div class="container py-5 h-100">
     <div class="row d-flex justify-content-center align-items-center h-100">
       <div class="col col-md-9 col-lg-7 col-xl-5">
         <div class="card" style="border-radius: 15px;">
           <div class="card-body p-4">
             <div class="d-flex text-black">
               <div class="flex-shrink-0">
-                <img src="../../img/userImage.png"
-                  alt="Generic placeholder image" class="img-fluid"
-                  style="width: 180px; border-radius: 10px;">
+                <img src="${logoProfil}" alt="You" class="img-fluid" style="width: 180px; height: 180px; border-radius: 10px;">
               </div>
               <div class="flex-grow-1 ms-3">
-                <h5 class="mb-1">Danny McLoan</h5>
-                <p class="mb-2 pb-1" style="color: #2b2a2a;">Senior Journalist</p>
+                <h5 class="mb-1">${username}</h5>
+                <p class="mb-2 pb-1" style="color: #2b2a2a;">Player</p>
                 <div class="d-flex justify-content-start rounded-3 p-2 mb-2"
                   style="background-color: #efefef;">
                   <div>
-                    <p class="small text-muted mb-1">Articles</p>
-                    <p class="mb-0">41</p>
+                    <p class="small text-muted mb-1">Games</p>
+                    <p class="mb-0">${gamesPlayed}</p>
                   </div>
                   <div class="px-3">
-                    <p class="small text-muted mb-1">Followers</p>
-                    <p class="mb-0">976</p>
+                    <p class="small text-muted mb-1">Best Round</p>
+                    <p class="mb-0">${highestRound}</p>
                   </div>
                   <div>
-                    <p class="small text-muted mb-1">Rating</p>
-                    <p class="mb-0">8.5</p>
+                    <p class="small text-muted mb-1">Best Score</p>
+                    <p class="mb-0">${bestScore}</p>
                   </div>
-                </div>
-                <div class="d-flex pt-1">
-                  <button type="button" class="btn btn-outline-primary me-1 flex-grow-1">Chat</button>
-                  <button type="button" class="btn btn-primary flex-grow-1">Follow</button>
                 </div>
               </div>
             </div>
@@ -61,7 +60,10 @@ async function renderProfilPage() {
         </div>
       </div>
     </div>
-  </div>`
+  </div>`;
+
+  main.appendChild(title);
+  main.appendChild(baseSection);
 }
 
 export default profilPage;
