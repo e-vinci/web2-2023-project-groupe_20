@@ -555,7 +555,7 @@ class GameScene extends Phaser.Scene {
             }
         
         })
-this.backTrackSound.isPlaying = !this.backTrackSound.isPlaying
+    this.backTrackSound.isPlaying = !this.backTrackSound.isPlaying
 
 
         this.tutoButton = this.add.sprite(1110,50,"tutoButton");
