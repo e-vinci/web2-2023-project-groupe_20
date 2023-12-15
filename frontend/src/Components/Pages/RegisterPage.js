@@ -49,8 +49,8 @@ function renderRegisterForm() {
   errorMessage.id = 'errorMessage';
   errorMessage.innerHTML = '';
 
-  const privacyPolicyDiv = document.createElement('div');
-  privacyPolicyDiv.className = 'privacyPolicy';
+  const privacyPolicyP = document.createElement('p');
+  privacyPolicyP.innerHTML = 'By continuing, you confirm that you have read and understand the <a href="https://policies.google.com/privacy?hl=en-US" target="_blank style="color:white";>Privacy Policy.</a>'
 
   // eslint-disable-next-line spaced-comment
   /***************************************************************************************
@@ -60,7 +60,7 @@ function renderRegisterForm() {
    ************************************************************************************** */
   // Le rgpd a été repris à partir de ce code et nous avons ensuite modifier certaine chose.
 
-  privacyPolicyDiv.innerHTML = `<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">privacy
+  /* privacyPolicyDiv.innerHTML = `<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">privacy
   policy</button>
   <div class="modal" id="myModal">
     <div class="modal-dialog">
@@ -89,13 +89,13 @@ function renderRegisterForm() {
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
     </div>
-  </div>`;
+  </div>`; */
 
   form.appendChild(username);
   form.appendChild(password);
   form.appendChild(confirmPassword);
   form.appendChild(alReadyAnAccount);
-  form.appendChild(privacyPolicyDiv);
+  form.appendChild(privacyPolicyP);
   form.appendChild(submit);
   form.appendChild(errorMessage);
   form.addEventListener('submit', onRegister);
