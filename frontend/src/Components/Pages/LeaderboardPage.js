@@ -1,93 +1,63 @@
-import { clearPage, renderImage } from '../../utils/render';
+import { clearPage } from '../../utils/render';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const LeaderboardPage = () => {
-    clearPage();
-    renderLeaderboardFromString();
-    getScoresAsString();
-    addLinesToTableHeadersAndGet();
-    getAllTableLinesAsString();
-  };
+  clearPage();
+  renderLeaderboard();
+};
 
-const Leaderboard = [
-    {
-      id: 1,
-      username: 'MohamedT',
-      wave: 11,
-      score: 1300,
-    },
-    {
-      id: 2,
-      username: 'Gab',
-      wave: 15,
-      score: 1600,
-    },
-    {
-      id: 3,
-      username: 'Trini',
-      wave: 18,
-      score: 1900,
-    },
-    {
-      id: 4,
-      username: 'Rayane',
-      wave: 7,
-      score: 800,
-    },
-    {
-      id: 5,
-      username: 'MohamedM',
-      wave: 14,
-      score: 1500,
-    },
-  ];
+async function renderLeaderboard() {
+  const response = await fetch('/scores');
+  const responseText = await response.text();
+  console.log('Full Response:', responseText);
 
-const body = document.querySelector('body');
+  const scores = parseJson(responseText);
 
-renderLeaderboardFromString(Leaderboard);
+  if (scores) {
+    console.log('Parsed Scores:', scores);
 
-function renderLeaderboardFromString(leaderboard) {
-  const menuTableAsString = getScoresAsString(Leaderboard);
-
-  const main = document.querySelector('main');
-
-  main.innerHTML += menuTableAsString;
+    const leaderboardTable = createLeaderboardTable(scores);
+    const main = document.querySelector('main');
+    main.innerHTML += leaderboardTable;
+  } else {
+    console.error('Error parsing JSON');
+  }
 }
 
-function getScoresAsString(leaderboard) {
-  const leaderboardTableLines = getAllTableLinesAsString(Leaderboard);
-  const leaderboardTable = addLinesToTableHeadersAndGet(leaderboardTableLines);
-  return leaderboardTable;
+function parseJson(jsonString) {
+  try {
+    return JSON.parse(jsonString);
+  } catch (parseError) {
+    console.error('Error parsing JSON:', parseError);
+    return null;
+  }
 }
 
-function addLinesToTableHeadersAndGet(tableLines) {
-  const leaderboardTable = `
-  <div class="table-responsive pt-5">
-    <table class="table table-danger">
-      <tr>
-        <th>Username</th>
-        <th>Wave</th>
-        <th>Score</th>
-      </tr>
-      ${tableLines}    
-    </table>
-  </div>
+function createLeaderboardTable(scores) {
+  const tableLines = scores.map((score) => createTableRow(score)).join('');
+
+  return `
+    <div class="table-responsive pt-5">
+      <table class="table table-danger">
+        <tr>
+          <th>Username</th>
+          <th>Wave</th>
+          <th>Score</th>
+        </tr>
+        ${tableLines}
+      </table>
+    </div>
   `;
-  return leaderboardTable;
 }
 
-function getAllTableLinesAsString(leaderboard) {
-  let scoreTableLines = '';
-
-  Leaderboard?.forEach((score) => {
-    scoreTableLines += `<tr>
+function createTableRow(score) {
+  return `
+    <tr>
       <td>${score.username}</td>
       <td>${score.wave}</td>
       <td>${score.score}</td>
-    </tr>`;
-  });
-
-  return scoreTableLines;
+    </tr>
+  `;
 }
 
 export default LeaderboardPage;

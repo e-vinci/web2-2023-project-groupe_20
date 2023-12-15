@@ -1,5 +1,7 @@
 import { clearPage } from '../../utils/render';
 import Navigate from '../Router/Navigate';
+import Navbar from '../Navbar/Navbar';
+import { setAuthenticatedUser } from '../../utils/auths';
 
 const LoginPage = () => {
   clearPage();
@@ -83,7 +85,12 @@ async function onLogin(e) {
     throw new Error(`fetch error : ${response.status} : ${response.statusText}`);
   }
   const authenticatedUser = await response.json();
-  Navigate('/');
+
+  setAuthenticatedUser(authenticatedUser);
+
+  Navbar();
+
+  Navigate('/game');
 }
 
 export default LoginPage;
