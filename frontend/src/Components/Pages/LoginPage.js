@@ -1,9 +1,11 @@
 import { clearPage } from '../../utils/render';
 import Navigate from '../Router/Navigate';
 import Navbar from '../Navbar/Navbar';
-import { setAuthenticatedUser } from '../../utils/auths';
+import { setAuthenticatedUser, getAuthenticatedUser } from '../../utils/auths';
+
 
 const LoginPage = () => {
+  if(getAuthenticatedUser()) Navigate('/');
   clearPage();
   renderLoginForm();
 };
@@ -91,7 +93,7 @@ async function onLogin(e) {
 
   Navbar();
 
-  Navigate('/game');
+  Navigate('/');
 }
 
 export default LoginPage;
