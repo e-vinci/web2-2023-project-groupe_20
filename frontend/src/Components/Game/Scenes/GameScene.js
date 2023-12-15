@@ -5,6 +5,8 @@ import HobGoblin from "../Enemies/HobGoblin";
 import Projectile from "../Projectile";
 import Tower from "../Towers/Tower";
 import AOETower from "../Towers/AOETower";
+import { getAuthenticatedUser, isAuthenticated  } from "../../../utils/auths"
+import { post } from "../../../../../api/routes/scores";
 
 const placementTilesData = [0, 0, 0, 342, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -613,13 +615,35 @@ setupShopTower(shopTower, cost, towerType){
 
     }
 
-
     gameOver(){
+        if(isAuthenticated()){
+            this.registerScore();
+        }
         this.backTrackSound.stop();
         this.scene.start("gameOver");
     }
 
+    async registerScore() {
+        const { score } = this.score;
+        const { wave } = this.wave;
+        const { username } = getAuthenticatedUser();
+        const options = {
+            method: 'POST',
+            body: JSON.stringify({
+                username,
+                score,
+                wave
+            }),
+            header: {
+                'Content-Type': 'application/json',
+            },
+        };
 
+        const response = await fetch(`${process.env.API_BASE_URL}/scores`, options);
+        if(!response.ok) {
+            throw new Error(`fetch error:: : ${response.status} : ${response.statusText}`);
+        }
+    }
 
 }
 
