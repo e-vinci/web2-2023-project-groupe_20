@@ -3,6 +3,7 @@ import { Navbar as BootstrapNavbar } from 'bootstrap';
 import { getAuthenticatedUser, isAuthenticated } from '../../utils/auths';
 
 import logoImage from '../../img/logo.png';
+import logoLogout from '../../img/logout.png';
 
 const Navbar = () => {
   renderNavbar();
@@ -55,9 +56,12 @@ function renderNavbar() {
             <a class="navbutton nav-link active white-text" aria-current="page" href="#" data-uri="/leaderboard">Leaderboard</a>
           </li>
         </ul>
-        <ul class="navbar-nav navbar-right">
+        <ul class="navbar-nav navbar-right mb-2 mb-lg-0">
          <li class="nav-item">
-           <a class="navbutton nav-link active white-text" href="#" data-uri="/logout">Logout</a>
+           <a class="navbutton nav-link active white-text" aria-current="page" style="margin-top:25%"; href="#" data-uri="/profil">Profil</a>
+         </li>
+         <li class="nav-item">
+           <a class="navbutton nav-link active white-text" href="#"><img src="${logoLogout}" style="height:50px; width:50px;" alt="Logout" data-uri="/logout"></a>
          </li>
        </ul>
       </div>

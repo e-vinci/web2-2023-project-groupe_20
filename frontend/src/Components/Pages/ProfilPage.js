@@ -29,7 +29,7 @@ async function renderProfilPage() {
           <div class="card-body p-4">
             <div class="d-flex text-black">
               <div class="flex-shrink-0">
-                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp"
+                <img src="../../img/userImage.png"
                   alt="Generic placeholder image" class="img-fluid"
                   style="width: 180px; border-radius: 10px;">
               </div>
