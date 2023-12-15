@@ -36,7 +36,7 @@ class GameScene extends Phaser.Scene {
         this.background.setOrigin(0,0);
         this.map = placementTilesData;
         this.props();
-        this.playerLives = 1000;
+        this.playerLives = 1;
         this.nextWaveTime = 0;
         this.gameSpeed = 1;
         this.uiContainer = this.add.container(this.game.config.width / 2, 20);
@@ -53,7 +53,7 @@ class GameScene extends Phaser.Scene {
             loop:true,
             volume:0.05
         })
-        
+        this.backTrackSound.play()
 
         this.heart = this.add.sprite(400,820,"heart").setScale(4);
         this.playerLivesText = this.add.text(-200,788, `: ${this.playerLives} / 10`, {
@@ -250,8 +250,7 @@ class GameScene extends Phaser.Scene {
         this.tower = this.getTowerAt(i,j)
 
             if(this.tower){
-                const sellAmount = this.tower.cost;
-                this.currency += parseInt(sellAmount,10);
+                this.currency += parseInt(this.tower.cost,10);
                 this.currencyText.setText(`: ${this.currency}`);
 
                 const index = i * 20 + j;
@@ -549,15 +548,14 @@ class GameScene extends Phaser.Scene {
         this.soundButton.on("pointerup", () => {
             this.soundButton.setFrame(0)
             if(this.backTrackSound.isPlaying){
-                this.backTrackSound.pause()
-            }else if (!this.backTrackSound.isPlaying){
+                this.backTrackSound.stop()
+            }else{
                 this.soundButton.setTexture("mutedToMusicButton").setFrame(2);
-                this.backTrackSound.resume()
+                this.backTrackSound.play()
             }
-            
+        
         })
-
-        this.backTrackSound.isPlaying = !this.backTrackSound.isPlaying
+this.backTrackSound.isPlaying = !this.backTrackSound.isPlaying
 
 
         this.tutoButton = this.add.sprite(1110,50,"tutoButton");
