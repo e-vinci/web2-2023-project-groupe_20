@@ -1,9 +1,12 @@
 body {
-  background-color: #1e665d;
+  /*background-color: #1e665d;*/
+  background-image:url("../assets/background-image.png");
+  background-attachment: fixed;
   margin: 0;
   height: 95%;
   justify-content: center;
   align-items: center;
+  
 }
 
 canvas {
