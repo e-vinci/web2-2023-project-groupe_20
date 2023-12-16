@@ -1,3 +1,8 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
 body {
   background-color: #1e665d;
   margin: 0;
@@ -11,7 +16,6 @@ canvas {
 
 .navbar {
   background-color: #1c2b48;
-  margin-bottom: 10px;
 }
 
 footer {
@@ -55,21 +59,68 @@ footer {
   width: 100%;
 }
 
-/* login page */
+/* login page and register page*/
 .formWrapper {
-  margin-top: 60%;
   display: flex;
-  align-self: center;
-  max-width: 400px;
+  flex-direction: row;
+  height: calc(100vh - 76px);
+  align-items: center;
+  max-width: 500px;
   justify-content: center;
   margin: auto;
 }
 
 #loginForm {
-  display: block;
+  position: relative;
+  bottom: 10px;
+  width: 100%;
+  height: fit-content;
   margin: 20px;
   padding: 15px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  background-color: white;
+  background: linear-gradient(to top,#1c2b48, white );
   border-radius: 25px;
+}
+
+#loginSubmit{
+    margin-top: 20px;
+    width: 100%;
+    height: 45px;
+}
+
+.registerWrapper {
+  display: flex;
+  flex-direction: row;
+  height: calc(100vh - 76px);
+  align-items: center;
+  max-width: 500px;
+  justify-content: center;
+  margin: auto;
+}
+
+#registerForm {
+  margin: 20px;
+  padding: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(to top,#1c2b48, white );
+  border-radius: 25px;
+}
+#username {
+  border-radius: 15px;
+}
+#password {
+  border-radius: 15px;
+}
+#confirmPassword {
+  border-radius: 15px;
+}
+
+#titleForm{
+    margin-bottom: 20px;
+}
+
+#registerSubmit{
+    margin-top: 20px;
+    width: 100%;
+    height: 45px;
 }
