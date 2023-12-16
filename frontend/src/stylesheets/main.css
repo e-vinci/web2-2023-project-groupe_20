@@ -4,7 +4,6 @@
 }
 
 body {
-<<<<<<< HEAD
   /*background-color: #1e665d;*/
   background-image:url("../assets/background-image.png");
   background-attachment: fixed;
@@ -13,11 +12,6 @@ body {
   justify-content: center;
   align-items: center;
   
-=======
-  background-color: #1e665d;
-  margin: 0;
-  height: 95%;
->>>>>>> 3911d0bb7d14671cd6f598de9c0ce14e0f751ea5
 }
 
 canvas {
@@ -27,17 +21,6 @@ canvas {
 
 .navbar {
   background-color: #1c2b48;
-<<<<<<< HEAD
-  margin-bottom: 10px;
-}
-
-footer {
-  height: 25px;
-  background-color: #1c2b48;
-  color: #ffffff;
-  text-align: center;
-  margin-top: 10px;
-=======
 }
 
 footer {
@@ -47,7 +30,6 @@ footer {
   width: 100%;
   color: white;
   text-align: center;
->>>>>>> 3911d0bb7d14671cd6f598de9c0ce14e0f751ea5
 }
 
 .navbutton {
@@ -82,19 +64,6 @@ footer {
   width: 100%;
 }
 
-<<<<<<< HEAD
-/* login page */
-.formWrapper{
-    position: relative;
-    background-color: #ffffff;
-    width: 400px;
-}
-#username {
-    width: 70%;
-    display: block;
-    margin: 0 auto;
-  }
-=======
 /* login page and register page*/
 .formWrapper {
   display: flex;
@@ -160,4 +129,3 @@ footer {
     width: 100%;
     height: 45px;
 }
->>>>>>> 3911d0bb7d14671cd6f598de9c0ce14e0f751ea5
