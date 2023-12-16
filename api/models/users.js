@@ -63,7 +63,17 @@ async function register(username, password) {
   return authenticatedUser;
 }
 
+async function readOneUserFromUsername(username) {
+  await mongoose.connect('mongodb+srv://WebProjectVinci2023:WebProjectVinci2023@ShadowFortressGame.trlvgrx.mongodb.net/ShadowFortressGame?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true });
+
+  const userFound = await User.findOne({ username });
+  if (userFound) return undefined;
+
+  return userFound;
+}
+
 module.exports = {
   login,
   register,
+  readOneUserFromUsername,
 };
