@@ -37,9 +37,8 @@ function renderRegisterForm() {
   confirmPassword.placeholder = 'Confirm your password';
   confirmPassword.className = 'form-control mb-3';
 
-  const alreadyHasDiv = document.createElement('div');
   const alReadyAnAccount = document.createElement('p');
-  alreadyHasDiv.innerHTML = 'Already have an account ? <a href="/login">sign in.</a>';
+  alReadyAnAccount.innerHTML = 'Already have an account ? <a href="/login">sign in.</a>';
 
   const submit = document.createElement('input');
   submit.value = 'Sign up';
@@ -50,16 +49,18 @@ function renderRegisterForm() {
   errorMessage.id = 'errorMessage';
   errorMessage.innerHTML = '';
 
-  
+  const privacyPolicyP = document.createElement('p');
+  privacyPolicyP.innerHTML = 'By continuing, you confirm that you have read and understand the <a href="https://policies.google.com/privacy?hl=en-US" target="_blank style="color:white";>Privacy Policy.</a>'
+
   form.appendChild(username);
   form.appendChild(password);
   form.appendChild(confirmPassword);
-  form.appendChild(alreadyHasDiv);
-  alreadyHasDiv.appendChild(alReadyAnAccount);
+  form.appendChild(alReadyAnAccount);
+  form.appendChild(privacyPolicyP);
   form.appendChild(submit);
   form.appendChild(errorMessage);
   form.addEventListener('submit', onRegister);
-  
+
   main.appendChild(title);
   main.appendChild(form);
 }

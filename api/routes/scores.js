@@ -27,11 +27,11 @@ router.post('/', authorize, async (req, res) => {
   const { username, wave, score } = req.body;
 
   // Validation des types pour wave et score
-  if (!username || typeof wave !== 'number' || typeof score !== 'number') {
+  if (!username) {
     return res.status(400).send('Bad Request');
   }
 
-  const createdScore = await Score.create({ username, wave, score });
+  const createdScore = await Score.createOneScore(username, wave, score);
   return res.json(createdScore);
 });
 
