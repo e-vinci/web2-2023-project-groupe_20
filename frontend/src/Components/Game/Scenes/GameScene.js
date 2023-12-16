@@ -3,6 +3,7 @@ import Goblin from "../Enemies/Goblin";
 import Wolf from "../Enemies/Wolf";
 import HobGoblin from "../Enemies/HobGoblin";
 import Projectile from "../Projectile";
+import AOEProjectile from "../AOEProjectile";
 import Tower from "../Towers/Tower";
 import AOETower from "../Towers/AOETower";
 import { getAuthenticatedUser, isAuthenticated  } from "../../../utils/auths";
@@ -30,13 +31,12 @@ class GameScene extends Phaser.Scene {
     create(){
         this.wave = 0;
         this.waveText = null;
-        this.currency = 250;
+        this.currency = 10000;
         this.score = 0;
         this.background = this.add.image(0,0, "gameMap");
         this.background.setOrigin(0,0);
         this.map = placementTilesData;
         this.props();
-
         this.playerLives = 10;
         this.nextWaveTime = 0;
         this.gameSpeed = 1;
@@ -113,12 +113,9 @@ class GameScene extends Phaser.Scene {
         
         this.shopCrossBow = this.add.image(900,810,"crossbow").setTint(0x666666)
         this.crossBowPrice = this.add.text(883,840,'125')
-        this.shopAOETower = this.add.image(1000,810,"slowingTower").setTint(0x666666)
-        this.shopAOETower.setVisible(false)
+        this.shopAOETower = this.add.image(1000,810,"AOETower").setTint(0x666666)
         this.slowingTowerPrice = this.add.text(985,840,'250')
-        this.slowingTowerPrice.setVisible(false)
 
-        // this.soldingButton = this.add.text(1200,810,"SOLD").setInteractive()
         
 
 
@@ -203,9 +200,11 @@ class GameScene extends Phaser.Scene {
         }
 
         if(this.sellMode === true){
+            this.shopMode.setTint(0x97FF00)
             this.input.off('pointerdown').on('pointerdown', pointer => this.sellTower(pointer));
         }else if (this.sellMode === false){
             this.input.off('pointerdown').on('pointerdown', pointer => this.placeTowers(pointer, GameObjects));
+            this.shopMode.setTint(0xffffff)
         }
 
         this.checkEnemiesReachedEnd();
@@ -214,11 +213,6 @@ class GameScene extends Phaser.Scene {
             this.startNextWave();
         }
 
-        if(this.sellMode === true) 
-            this.shopMode.setTint(0x97FF00)
-        else{
-            this.shopMode.setTint(0xffffff)
-        }
     }
 
     startNextWave(){
@@ -250,8 +244,14 @@ class GameScene extends Phaser.Scene {
     
         if(this.canPlaceTower(i, j)){
             this.currentPosition = {i, j};
-            this.setupShopTower(this.shopCrossBow, 125, 'Arrow')
-            this.setupShopTower(this.shopAOETower, 250, 'AOETower')
+            if(this.currency>= 125){
+                this.setupShopTower(this.shopCrossBow, 125, 'Arrow')
+            }
+            if(this.currency>= 250){
+                this.setupShopTower(this.shopAOETower, 250, 'AOETower')
+            }
+
+
         }
     }
 
@@ -275,22 +275,22 @@ class GameScene extends Phaser.Scene {
             }
         }
 
-setupShopTower(shopTower, cost, towerType){
+    setupShopTower(shopTower, cost, towerType){
 
-    shopTower.setInteractive().setScale(1.3).setTint('0xffffff');
-    shopTower.on('pointerover', () => shopTower.setScale(1.5));
-    shopTower.on('pointerout', () => shopTower.setScale(1.3));
+        shopTower.setInteractive().setScale(1.3).setTint('0xffffff');
+        shopTower.on('pointerover', () => shopTower.setScale(1.5));
+        shopTower.on('pointerout', () => shopTower.setScale(1.3));
 
-    shopTower.on('pointerup', () => {
-        if(this.currency >= cost){
-            const existingTower = this.getTowerAt(this.currentPosition.i, this.currentPosition.j);
-            if (!existingTower) {
-                this.placeTower(this.currentPosition.i, this.currentPosition.j, towerType);
+        shopTower.on('pointerup', () => {
+            if(this.currency >= cost){
+                const existingTower = this.getTowerAt(this.currentPosition.i, this.currentPosition.j);
+                if (!existingTower) {
+                    this.placeTower(this.currentPosition.i, this.currentPosition.j, towerType);
+                }
             }
-        }
-        shopTower.setScale(1.3).setTint(0x666666);
-    });
-}
+            shopTower.setScale(1.3).setTint(0x666666);
+        });
+    }
 
     placeTower(i, j, towerType){
         const cost = towerType === 'Arrow' ? 125 : 250;
@@ -360,7 +360,7 @@ setupShopTower(shopTower, cost, towerType){
         });
 
         this.projectiles = this.physics.add.group({
-            classType: Projectile,
+            classType: Projectile,AOEProjectile,
             runChildUpdate: true
         });
 
@@ -434,7 +434,15 @@ setupShopTower(shopTower, cost, towerType){
     }
 
     addProjectile(x, y , angle){
-        const projectile = new Projectile(this, 0, 0);
+        let projectile;
+        const i = Math.floor(y/64)
+        const j = Math.floor(x/64)
+        const towerType = this.getTowerAt(i,j)
+
+        if(towerType.type === 'Arrow')
+            projectile = new Projectile(this, 0, 0,this.damage);
+        else if (towerType.type === 'AOE')
+            projectile = new AOEProjectile(this, 0, 0,this.damage);
         this.projectiles.add(projectile);
         projectile.fire(x, y, angle);
     }
@@ -478,7 +486,7 @@ setupShopTower(shopTower, cost, towerType){
     }
 
     damageEnemy(enemy, projectile){
-        this.damage = 30;
+        this.damage = projectile.damage
         const reward = enemy.getReward();
         const score = enemy.getScore();
         if (enemy.active === true && projectile.active === true) {
@@ -556,8 +564,8 @@ setupShopTower(shopTower, cost, towerType){
             }
         
         })
+    this.backTrackSound.isPlaying = !this.backTrackSound.isPlaying
 
-this.backTrackSound.isPlaying = !this.backTrackSound.isPlaying
 
         this.tutoButton = this.add.sprite(1110,50,"tutoButton");
         this.tutoButton.setScale(3);
