@@ -16,6 +16,7 @@ function renderLoginForm() {
 
   const form = document.createElement('form');
   form.className = 'p-5';
+  form.id = 'loginForm'
 
   const title = document.createElement('h1');
   title.className = 'text-center';

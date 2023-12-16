@@ -2,8 +2,6 @@ body {
   background-color: #1e665d;
   margin: 0;
   height: 95%;
-  justify-content: center;
-  align-items: center;
 }
 
 canvas {
@@ -17,11 +15,12 @@ canvas {
 }
 
 footer {
-  height: 25px;
+  position: fixed;
+  bottom: 0;
   background-color: #1c2b48;
-  color: #ffffff;
+  width: 100%;
+  color: white;
   text-align: center;
-  margin-top: 10px;
 }
 
 .navbutton {
@@ -57,13 +56,20 @@ footer {
 }
 
 /* login page */
-.formWrapper{
-    position: relative;
-    background-color: #ffffff;
-    width: 400px;
+.formWrapper {
+  margin-top: 60%;
+  display: flex;
+  align-self: center;
+  max-width: 400px;
+  justify-content: center;
+  margin: auto;
 }
-#username {
-    width: 70%;
-    display: block;
-    margin: 0 auto;
-  }
+
+#loginForm {
+  display: block;
+  margin: 20px;
+  padding: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  border-radius: 25px;
+}
