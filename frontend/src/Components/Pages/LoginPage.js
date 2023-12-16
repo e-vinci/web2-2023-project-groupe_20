@@ -11,6 +11,9 @@ const LoginPage = () => {
 function renderLoginForm() {
   const main = document.querySelector('main');
 
+  const formDiv = document.createElement('div');
+  formDiv.className = 'formWrapper';
+
   const form = document.createElement('form');
   form.className = 'p-5';
 
@@ -44,16 +47,17 @@ function renderLoginForm() {
   errorMessage.id = 'errorMessage';
   errorMessage.innerHTML = '';
 
-  
+  form.appendChild(title);
   form.appendChild(username);
   form.appendChild(password);
   form.appendChild(notYetAnAccount);
   form.appendChild(submit);
   form.appendChild(errorMessage);
-  form.addEventListener('submit', onLogin);
+  form.addEventListener('submit', onLogin); 
   
-  main.appendChild(title);
-  main.appendChild(form);
+  formDiv.appendChild(form);
+  
+  main.appendChild(formDiv);
 }
 
 
