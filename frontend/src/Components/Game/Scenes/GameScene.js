@@ -5,7 +5,6 @@ import HobGoblin from "../Enemies/HobGoblin";
 import Projectile from "../Projectile";
 import Tower from "../Towers/Tower";
 import AOETower from "../Towers/AOETower";
-import { getAuthenticatedUser, isAuthenticated  } from "../../../utils/auths";
 
 const placementTilesData = [0, 0, 0, 342, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -605,37 +604,13 @@ this.backTrackSound.isPlaying = !this.backTrackSound.isPlaying
 
     }
 
+
     gameOver(){
-        if(isAuthenticated()){
-            this.registerScore();
-        }
         this.backTrackSound.stop();
         this.scene.start("gameOver");
     }
 
-    async registerScore() {
-        
-        const {score} = this;
-        const {wave} = this;
-        const { username, token } = getAuthenticatedUser();
-        const options = {
-            method: 'POST',
-            body: JSON.stringify({
-                username,
-                score,
-                wave
-            }),
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': token
-            },
-        };
 
-        const response = await fetch(`/api/scores`, options);
-        if(!response.ok) {
-            throw new Error(`fetch error:: : ${response.status} : ${response.statusText}`);
-        }
-    }
 
 }
 
