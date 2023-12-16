@@ -35,7 +35,7 @@ class Goblin extends Phaser.GameObjects.Sprite{
     }
 
     update(time, delta){
-        this.follower.t += 0.00005 * delta;
+        this.follower.t += 0.00005 * delta; 
 
         this.path.getPoint(this.follower.t, this.follower.vec);
         this.setPosition(this.follower.vec.x + this.xOffset, this.follower.vec.y + this.yOffset);
