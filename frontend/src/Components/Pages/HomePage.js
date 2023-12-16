@@ -4,10 +4,7 @@ const HomePage = () => {
     renderHomePage()
   };
 
-
   function renderHomePage(){
-  
-    const homePage = ``
   }
 
 
