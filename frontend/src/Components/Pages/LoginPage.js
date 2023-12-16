@@ -42,6 +42,7 @@ function renderLoginForm() {
   const submit = document.createElement('input');
   submit.value = 'Sign up';
   submit.type = 'submit';
+  submit.id = 'loginSubmit'
   submit.className = 'btn btn-primary';
 
   const errorMessage = document.createElement('p');
