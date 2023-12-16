@@ -36,6 +36,7 @@ class GameScene extends Phaser.Scene {
         this.background.setOrigin(0,0);
         this.map = placementTilesData;
         this.props();
+
         this.playerLives = 10;
         this.nextWaveTime = 0;
         this.gameSpeed = 1;
@@ -249,8 +250,8 @@ class GameScene extends Phaser.Scene {
     
         if(this.canPlaceTower(i, j)){
             this.currentPosition = {i, j};
-            this.setupShopTower(this.shopCrossBow, 125, 'Arrow');
-            this.setupShopTower(this.shopAOETower, 250, 'AOETower');
+            this.setupShopTower(this.shopCrossBow, 125, 'Arrow')
+            this.setupShopTower(this.shopAOETower, 250, 'AOETower')
         }
     }
 
@@ -260,8 +261,7 @@ class GameScene extends Phaser.Scene {
         this.tower = this.getTowerAt(i,j)
 
             if(this.tower){
-                const sellAmount = this.tower.cost;
-                this.currency += parseInt(sellAmount,10);
+                this.currency += parseInt(this.tower.cost,10);
                 this.currencyText.setText(`: ${this.currency}`);
 
                 const index = i * 20 + j;
@@ -309,6 +309,8 @@ setupShopTower(shopTower, cost, towerType){
         tower.setActive(true);
         tower.setVisible(true);
         tower.place(i, j);
+        this.shopAOETower.setTint(0x666666).disableInteractive()
+        this.shopCrossBow.setTint(0x666666).disableInteractive()
     }
 
 
@@ -525,22 +527,9 @@ setupShopTower(shopTower, cost, towerType){
             this.scene.pause();
             this.scene.launch('pauseGame');
         });
-/*
-        // Fast forward button
-        this.fastForwardButton = this.add.sprite(1170, 50, "times2Button").setScale(3);
-        this.fastForwardButton.setInteractive();
-        this.fastForwardButton.on("pointerover", () => {
-            this.fastForwardButton.setTint(0xe0e0e0);
-        });
-      
-        this.fastForwardButton.on("pointerout", () => {
-            this.fastForwardButton.setTint(0xFFFFFF);
-        });
-        this.fastForwardButton.on("pointerup", () => {
-            this.fastForwardButton.play("times2Button_anim");
-            this.toggleFastForward();
-        });
-*/  
+
+        // SoundButton music on/off
+        
         this.soundButton = this.add.sprite(1170,50,"musicToMuteButton").setFrame(0);
         this.soundButton.setScale(3);
         this.soundButton.setInteractive();
@@ -565,8 +554,10 @@ setupShopTower(shopTower, cost, towerType){
                 this.soundButton.setTexture("mutedToMusicButton").setFrame(2);
                 this.backTrackSound.play()
             }
-            
+        
         })
+
+this.backTrackSound.isPlaying = !this.backTrackSound.isPlaying
 
         this.tutoButton = this.add.sprite(1110,50,"tutoButton");
         this.tutoButton.setScale(3);
