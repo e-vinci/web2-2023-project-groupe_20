@@ -15,9 +15,9 @@ import crossbowSprite from "../../../assets/spriteSheets/crossbow.png"
 import arrowPng from "../../../assets/arrow.png"
 import crossbowArrowSprite from "../../../assets/spriteSheets/crossbowArrow.png"
 import arrowImpactSprite from "../../../assets/spriteSheets/arrowImpact.png"
-import AOETowerSprite from "../../../assets/spriteSheets/AOETower/AOETowerWeapon.png"
-import AOETowerProjectileSprite from "../../../assets/spriteSheets/AOETower/AOETowerProjectile.png"
-import AOETowerProjectileImpactSprite from "../../../assets/spriteSheets/AOETower/AOETowerProjectileImpact.png"
+import AOETower from "../../../assets/spriteSheets/slowingTower/AOETowerWeapon.png"
+import AOETowerProjectile from "../../../assets/spriteSheets/slowingTower/AOETowerProjectile.png"
+import AOETowerProjectileImpact from "../../../assets/spriteSheets/slowingTower/AOETowerProjectileImpact.png"
 
 import pauseButtonSprite from "../../../assets/spriteSheets/UI/UIPauseButton.png"
 import times2ButtonSprite from "../../../assets/spriteSheets/UI/UI2timeButton.png"
@@ -130,15 +130,15 @@ class PreloadScene extends Phaser.Scene {
             frameHeight: 32
         })
         
-        this.load.spritesheet("AOETower",AOETowerSprite,{
+        this.load.spritesheet("AOETower",AOETower,{
             frameWidth:96,
             frameHeight:96
         })
-        this.load.spritesheet("AOETowerProjectile", AOETowerProjectileSprite, {
+        this.load.spritesheet("AOETowerProjectile", AOETowerProjectile, {
             frameWidth: 16,
             frameHeight: 16
         });
-        this.load.spritesheet("AOETowerProjectileImpact", AOETowerProjectileImpactSprite, {
+        this.load.spritesheet("AOETowerProjectileImpact", AOETowerProjectileImpact, {
             frameWidth: 64,
             frameHeight: 64
         }); 
@@ -204,7 +204,7 @@ class PreloadScene extends Phaser.Scene {
         this.anims.create({
             key:"AOETower_anim",
             frames: this.anims.generateFrameNames("AOETower"),
-            frameRate:29,
+            frameRate:25,
             repeat:-1
         })
 
@@ -217,8 +217,8 @@ class PreloadScene extends Phaser.Scene {
 
         this.anims.create({
             key: "AOETowerWeapon_anim",
-            frames : this.anims.generateFrameNames("AOETower"),
-            frameRate:29,
+            frames : this.anims.generateFrameNames("AOETowerWeapon"),
+            framesRate:25,
             repeat:-1
         })
 
@@ -228,10 +228,6 @@ class PreloadScene extends Phaser.Scene {
             frameRate: 10,
             repeat: -1
         });
-        this.anims.create({
-            key: 'AOETowerProjectile_anim',
-            frames: this.anims.generateFrameNames("AOETowerProjectile")
-        })
 
         this.anims.create({
             key: "arrowImpact_anim",
@@ -241,7 +237,7 @@ class PreloadScene extends Phaser.Scene {
         });
         this.anims.create({
             key: "AOETowerWeaponImpact_anim",
-            frames: this.anims.generateFrameNames("AOETowerProjectileImpact"),
+            frames: this.anims.generateFrameNames("AOETowerWeaponImpact"),
             frameRate: 25,
             repeat: -1
         });
@@ -259,25 +255,19 @@ class PreloadScene extends Phaser.Scene {
         });
         this.anims.create({
             key:"soundButton_anim",
-            frames: this.anims.generateFrameNames("menuSoundButton"),
+            frame: this.anims.generateFrameNames("menuSoundButton"),
             frameRate:15,
             repeat:0
         })
         this.anims.create({
             key:"musicToMute_anim",
-            frames: this.anims.generateFrameNames("musicToMuteButton"),
-            frameRate:15,
-            repeat:0
-        })
-        this.anims.create({
-            key:"muteToMusicButton_anim",
-            frames: this.anims.generateFrameNames("mutedToMusicButton"),
+            frame: this.anims.generateFrameNames("musicToMuteButton"),
             frameRate:15,
             repeat:0
         })
         this.anims.create({
             key:"muteToMusic_anim",
-            frames: this.anims.generateFrameNames("muteToMusicButton"),
+            frame: this.anims.generateFrameNames("muteToMusicButton"),
             frameRate:15,
             repeat:0
         })
