@@ -19,7 +19,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use('/users', cors(corsOptions), usersRouter);
-app.use('/scores', scoreRouter);
 app.use('/auths', cors(corsOptions), authsRouter);
 
 module.exports = app;
