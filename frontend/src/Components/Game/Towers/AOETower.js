@@ -1,16 +1,21 @@
 import Phaser from "phaser";
+import Projectile from "../AOEProjectile";
 
-class AOETower extends Phaser.GameObjects.Sprite{
-    constructor(scene,x,y,map){
-        super(scene,x,y,map)
-        this.nextTic = 0
-        this.map=map
-        this.cost = 250
+class Tower extends Phaser.GameObjects.Sprite{
+    constructor(scene, x, y, map,cost,type,projectile) {
+        super(scene, x, y, "AOETowerWeapon",);
 
-        this.scene.add.existing(this)
-        this.rangedGraphics = scene.add.graphics()
-        this.play("AOETowerWeapon_anim")
-        this.anims.stop()
+        this.nextTic = 0;
+        this.map = map;
+
+        this.cost = '250'
+        this.type = 'AOE'
+        this.projectile = Projectile
+
+        this.scene.add.existing(this);
+        this.rangeGraphics = scene.add.graphics();
+        this.play("AOETowerWeapon_anim");
+        this.anims.stop();
     }
 
     place(i, j) {
@@ -18,7 +23,6 @@ class AOETower extends Phaser.GameObjects.Sprite{
         this.x = j * 64 + 64 / 2
         const index = i * 20 + j
         this.map[index] = 1
-        
     }
 
     fire() {
@@ -39,7 +43,7 @@ class AOETower extends Phaser.GameObjects.Sprite{
                 this.anims.stop()
             }
             this.fire()
-            this.nextTic = time + 500
+            this.nextTic = time + 1500
         }
         this.updateRangeVisualization()
     }
@@ -55,12 +59,12 @@ class AOETower extends Phaser.GameObjects.Sprite{
     }
 
     updateRangeVisualization() {
-        this.rangeGraphics.clear()
-        this.rangeGraphics.lineStyle(2, 0xffffff, 0.3)
-        this.rangeGraphics.beginPath()
-        this.rangeGraphics.arc(this.x, this.y, 200, 0, 2 * Math.PI)
-        this.rangeGraphics.strokePath()
+        this.rangeGraphics.clear();
+        this.rangeGraphics.lineStyle(2, 0xffffff, 0.3);
+        this.rangeGraphics.beginPath();
+        this.rangeGraphics.arc(this.x, this.y, 200, 0, 2 * Math.PI);
+        this.rangeGraphics.strokePath();
     }
 }
 
-export default AOETower
+export default Tower
