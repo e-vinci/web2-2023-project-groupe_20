@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import archerTower from "../../assets/spriteSheets/entityPng/crossbowAlone.png"
 import heavyTower from "../../assets/spriteSheets/entityPng/heavyTower.png"
 import goblin from "../../assets/spriteSheets/entityPng/S_Goblin.png"
@@ -8,7 +9,19 @@ const HomePage = () => {
     const main = document.querySelector('main');
     main.innerHTML = renderHomePage()
 
+=======
+import  {Cards as BootstrapCards} from 'bootstrap'
+
+const HomePage = () => {
+    const main = document.querySelector('main');
+    main.innerHTML = 'Deal with the content of your HomePage';
+    renderHomePage();
+>>>>>>> 3911d0bb7d14671cd6f598de9c0ce14e0f751ea5
   };
+
+  function renderHomePage() {
+    const Bestiary = ``
+  }
   
 
   function renderHomePage(){    

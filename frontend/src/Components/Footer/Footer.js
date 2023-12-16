@@ -2,7 +2,7 @@ const Footer = () => {
     const footer = document.querySelector('footer');
     footer.innerHTML = `
     <div class="footer content">
-      Site réalisé par Touali Mohamed, Quiambao Roemer-Trinité, Mcheik Mohamed, Belbachir Rayane, Paquet Gabriel.
+      Site réalisé par Belbachir Rayane, Mcheik Mohamed, Paquet Gabriel, Quiambao Roemer-Trinité, Touali Mohamed.
     </div>
     `;
   };

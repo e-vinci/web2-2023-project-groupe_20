@@ -8,6 +8,7 @@ const corsOptions = {
 };
 
 const usersRouter = require('./routes/users');
+const scoreRouter = require('./routes/scores');
 const authsRouter = require('./routes/auths');
 
 const app = express();

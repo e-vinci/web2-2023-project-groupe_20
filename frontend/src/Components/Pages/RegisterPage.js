@@ -11,8 +11,12 @@ const RegisterPage = () => {
 function renderRegisterForm() {
   const main = document.querySelector('main');
 
+  const formDiv = document.createElement('div');
+  formDiv.className = 'registerWrapper';
+
   const form = document.createElement('form');
   form.className = 'p-5';
+  form.id = 'registerForm';
 
   const title = document.createElement('h1');
   title.innerHTML = 'Register';
@@ -37,31 +41,36 @@ function renderRegisterForm() {
   confirmPassword.placeholder = 'Confirm your password';
   confirmPassword.className = 'form-control mb-3';
 
-  const alreadyHasDiv = document.createElement('div');
   const alReadyAnAccount = document.createElement('p');
-  alreadyHasDiv.innerHTML = 'Already have an account ? <a href="/login">sign in.</a>';
+  alReadyAnAccount.innerHTML = 'Already have an account ? <a href="/login">sign in.</a>';
 
   const submit = document.createElement('input');
   submit.value = 'Sign up';
   submit.type = 'submit';
+  submit.id = 'registerSubmit';
   submit.className = 'btn btn-primary';
 
   const errorMessage = document.createElement('p');
   errorMessage.id = 'errorMessage';
   errorMessage.innerHTML = '';
 
+  const privacyPolicyP = document.createElement('p');
+  privacyPolicyP.innerHTML =
+    'By continuing, you confirm that you have read and understand the <a href="https://policies.google.com/privacy?hl=en-US" target="_blank style="color:white";>Privacy Policy.</a>';
   
+  form.appendChild(title);
   form.appendChild(username);
   form.appendChild(password);
   form.appendChild(confirmPassword);
-  form.appendChild(alreadyHasDiv);
-  alreadyHasDiv.appendChild(alReadyAnAccount);
+  form.appendChild(alReadyAnAccount);
+  form.appendChild(privacyPolicyP);
   form.appendChild(submit);
   form.appendChild(errorMessage);
   form.addEventListener('submit', onRegister);
-  
-  main.appendChild(title);
-  main.appendChild(form);
+
+  formDiv.appendChild(form);
+ 
+  main.appendChild(formDiv);
 }
 
 async function onRegister(e) {
@@ -102,7 +111,7 @@ async function onRegister(e) {
   setAuthenticatedUser(authenticatedUser);
 
   Navbar();
-  
+
   Navigate('/');
 }
 

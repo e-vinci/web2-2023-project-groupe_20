@@ -1,4 +1,10 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
 body {
+<<<<<<< HEAD
   /*background-color: #1e665d;*/
   background-image:url("../assets/background-image.png");
   background-attachment: fixed;
@@ -7,6 +13,11 @@ body {
   justify-content: center;
   align-items: center;
   
+=======
+  background-color: #1e665d;
+  margin: 0;
+  height: 95%;
+>>>>>>> 3911d0bb7d14671cd6f598de9c0ce14e0f751ea5
 }
 
 canvas {
@@ -16,6 +27,7 @@ canvas {
 
 .navbar {
   background-color: #1c2b48;
+<<<<<<< HEAD
   margin-bottom: 10px;
 }
 
@@ -25,6 +37,17 @@ footer {
   color: #ffffff;
   text-align: center;
   margin-top: 10px;
+=======
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  background-color: #1c2b48;
+  width: 100%;
+  color: white;
+  text-align: center;
+>>>>>>> 3911d0bb7d14671cd6f598de9c0ce14e0f751ea5
 }
 
 .navbutton {
@@ -59,6 +82,7 @@ footer {
   width: 100%;
 }
 
+<<<<<<< HEAD
 /* login page */
 .formWrapper{
     position: relative;
@@ -70,3 +94,70 @@ footer {
     display: block;
     margin: 0 auto;
   }
+=======
+/* login page and register page*/
+.formWrapper {
+  display: flex;
+  flex-direction: row;
+  height: calc(100vh - 76px);
+  align-items: center;
+  max-width: 500px;
+  justify-content: center;
+  margin: auto;
+}
+
+#loginForm {
+  position: relative;
+  bottom: 10px;
+  width: 100%;
+  height: fit-content;
+  margin: 20px;
+  padding: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(to top,#1c2b48, white );
+  border-radius: 25px;
+}
+
+#loginSubmit{
+    margin-top: 20px;
+    width: 100%;
+    height: 45px;
+}
+
+.registerWrapper {
+  display: flex;
+  flex-direction: row;
+  height: calc(100vh - 76px);
+  align-items: center;
+  max-width: 500px;
+  justify-content: center;
+  margin: auto;
+}
+
+#registerForm {
+  margin: 20px;
+  padding: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(to top,#1c2b48, white );
+  border-radius: 25px;
+}
+#username {
+  border-radius: 15px;
+}
+#password {
+  border-radius: 15px;
+}
+#confirmPassword {
+  border-radius: 15px;
+}
+
+#titleForm{
+    margin-bottom: 20px;
+}
+
+#registerSubmit{
+    margin-top: 20px;
+    width: 100%;
+    height: 45px;
+}
+>>>>>>> 3911d0bb7d14671cd6f598de9c0ce14e0f751ea5
