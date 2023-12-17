@@ -19,7 +19,7 @@ Content-Type: application/json
 }
 
 
-### Create a duplicate user
+### Try to create a duplicate user
 POST {{baseUrl}}/auths/register
 Content-Type: application/json
 
