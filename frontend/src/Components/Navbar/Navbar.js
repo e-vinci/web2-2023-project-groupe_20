@@ -9,6 +9,7 @@ const Navbar = () => {
   renderNavbar();
 }
 function renderNavbar() {
+  // Not connected user
   const anonymousNavbar = `
   <nav class="navbar navbar-expand-lg me-auto">
     <div class="container-fluid">
@@ -38,6 +39,7 @@ function renderNavbar() {
   </nav>
   `;
 
+  // Connected user
   const authenticatedNavbar = `
   <nav class="navbar navbar-expand-lg me-auto">
     <div class="container-fluid">
