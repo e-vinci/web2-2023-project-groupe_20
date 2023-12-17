@@ -270,12 +270,6 @@ class PreloadScene extends Phaser.Scene {
             frameRate:15,
             repeat:0
         })
-        this.anims.create({
-            key:"muteToMusic_anim",
-            frame: this.anims.generateFrameNames("muteToMusicButton"),
-            frameRate:15,
-            repeat:0
-        })
 
         this.anims.create({
             key:"tutoButton_anim",
