@@ -7,10 +7,13 @@ body {
   background-image:url("../assets/background-image.png");
   background-attachment: fixed;
   background-size: contain;
-  height: 1350px;
+  height:100%;
   justify-content: center;
   align-items: center;
 }
+
+main{height: 100%;}
+
 
 canvas {
   display: block;
@@ -22,10 +25,11 @@ canvas {
 }
 
 footer {
-  position: fixed;
-  bottom: 0;
+  position: absolute;
+  bottom: auto;
   background-color: #1c2b48;
   width: 100%;
+  height: 30px;
   color: white;
   text-align: center;
 }
@@ -73,12 +77,11 @@ footer {
 .contenue{
   display: grid;
   width: 100%;
-  height: 400px;
+  height: 100%;
   grid-template-areas: 
   "tower1 mid1 mob1"
   "tower2 mid2 mob2"
-  "tower3 mid3 mob3"
-  "empty mid3 empty" ;
+  "tower3 mid3 mob3" ;
   grid-template-rows: 350px 350px 350px;
   grid-template-columns: 1fr 1fr;
 }
@@ -89,6 +92,7 @@ footer {
   text-align:justify;
   margin: 25px;
   padding: 25px;
+  height: 300px;
 }
 
 .card-tower1,.card-tower2{
@@ -100,7 +104,7 @@ footer {
 .card-tower1:hover,.card-tower2:hover,.card-mob1:hover,.card-mob2:hover,.card-mob3:hover{
   transition: all 0.5s ease-out; 
   max-width: 1000px;
-  width: 1000px;
+  width: 100%;
   height: 300px;
 }
 .card-tower2{
@@ -222,3 +226,20 @@ footer {
     height: 45px;
 }
 
+.table-responsive-pt-5{
+  text-align: center;
+  margin-top:25px ;
+  opacity: 0.99;
+}
+.table-table-dark-table-striped{
+  margin: auto;
+  background: linear-gradient(to  bottom, #1c2b48,rgb(0, 79, 168));
+  border-radius: 10px;
+  width: 90%;
+  color: white;
+}
+
+
+th,td{
+  padding: 10px;  
+}
