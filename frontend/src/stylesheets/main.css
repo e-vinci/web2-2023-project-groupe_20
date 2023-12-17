@@ -7,7 +7,8 @@
 body {
   background-image:url("../assets/background-image.png");
   background-attachment: fixed;
-  background-size: contain;
+  background-size:100%;
+  background-repeat: no-repeat;
   height:100%;
   justify-content: center;
   align-items: center;
