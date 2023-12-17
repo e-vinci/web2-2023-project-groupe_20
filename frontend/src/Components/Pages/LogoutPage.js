@@ -4,7 +4,9 @@ import Navigate from '../Router/Navigate';
 
 const Logout = () => {
   clearAuthenticatedUser();
+
   Navbar();
+  
   Navigate('/');
 };
 

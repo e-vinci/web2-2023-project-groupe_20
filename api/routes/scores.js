@@ -51,4 +51,15 @@ router.delete('/:id', authorize, isAdmin, async (req, res) => {
   return res.json(deletedScore);
 });
 
+// Get all games for a user based on its username
+router.get('/allGames', async (req, res) => {
+  const username = req?.query?.username?.length !== 0 ? req.query.username : undefined;
+
+  if (!username) return res.sendStatus(400); // 400 Bad Request
+
+  const games = await Score.getAllGamesFromUser(username);
+
+  return res.json(games);
+});
+
 module.exports = router;

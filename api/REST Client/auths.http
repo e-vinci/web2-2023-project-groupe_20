@@ -45,3 +45,6 @@ Content-Type: application/json
     "username":"GabEstBeau",
     "password":"GabEstBeau2023"
 }
+
+### Find all games for a user
+GET {{baseUrl}}/scores/allGames?username=Momzer
