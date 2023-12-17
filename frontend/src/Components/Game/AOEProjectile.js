@@ -13,7 +13,6 @@ class Projectile extends Phaser.GameObjects.Sprite{
 
 
         scene.add.existing(this);
-        this.play("AOETowerProjectile");
         this.play("AOETowerProjectile_anim");
     }
 

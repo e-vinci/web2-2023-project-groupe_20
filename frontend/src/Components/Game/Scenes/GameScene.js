@@ -31,7 +31,7 @@ class GameScene extends Phaser.Scene {
     create(){
         this.wave = 0;
         this.waveText = null;
-        this.currency = 10000;
+        this.currency = 300;
         this.score = 0;
         this.background = this.add.image(0,0, "gameMap");
         this.background.setOrigin(0,0);
@@ -112,9 +112,9 @@ class GameScene extends Phaser.Scene {
         
         
         this.shopCrossBow = this.add.image(900,810,"crossbow").setTint(0x666666)
-        this.crossBowPrice = this.add.text(883,840,'125')
+        this.crossBowPrice = this.add.text(883,840,'150')
         this.shopAOETower = this.add.image(1000,810,"AOETower").setTint(0x666666)
-        this.slowingTowerPrice = this.add.text(985,840,'250')
+        this.slowingTowerPrice = this.add.text(985,840,'300')
 
         
 
@@ -221,7 +221,7 @@ class GameScene extends Phaser.Scene {
         if (this.wave === 5){
             this.totalEnemies = 1;
         } else{
-            this.totalEnemies = this.wave * 5;
+            this.totalEnemies = this.wave * 3;
         }
         this.nextEnemy = 0;
 
@@ -244,11 +244,11 @@ class GameScene extends Phaser.Scene {
     
         if(this.canPlaceTower(i, j)){
             this.currentPosition = {i, j};
-            if(this.currency>= 125){
-                this.setupShopTower(this.shopCrossBow, 125, 'Arrow')
+            if(this.currency>= 150){
+                this.setupShopTower(this.shopCrossBow, 150, 'Arrow')
             }
-            if(this.currency>= 250){
-                this.setupShopTower(this.shopAOETower, 250, 'AOETower')
+            if(this.currency>= 300){
+                this.setupShopTower(this.shopAOETower, 300, 'AOETower')
             }
 
 
@@ -293,7 +293,7 @@ class GameScene extends Phaser.Scene {
     }
 
     placeTower(i, j, towerType){
-        const cost = towerType === 'Arrow' ? 125 : 250;
+        const cost = towerType === 'Arrow' ? 150 : 300;
         this.currency -= cost;
         this.currencyText.setText(`: ${this.currency}`);
     

@@ -7,7 +7,7 @@ class Wolf extends Phaser.GameObjects.Sprite{
         this.play("wolf_anim");
         this.flipX= true;
         this.setScale(2);
-        this.reward = 10;
+        this.reward = 7;
         this.score = 10;
         this.wolfDeath = wolfDeath;
         this.alive = true;
