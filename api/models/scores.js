@@ -9,7 +9,7 @@ const scoreSchema = new mongoose.Schema({
 const Score = mongoose.model('Score', scoreSchema);
 
 async function readBestScores() {
-  await mongoose.connect('mongodb+srv://WebProjectVinci2023:WebProjectVinci2023@ShadowFortressGame.trlvgrx.mongodb.net/ShadowFortressGame?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true });
+  await mongoose.connect('mongodb+srv://USERNAME:PASSWORD@ShadowFortressGame.trlvgrx.mongodb.net/ShadowFortressGame?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true });
   return Score.aggregate([
     {
       $group: {
@@ -39,17 +39,17 @@ async function readBestScores() {
 }
 
 async function createOneScore(username, wave, score) {
-  await mongoose.connect('mongodb+srv://WebProjectVinci2023:WebProjectVinci2023@ShadowFortressGame.trlvgrx.mongodb.net/ShadowFortressGame?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true });
+  await mongoose.connect('mongodb+srv://USERNAME:PASSWORD@ShadowFortressGame.trlvgrx.mongodb.net/ShadowFortressGame?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true });
   return Score.create({ username, wave, score });
 }
 
 async function deleteOneScore(id) {
-  await mongoose.connect('mongodb+srv://WebProjectVinci2023:WebProjectVinci2023@ShadowFortressGame.trlvgrx.mongodb.net/ShadowFortressGame?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true });
+  await mongoose.connect('mongodb+srv://USERNAME:PASSWORD@ShadowFortressGame.trlvgrx.mongodb.net/ShadowFortressGame?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true });
   return Score.findByIdAndRemove(id);
 }
 
 async function getAllGamesFromUser(username) {
-  await mongoose.connect('mongodb+srv://WebProjectVinci2023:WebProjectVinci2023@ShadowFortressGame.trlvgrx.mongodb.net/ShadowFortressGame?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true });
+  await mongoose.connect('mongodb+srv://USERNAME:PASSWORD@ShadowFortressGame.trlvgrx.mongodb.net/ShadowFortressGame?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true });
   const games = await Score.find({ username });
   const gamesTable = [];
 
