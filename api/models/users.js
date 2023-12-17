@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema({
 
 const User = mongoose.model('Users', userSchema);
 
-const jwtSecret = 'ilovemypizza!';
+const jwtSecret = 'ShadowFortress4LifeDudes<3';
 const lifetimeJwt = 24 * 60 * 60 * 1000; // in ms : 24 * 60 * 60 * 1000 = 24h
 
 const saltRounds = 10;
