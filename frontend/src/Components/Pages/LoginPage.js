@@ -40,7 +40,8 @@ function renderLoginForm() {
   
   const notYetAnAccount = document.createElement('button');
   notYetAnAccount.textContent = "Not yet an account ?"
-  notYetAnAccount.style = "margin-top:10px;"
+  notYetAnAccount.style = "margin-top:10px"
+  notYetAnAccount.className = "btn btn-primary"
   notYetAnAccount.addEventListener('click', () => {
     Navigate('/register')
   })
@@ -50,7 +51,7 @@ function renderLoginForm() {
   })
 
   const submit = document.createElement('input');
-  submit.value = 'Sign up';
+  submit.value = 'Sign in';
   submit.type = 'submit';
   submit.id = 'loginSubmit'
   submit.className = 'btn btn-primary';

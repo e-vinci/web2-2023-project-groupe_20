@@ -46,6 +46,7 @@ function renderRegisterForm() {
 
   const alReadyAnAccount = document.createElement('button');
   alReadyAnAccount.textContent = "Already an account ?"
+  alReadyAnAccount.className = "btn btn-primary"
   alReadyAnAccount.style = "margin-top:10px;"
   alReadyAnAccount.addEventListener('click', () => {
     Navigate('/login')

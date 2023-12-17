@@ -1,12 +1,13 @@
 * {
-  padding: 0;
   margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
   background-image:url("../assets/background-image.png");
   background-attachment: fixed;
-  background-size: contain;
+  background-size:100%;
   height:100%;
   justify-content: center;
   align-items: center;
@@ -18,6 +19,7 @@ main{height: 100%;}
 canvas {
   display: block;
   margin: auto;
+  padding: 20px;
 }
 
 .navbar {
@@ -25,8 +27,8 @@ canvas {
 }
 
 footer {
-  position: absolute;
-  bottom: auto;
+  position: fixed;
+  bottom: 0;
   background-color: #1c2b48;
   width: 100%;
   height: 30px;
@@ -73,91 +75,69 @@ footer {
   font-size: 48px;
   font-weight: bold;
 }
+#container{
+  margin: 0px auto;
+        max-width: 1200px;
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+}
 
-.contenue{
-  display: grid;
+.columns{
   width: 100%;
-  height: 100%;
-  grid-template-areas: 
-  "tower1 mid1 mob1"
-  "tower2 mid2 mob2"
-  "tower3 mid3 mob3" ;
-  grid-template-rows: 350px 350px 350px;
-  grid-template-columns: 1fr 1fr;
+  max-width: 400px;
+  padding: 10px;
 }
 
-.card-tower1,.card-tower2,.card-mob1,.card-mob2,.card-mob3{
-  max-width: 540px;
-  border-radius:15px ;
-  text-align:justify;
-  margin: 25px;
-  padding: 25px;
-  height: 300px;
+#left-column{
+  margin-right: 400px;
 }
 
-.card-tower1,.card-tower2{
-  background:linear-gradient(to right, #1c2b48,white) ;
-}
-.card-tower1{
-  grid-area: tower1;
-}
-.card-tower1:hover,.card-tower2:hover,.card-mob1:hover,.card-mob2:hover,.card-mob3:hover{
-  transition: all 0.5s ease-out; 
-  max-width: 1000px;
+.towerDiv,.mobDiv{
   width: 100%;
-  height: 300px;
-}
-.card-tower2{
-  grid-area: tower2;
-}
-.card-mob1{
-  grid-area: mob1;
-}
-.card-mob2{
-  grid-area: mob2;
-  margin-top: 400px;
-}
-.card-mob3{
-  grid-area: mob3;
-  margin-top: 800px;
-  
+  max-width: 400px;
+  background-color: #ccc;
+  padding: 10px;
 }
 
-
-.card-mob1,.card-mob2,.card-mob3{
-  position: absolute;
-  right: 25px;
-  background:linear-gradient(to left, #1c2b48,white) ;
+.card-mob,.card-tower{
+  transition: all 0.3s ease-in-out;
+  width: 100%;
+  min-height: 250px;
+  background-color: #fff;
+  margin-bottom: 40px;
+  border-radius: 15px;
+  padding: 5px;
 }
 
-
-.card-tower1{
-  grid-column: 1 / 2;
-  grid-row: 1;
+.card-tower{
+  background: linear-gradient(to right, #1c2b48,white);
 }
 
-.card-tower2{
-  grid-column: 1 / 2;
-  grid-row: 2;
+.card-mob{
+  background: linear-gradient(to left, #1c2b48,white);
 }
 
-
-.card-mob1{
-  grid-column: 3 / 2;
-  grid-row: 1;
-}
-.card-mob2{
-  grid-column: 3 / 2;
-  grid-row: 2;
-}
-.card-mob3{
-  grid-column: 3 / 2;
-  grid-row: 3;
-
+.card-mob:hover,.card-tower:hover{
+  transform: scale(1.05);
 }
 
-.card-title{
-  text-align: center;
+#last-card{
+  margin-bottom: 0px;
+}
+
+@media screen and (max-width: 550px) {
+  #container{
+      flex-direction: column;
+  }
+  .columns{
+      max-width: none;
+  }
+
+  #right-column{
+      margin-top: 100px;
+  }
+
 }
 
 /* login page and register page*/
@@ -175,12 +155,10 @@ footer {
   position: relative;
   bottom: 10px;
   width: 100%;
-  height: fit-content;
   margin: 20px;
   padding: 15px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   background: linear-gradient(to top,#1c2b48, white );
-  opacity : 0.9;
   border-radius: 25px;
 }
 
@@ -205,7 +183,6 @@ footer {
   padding: 15px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   background: linear-gradient(to top,#1c2b48, white );
-  opacity : 0.9;
   border-radius: 25px;
 }
 #username {
