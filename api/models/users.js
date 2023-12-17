@@ -9,13 +9,13 @@ const userSchema = new mongoose.Schema({
 
 const User = mongoose.model('Users', userSchema);
 
-const jwtSecret = 'ShadowFortress4LifeDudes<3';
+const jwtSecret = 'mySecretIsHidden';
 const lifetimeJwt = 24 * 60 * 60 * 1000; // in ms : 24 * 60 * 60 * 1000 = 24h
 
 const saltRounds = 10;
 
 async function login(username, password) {
-  await mongoose.connect('mongodb+srv://WebProjectVinci2023:WebProjectVinci2023@ShadowFortressGame.trlvgrx.mongodb.net/ShadowFortressGame?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true });
+  await mongoose.connect('mongodb+srv://USERNAME:PASSWORD@ShadowFortressGame.trlvgrx.mongodb.net/ShadowFortressGame?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true });
 
   const userFound = await User.findOne({ username });
   if (!userFound) return undefined;
@@ -40,7 +40,7 @@ async function login(username, password) {
 }
 
 async function register(username, password) {
-  await mongoose.connect('mongodb+srv://WebProjectVinci2023:WebProjectVinci2023@ShadowFortressGame.trlvgrx.mongodb.net/ShadowFortressGame?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true });
+  await mongoose.connect('mongodb+srv://USERNAME:PASSWORD@ShadowFortressGame.trlvgrx.mongodb.net/ShadowFortressGame?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true });
 
   const userFound = await User.findOne({ username });
   if (userFound) return undefined;
@@ -64,7 +64,7 @@ async function register(username, password) {
 }
 
 async function readOneUserFromUsername(username) {
-  await mongoose.connect('mongodb+srv://WebProjectVinci2023:WebProjectVinci2023@ShadowFortressGame.trlvgrx.mongodb.net/ShadowFortressGame?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true });
+  await mongoose.connect('mongodb+srv://USERNAME:PASSWORD@ShadowFortressGame.trlvgrx.mongodb.net/ShadowFortressGame?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true });
 
   const userFound = await User.findOne({ username });
   if (userFound) return undefined;
