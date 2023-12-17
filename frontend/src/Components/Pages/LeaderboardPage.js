@@ -25,8 +25,8 @@ function createLeaderboardTable(scores) {
   const tableLines = scores.map((score) => createTableRow(score)).join('');
 
   return `
-    <div class="table-responsive pt-5">
-      <table class="table table-dark table-striped">
+    <div class="table-responsive-pt-5">
+      <table class="table-table-dark-table-striped">
         <thead>
           <tr>
             <th scope="col">Username</th>
