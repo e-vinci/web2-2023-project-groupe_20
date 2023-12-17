@@ -12,11 +12,23 @@ const profilPage = () => {
 async function renderProfilPage() {
     const user = getAuthenticatedUser();
     const {username} = user;
-    const userRecord = await fetch('/api/scores/score', user);
-    const {gamesPlayed} = userRecord.length();
-    const {highestRound} = userRecord.round;
-    const {bestScore} = userRecord.score;
+    
+    const url = `/api/scores/allGames?username=${encodeURIComponent(username)}`;
+    const response = await fetch(url);
+    const games = await response.json();
 
+    let gamesPlayed;
+
+    if(!games) gamesPlayed = 0;
+    else gamesPlayed = games.length
+
+    let highestWave = 0;
+    let bestScore = 0;
+
+    games.forEach(game => {
+      highestWave = Math.max(highestWave, game.wave);
+      bestScore = Math.max(bestScore, game.score);
+  });
 
     const main = document.querySelector('main');
     
@@ -25,7 +37,6 @@ async function renderProfilPage() {
     const baseSection = document.createElement('section');
 
     baseSection.className = 'vh-100';
-    baseSection.style.background = '#1E665D'
 
   baseSection.innerHTML = `<div class="container py-5 h-100">
     <div class="row d-flex justify-content-center align-items-center h-100">
@@ -47,7 +58,7 @@ async function renderProfilPage() {
                   </div>
                   <div class="px-3">
                     <p class="small text-muted mb-1">Best Round</p>
-                    <p class="mb-0">${highestRound}</p>
+                    <p class="mb-0">${highestWave}</p>
                   </div>
                   <div>
                     <p class="small text-muted mb-1">Best Score</p>

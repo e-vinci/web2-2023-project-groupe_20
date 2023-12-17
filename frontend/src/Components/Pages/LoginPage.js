@@ -1,11 +1,11 @@
 import { clearPage } from '../../utils/render';
 import Navigate from '../Router/Navigate';
 import Navbar from '../Navbar/Navbar';
-import { setAuthenticatedUser, getAuthenticatedUser } from '../../utils/auths';
+import { setAuthenticatedUser, isAuthenticated } from '../../utils/auths';
 
 
 const LoginPage = () => {
-  if(getAuthenticatedUser()) Navigate('/');
+  if(isAuthenticated()) Navigate('/');
   clearPage();
   renderLoginForm();
 };

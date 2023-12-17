@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import { Navbar as BootstrapNavbar } from 'bootstrap';
-import { getAuthenticatedUser, isAuthenticated } from '../../utils/auths';
+import { isAuthenticated } from '../../utils/auths';
 
 import logoImage from '../../img/logo.png';
 import logoLogout from '../../img/logout.png';
@@ -9,8 +9,6 @@ const Navbar = () => {
   renderNavbar();
 }
 function renderNavbar() {
-  const authenticatedUser = getAuthenticatedUser();
-
   const anonymousNavbar = `
   <nav class="navbar navbar-expand-lg me-auto">
     <div class="container-fluid">
