@@ -7,7 +7,7 @@ class Goblin extends Phaser.GameObjects.Sprite{
         this.play("goblin_anim");
         this.flipX= true;
         this.setScale(3);
-        this.reward = 15;
+        this.reward = 10;
         this.score = 20;
         this.goblinDeath = goblinDeath;
         this.alive = true;
