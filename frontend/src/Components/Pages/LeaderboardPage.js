@@ -7,30 +7,18 @@ const LeaderboardPage = () => {
 };
 
 async function renderLeaderboard() {
-  const response = await fetch('/scores');
-  const responseText = await response.text();
-  console.log('Full Response:', responseText);
+    const response = await fetch('/api/scores');
+    if (!response.ok) {
+      throw new Error(`Fetch error: ${response.status} - ${response.statusText}`);
+    }
 
-  const scores = parseJson(responseText);
+    const responseBody = await response.text();
 
-  if (scores) {
-    console.log('Parsed Scores:', scores);
-
+    const scores = JSON.parse(responseBody);
     const leaderboardTable = createLeaderboardTable(scores);
     const main = document.querySelector('main');
     main.innerHTML += leaderboardTable;
-  } else {
-    console.error('Error parsing JSON');
-  }
-}
 
-function parseJson(jsonString) {
-  try {
-    return JSON.parse(jsonString);
-  } catch (parseError) {
-    console.error('Error parsing JSON:', parseError);
-    return null;
-  }
 }
 
 function createLeaderboardTable(scores) {
@@ -38,13 +26,17 @@ function createLeaderboardTable(scores) {
 
   return `
     <div class="table-responsive pt-5">
-      <table class="table table-danger">
-        <tr>
-          <th>Username</th>
-          <th>Wave</th>
-          <th>Score</th>
-        </tr>
-        ${tableLines}
+      <table class="table table-dark table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Username</th>
+            <th scope="col">Wave</th>
+            <th scope="col">Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${tableLines}
+        </tbody>
       </table>
     </div>
   `;
