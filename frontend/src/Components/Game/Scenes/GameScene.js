@@ -37,7 +37,7 @@ class GameScene extends Phaser.Scene {
         this.background.setOrigin(0,0);
         this.map = placementTilesData;
         this.props();
-        this.playerLives = 10;
+        this.playerLives = 1;
         this.nextWaveTime = 0;
         this.gameSpeed = 1;
         this.uiContainer = this.add.container(this.game.config.width / 2, 20);
@@ -635,7 +635,6 @@ class GameScene extends Phaser.Scene {
             }),
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': token
             },
         };
 

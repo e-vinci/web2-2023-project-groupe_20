@@ -23,7 +23,7 @@ router.get('/', async (req, res) => {
 });
 
 // Create a score to be added to the leaderboard
-router.post('/', authorize, async (req, res) => {
+router.post('/', async (req, res) => {
   const { username, wave, score } = req.body;
 
   if (typeof username !== 'string' || typeof wave !== 'number' || typeof score !== 'number') {
