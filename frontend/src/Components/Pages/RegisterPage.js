@@ -5,8 +5,10 @@ import Navbar from '../Navbar/Navbar';
 
 const RegisterPage = () => {
   if(isAuthenticated()) Navigate('/');
-  clearPage();
-  renderRegisterForm();
+  else {
+    clearPage();
+    renderRegisterForm();
+  }
 };
 
 function renderRegisterForm() {
@@ -43,8 +45,8 @@ function renderRegisterForm() {
   confirmPassword.className = 'form-control mb-3';
 
   const alReadyAnAccount = document.createElement('button');
-  alReadyAnAccount.classList.add("nav-button");
   alReadyAnAccount.textContent = "Already an account ?"
+  alReadyAnAccount.style = "margin-top:10px;"
   alReadyAnAccount.addEventListener('click', () => {
     Navigate('/login')
   })
@@ -67,9 +69,9 @@ function renderRegisterForm() {
   form.appendChild(username);
   form.appendChild(password);
   form.appendChild(confirmPassword);
-  form.appendChild(alReadyAnAccount);
   form.appendChild(privacyPolicyP);
   form.appendChild(submit);
+  form.appendChild(alReadyAnAccount); 
   form.appendChild(errorMessage);
   form.addEventListener('submit', onRegister);
 

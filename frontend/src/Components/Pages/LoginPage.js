@@ -39,8 +39,8 @@ function renderLoginForm() {
 
   
   const notYetAnAccount = document.createElement('button');
-  notYetAnAccount.classList.add("nav-button");
   notYetAnAccount.textContent = "Not yet an account ?"
+  notYetAnAccount.style = "margin-top:10px;"
   notYetAnAccount.addEventListener('click', () => {
     Navigate('/register')
   })
@@ -62,8 +62,8 @@ function renderLoginForm() {
   form.appendChild(title);
   form.appendChild(username);
   form.appendChild(password);
-  form.appendChild(notYetAnAccount);
   form.appendChild(submit);
+  form.appendChild(notYetAnAccount);
   form.appendChild(errorMessage);
   form.addEventListener('submit', onLogin); 
   

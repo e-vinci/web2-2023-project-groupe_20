@@ -1,6 +1,6 @@
 const express = require('express');
 const Score = require('../models/scores');
-const { authorize, isAdmin } = require('../utils/auths');
+const { authorize } = require('../utils/auths');
 
 const router = express.Router();
 
@@ -36,19 +36,6 @@ router.post('/', authorize, async (req, res) => {
 
   const createdScore = await Score.createOneScore(username, wave, score);
   return res.json(createdScore);
-});
-
-// Delete a score from the leaderboard based on its id
-router.delete('/:id', authorize, isAdmin, async (req, res) => {
-  const { id } = req.params;
-
-  const deletedScore = await Score.deleteOneScore(id);
-
-  if (!deletedScore) {
-    return res.status(404).send('Score not found');
-  }
-
-  return res.json(deletedScore);
 });
 
 // Get all games for a user based on its username
