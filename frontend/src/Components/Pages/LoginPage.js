@@ -5,7 +5,7 @@ import { setAuthenticatedUser, isAuthenticated } from '../../utils/auths';
 
 
 const LoginPage = () => {
-  if(isAuthenticated()) Navigate('/');
+  if(isAuthenticated() === true) Navigate('/');
   clearPage();
   renderLoginForm();
 };
@@ -38,8 +38,16 @@ function renderLoginForm() {
   password.className = 'form-control mb-3';
 
   
-  const notYetAnAccount = document.createElement('p');
-  notYetAnAccount.innerHTML = 'Not yet an account ? <a href="/register">sign up.</a>';
+  const notYetAnAccount = document.createElement('button');
+  notYetAnAccount.classList.add("nav-button");
+  notYetAnAccount.textContent = "Not yet an account ?"
+  notYetAnAccount.addEventListener('click', () => {
+    Navigate('/register')
+  })
+
+  notYetAnAccount.addEventListener('click', () => {
+    Navigate('/register');
+  })
 
   const submit = document.createElement('input');
   submit.value = 'Sign up';

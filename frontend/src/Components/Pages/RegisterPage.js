@@ -42,8 +42,12 @@ function renderRegisterForm() {
   confirmPassword.placeholder = 'Confirm your password';
   confirmPassword.className = 'form-control mb-3';
 
-  const alReadyAnAccount = document.createElement('p');
-  alReadyAnAccount.innerHTML = 'Already have an account ? <a href="/login">sign in.</a>';
+  const alReadyAnAccount = document.createElement('button');
+  alReadyAnAccount.classList.add("nav-button");
+  alReadyAnAccount.textContent = "Already an account ?"
+  alReadyAnAccount.addEventListener('click', () => {
+    Navigate('/login')
+  })
 
   const submit = document.createElement('input');
   submit.value = 'Sign up';
