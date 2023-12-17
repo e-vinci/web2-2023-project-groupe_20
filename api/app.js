@@ -5,6 +5,7 @@ const cors = require('cors');
 
 const corsOptions = {
   origin: ['http://localhost:8080/', 'https://niromin.github.io', 'http://localhost:3000/'],
+  credentials: true,
 };
 
 const usersRouter = require('./routes/users');
