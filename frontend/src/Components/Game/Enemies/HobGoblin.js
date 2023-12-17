@@ -7,7 +7,7 @@ class HobGoblin extends Phaser.GameObjects.Sprite{
         this.play("hobGoblin_anim");
         this.flipX= true;
         this.setScale(4);
-        this.reward = 50;
+        this.reward = 15;
         this.score = 50;
 
         this.path = path;

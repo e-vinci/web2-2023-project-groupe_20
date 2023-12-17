@@ -1,11 +1,14 @@
-import { setAuthenticatedUser } from '../../utils/auths';
+import { setAuthenticatedUser, isAuthenticated } from '../../utils/auths';
 import { clearPage } from '../../utils/render';
 import Navigate from '../Router/Navigate';
 import Navbar from '../Navbar/Navbar';
 
 const RegisterPage = () => {
-  clearPage();
-  renderRegisterForm();
+  if(isAuthenticated()) Navigate('/');
+  else {
+    clearPage();
+    renderRegisterForm();
+  }
 };
 
 function renderRegisterForm() {
@@ -41,8 +44,12 @@ function renderRegisterForm() {
   confirmPassword.placeholder = 'Confirm your password';
   confirmPassword.className = 'form-control mb-3';
 
-  const alReadyAnAccount = document.createElement('p');
-  alReadyAnAccount.innerHTML = 'Already have an account ? <a href="/login">sign in.</a>';
+  const alReadyAnAccount = document.createElement('button');
+  alReadyAnAccount.textContent = "Already an account ?"
+  alReadyAnAccount.style = "margin-top:10px;"
+  alReadyAnAccount.addEventListener('click', () => {
+    Navigate('/login')
+  })
 
   const submit = document.createElement('input');
   submit.value = 'Sign up';
@@ -62,9 +69,9 @@ function renderRegisterForm() {
   form.appendChild(username);
   form.appendChild(password);
   form.appendChild(confirmPassword);
-  form.appendChild(alReadyAnAccount);
   form.appendChild(privacyPolicyP);
   form.appendChild(submit);
+  form.appendChild(alReadyAnAccount); 
   form.appendChild(errorMessage);
   form.addEventListener('submit', onRegister);
 

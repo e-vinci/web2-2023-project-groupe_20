@@ -1,9 +1,11 @@
 import { clearPage } from '../../utils/render';
 import Navigate from '../Router/Navigate';
 import Navbar from '../Navbar/Navbar';
-import { setAuthenticatedUser } from '../../utils/auths';
+import { setAuthenticatedUser, isAuthenticated } from '../../utils/auths';
+
 
 const LoginPage = () => {
+  if(isAuthenticated() === true) Navigate('/');
   clearPage();
   renderLoginForm();
 };
@@ -36,8 +38,16 @@ function renderLoginForm() {
   password.className = 'form-control mb-3';
 
   
-  const notYetAnAccount = document.createElement('p');
-  notYetAnAccount.innerHTML = 'Not yet an account ? <a href="/register">sign up.</a>';
+  const notYetAnAccount = document.createElement('button');
+  notYetAnAccount.textContent = "Not yet an account ?"
+  notYetAnAccount.style = "margin-top:10px;"
+  notYetAnAccount.addEventListener('click', () => {
+    Navigate('/register')
+  })
+
+  notYetAnAccount.addEventListener('click', () => {
+    Navigate('/register');
+  })
 
   const submit = document.createElement('input');
   submit.value = 'Sign up';
@@ -52,8 +62,8 @@ function renderLoginForm() {
   form.appendChild(title);
   form.appendChild(username);
   form.appendChild(password);
-  form.appendChild(notYetAnAccount);
   form.appendChild(submit);
+  form.appendChild(notYetAnAccount);
   form.appendChild(errorMessage);
   form.addEventListener('submit', onLogin); 
   
@@ -96,7 +106,7 @@ async function onLogin(e) {
 
   Navbar();
 
-  Navigate('/game');
+  Navigate('/');
 }
 
 export default LoginPage;

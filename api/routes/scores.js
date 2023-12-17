@@ -1,6 +1,6 @@
 const express = require('express');
 const Score = require('../models/scores');
-const { authorize, isAdmin } = require('../utils/auths');
+const { authorize } = require('../utils/auths');
 
 const router = express.Router();
 
@@ -38,17 +38,15 @@ router.post('/', authorize, async (req, res) => {
   return res.json(createdScore);
 });
 
-// Delete a score from the leaderboard based on its id
-router.delete('/:id', authorize, isAdmin, async (req, res) => {
-  const { id } = req.params;
+// Get all games for a user based on its username
+router.get('/allGames', async (req, res) => {
+  const username = req?.query?.username?.length !== 0 ? req.query.username : undefined;
 
-  const deletedScore = await Score.deleteOneScore(id);
+  if (!username) return res.sendStatus(400); // 400 Bad Request
 
-  if (!deletedScore) {
-    return res.status(404).send('Score not found');
-  }
+  const games = await Score.getAllGamesFromUser(username);
 
-  return res.json(deletedScore);
+  return res.json(games);
 });
 
 module.exports = router;
