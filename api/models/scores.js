@@ -1,87 +1,54 @@
-const path = require('node:path');
-const { parse, serialize } = require('../utils/json');
+const mongoose = require('mongoose');
 
-const jsonDbPath = path.join(__dirname, '/../data/scores.json');
+const scoreSchema = new mongoose.Schema({
+  username: { type: String, required: true },
+  wave: { type: Number, required: true },
+  score: { type: Number, required: true },
+});
 
-const Leaderboard = [
-  {
-    id: 1,
-    username: 'MohamedT',
-    wave: 11,
-    score: 1300,
-  },
-  {
-    id: 2,
-    username: 'Gab',
-    wave: 15,
-    score: 1600,
-  },
-  {
-    id: 3,
-    username: 'Trini',
-    wave: 18,
-    score: 1900,
-  },
-  {
-    id: 4,
-    username: 'Rayane',
-    wave: 7,
-    score: 800,
-  },
-  {
-    id: 5,
-    username: 'MohamedM',
-    wave: 14,
-    score: 1500,
-  },
-];
+const Score = mongoose.model('Score', scoreSchema);
 
-function readAllScores() {
-  const scores = parse(jsonDbPath, Leaderboard);
+mongoose.connect('mongodb+srv://WebProjectVinci2023:WebProjectVinci2023@ShadowFortressGame.trlvgrx.mongodb.net/ShadowFortressGame?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true });
 
-  return scores;
+async function readBestScores() {
+  return Score.aggregate([
+    {
+      $group: {
+        _id: '$username',
+        bestResult: {
+          $max: {
+            score: '$score',
+            wave: '$wave',
+          },
+        },
+      },
+    },
+    {
+      $project: {
+        username: '$_id',
+        score: '$bestResult.score',
+        wave: '$bestResult.wave',
+        _id: 0,
+      },
+    },
+    {
+      $sort: {
+        score: -1,
+      },
+    },
+  ]);
 }
 
-function createOneScore(username, wave, score) {
-  const scores = parse(jsonDbPath, Leaderboard);
-
-  const createdScore = {
-    id: getNextId(),
-    username,
-    wave,
-    score,
-  };
-
-  scores.push(createdScore);
-
-  serialize(jsonDbPath, scores);
-
-  return createdScore;
+async function createOneScore(username, wave, score) {
+  return Score.create({ username, wave, score });
 }
 
-function getNextId() {
-  const scores = parse(jsonDbPath, Leaderboard);
-  const lastItemIndex = scores?.length !== 0 ? scores.length - 1 : undefined;
-  if (lastItemIndex === undefined) return 1;
-  const lastId = scores[lastItemIndex]?.id;
-  const nextId = lastId + 1;
-  return nextId;
-}
-
-function deleteOneScore(id) {
-  const idNumber = parseInt(id, 10);
-  const scores = parse(jsonDbPath, Leaderboard);
-  const foundIndex = scores.findIndex((score) => score.id === idNumber);
-  if (foundIndex < 0) return undefined;
-  const deletedScores = scores.splice(foundIndex, 1);
-  const deletedScore = deletedScores[0];
-  serialize(jsonDbPath, scores);
-
-  return deletedScore;
+async function deleteOneScore(id) {
+  return Score.findByIdAndRemove(id);
 }
 
 module.exports = {
-  readAllScores,
+  readBestScores,
   createOneScore,
   deleteOneScore,
 };
