@@ -1,0 +1,24 @@
+@baseUrl = http://localhost:3000
+
+### Read best scores for all users
+GET {{baseUrl}}/scores
+Content-Type: application/json
+
+### Create a score
+POST {{baseUrl}}/scores
+Content-Type: application/json
+
+{
+    "username":"ZwinGo",
+    "wave":12,
+    "score":4500
+}
+
+
+### Find all games for a user
+GET {{baseUrl}}/scores/allGames?username=ZwinGo
+Content-Type: application/json
+
+{
+    "username":"ZwinGo"
+}
